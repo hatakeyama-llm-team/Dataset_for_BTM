@@ -40,3 +40,9 @@ class Text2Vec:
             return np.zeros(self.dim)
         else:
             return np.mean(vecs, axis=0)
+
+
+def texts2classes(target_texts, t2v, kmeans):
+    vec = np.array([t2v.text2vec(i) for i in target_texts]).astype(np.double)
+    classes = kmeans.predict(vec)
+    return classes
