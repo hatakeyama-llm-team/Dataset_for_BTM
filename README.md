@@ -24,9 +24,10 @@ wget https://data.statmt.org/cc-100/ja.txt.xz
 #shisa
 wget https://huggingface.co/datasets/augmxnt/shisa-pretrain-en-ja-v1/resolve/main/dataset.parquet
 
+mkdir oscar
 #oscar
 conda activate textprocess
-cd ../../
-python load_oscar.py
+#cd ../../
+#python dump_oscar.py
 
 ~~~
