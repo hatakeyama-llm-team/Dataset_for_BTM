@@ -5,7 +5,28 @@
 # Scripts
 - [setup.sh](./setup.sh)
     - minicondaで環境構築するためのscript
-- [0_download_dataset.py](./codes/0_download_dataset.py)
-    - huggingfaceのdatasetsをdata folderにcacheとして保存しておきます for 高速処理
-        - mc4, oscar, cc100, shisa
-    - 1 TBくらいは容量を使うと思います｡
+
+# 事前ダウンロード
+- webコーパスを事前ダウンロードしておきます｡
+~~~
+cd data
+mkdir original_dump
+cd original_dump
+
+#mc4-ja
+GIT_LFS_SKIP_SMUDGE=1 git clone https://huggingface.co/datasets/allenai/c4
+cd c4
+git lfs pull --include "multilingual/c4-ja.*.json.gz"
+
+#cc100
+wget https://data.statmt.org/cc-100/ja.txt.xz
+
+#shisa
+wget https://huggingface.co/datasets/augmxnt/shisa-pretrain-en-ja-v1/resolve/main/dataset.parquet
+
+#oscar
+conda activate textprocess
+cd ../../
+python load_oscar.py
+
+~~~

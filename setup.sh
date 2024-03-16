@@ -14,7 +14,9 @@ pip install hojichar==0.9.0
 #text clustering
 pip install gensim==4.3.2
 pip install scikit-learn==1.4.1.post1 
-
+#pip install dask==2024.3.1
+#pip install "dask[dataframe]"
+#pip install jinja2-3.1.3
 
 #model download
 cd data

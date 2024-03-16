@@ -1,4 +1,4 @@
-from src.loaders import load_c4, load_oscar, load_cc100, load_shisa
+from codes.old.loaders import load_c4, load_oscar, load_cc100, load_shisa
 
 load_c4()
 load_oscar()
