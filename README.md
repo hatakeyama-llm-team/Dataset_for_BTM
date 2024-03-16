@@ -31,3 +31,7 @@ conda activate textprocess
 #python dump_oscar.py
 
 ~~~
+
+- [dump_cc](./dump_cc_shisa.ipynb)
+- [dump_shisa](./dump_shisa.ipynb)
+- を実行(TODO: pyにexport)
