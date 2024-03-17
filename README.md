@@ -12,6 +12,7 @@
 - download_scriptフォルダ内のscriptを実行すれば処理が進みます
     - コーパスごとに独立に実行できます
     - jsonl.gzで分割圧縮します
+    - 700 GB程度
 ~~~
 #はじめの処理
 cd data
