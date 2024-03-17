@@ -13,6 +13,7 @@ from src.load_gz import read_gzip_json_file
 streaming = True
 base_dir = "../data/categorized"
 length_threshold = 30  # 短い記事は捨てる
+check_length=200 # はじめのlengthだけで分類する
 
 # load models
 t2v = Text2Vec(load_facebook_model('../data/model/cc.ja.300.bin'))
@@ -43,12 +44,12 @@ def proc(docs):
     # docsを処理する関数
     # ここに処理のロジックを実装します
     print(f"Processing {len(docs)} documents...")
-    categories = texts2classes(docs, t2v, kmeans)
+    categories = texts2classes(docs, t2v, kmeans,length=check_length)
 
     for text, category in zip(docs, categories):
         save_dir = f"{base_dir}/{category}"
         make_dir(save_dir)
-        database_name=database_path.split("/")[-1].split(".")[0]
+        database_name=database_path.split("/")[-1]#.split(".")[0]
 
         data = json.dumps(
             {"db": database_name, "text": text}, ensure_ascii=False)
