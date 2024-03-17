@@ -7,31 +7,19 @@
     - minicondaで環境構築するためのscript
 
 # 事前ダウンロード
-- webコーパスを事前ダウンロードしておきます｡
+- webコーパスを事前にダウンロードしておきます｡
+- download_scriptフォルダ内のscriptを実行すれば処理が進みます
+    - コーパスごとに独立に実行できます
+    - jsonl.gzで分割圧縮します
 ~~~
+#はじめの処理
 cd data
 mkdir original_dump
-cd original_dump
+cd ../download_script
 
-#mc4-ja
-GIT_LFS_SKIP_SMUDGE=1 git clone https://huggingface.co/datasets/allenai/c4
-cd c4
-git lfs pull --include "multilingual/c4-ja.*.json.gz"
-
-#cc100
-wget https://data.statmt.org/cc-100/ja.txt.xz
-
-#shisa
-wget https://huggingface.co/datasets/augmxnt/shisa-pretrain-en-ja-v1/resolve/main/dataset.parquet
-
-mkdir oscar
-#oscar
-conda activate textprocess
-#cd ../../
-#python dump_oscar.py
-
+#データベースのダウンロード (独立に実行可能。1日くらいかかるかも)
+bash mc4_ja.sh
+bash oscar.sh
+bash cc100.sh
+bash shisa.sh
 ~~~
-
-- [dump_cc](./dump_cc_shisa.ipynb)
-- [dump_shisa](./dump_shisa.ipynb)
-- を実行(TODO: pyにexport)
