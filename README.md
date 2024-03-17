@@ -60,5 +60,5 @@ python clean_and_clustering.py 16 # 数学は並列処理の数
     - Nを小さくするための策の一つとして、一つ前のstepでクラスタリングしています。
 
 ~~~
-python dedup.py 15 # 数値は並列処理の数
+python dedup.py 64 # 数値は並列処理の数
 ~~~
