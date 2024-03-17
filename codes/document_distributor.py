@@ -8,6 +8,7 @@ from src.classify.Text2Vec import Text2Vec, texts2classes
 from src.cleaner.auto_cleaner import clean_text
 from gensim.models.fasttext import load_facebook_model
 import joblib
+from src.load_gz import read_gzip_json_file
 
 streaming = True
 base_dir = "../data/categorized"
@@ -32,25 +33,10 @@ batch_size = 10000
 
 parser = argparse.ArgumentParser(
     description="Load a dataset based on the given database name.")
-parser.add_argument('database_name', type=str,
-                    help='The name of the database to load')
+parser.add_argument('database_path', type=str,
+                    help='The path of the database to load')
 args = parser.parse_args()
-database_name = args.database_name
-
-
-if database_name == "mc4":
-    dataset = load_dataset('mc4', 'ja', split='train', streaming=streaming)
-elif database_name == "oscar":
-    dataset = load_dataset(
-        'oscar', 'unshuffled_deduplicated_ja', split='train', streaming=streaming)
-elif database_name == "cc100":
-    dataset = load_dataset(
-        'cc100', lang='ja', split='train', streaming=streaming)
-elif database_name == "shisa":
-    dataset = load_dataset("augmxnt/shisa-pretrain-en-ja-v1",
-                           split="train", streaming=streaming)
-else:
-    raise ValueError(f"unknown database name: {database_name}")
+database_path = args.database_path
 
 
 def proc(docs):
@@ -62,6 +48,7 @@ def proc(docs):
     for text, category in zip(docs, categories):
         save_dir = f"{base_dir}/{category}"
         make_dir(save_dir)
+        database_name=database_path.split("/")[-1].split(".")[0]
 
         data = json.dumps(
             {"db": database_name, "text": text}, ensure_ascii=False)
@@ -76,8 +63,14 @@ def main():
     docs = []
     futures = []
 
-    for doc in dataset:
-        text = doc["text"]
+    lines=[]
+    for article in read_gzip_json_file(database_path):
+        text = article.get('text', '')  # 'text'キーからテキストデータを取得
+        lines.append(text)
+
+
+
+    for text in lines:
         text = clean_text(text)
         if len(text) < length_threshold:
             continue
@@ -88,37 +81,6 @@ def main():
             proc(docs[:])
             # docsをリセット
             docs = []
-    """
-    with ThreadPoolExecutor(max_workers=5) as executor:
-        for doc in dataset:
-            text = doc["text"]
-            text = clean_text(text)
-            if len(text) < length_threshold:
-                continue
-
-            docs.append(text)
-            if len(docs) == batch_size:
-                # docsのコピーを作成してprocに渡す
-                docs_copy = docs[:]
-                # バッチをproc関数に非同期で渡す
-                future = executor.submit(proc, docs_copy)
-                futures.append(future)
-
-                # docsをリセット
-                docs = []
-            # break
-
-        # まだ処理されていないドキュメントがあれば、それも処理する
-        if docs:
-            futures.append(executor.submit(proc, docs))
-
-        # すべての処理が完了するのを待つ
-        for future in as_completed(futures):
-            result = future.result()
-            print(f"Batch processed with {result} documents.")
-
-    """
-
 
 if __name__ == "__main__":
     main()
