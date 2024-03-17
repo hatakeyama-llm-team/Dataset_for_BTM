@@ -25,3 +25,14 @@ cd model
 wget https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.ja.300.bin.gz
 gzip -d cc.ja.300.bin.gz
 cd ../../
+
+
+#dedup build
+sudo apt install nlohmann-json3-dev -y
+
+git clone https://github.com/if001/dedup_sentence
+cd dedup_sentence
+git clone https://github.com/aappleby/smhasher.git
+wget https://raw.githubusercontent.com/simdjson/simdjson/master/singleheader/simdjson.h 
+wget https://raw.githubusercontent.com/simdjson/simdjson/master/singleheader/simdjson.cpp 
+make
