@@ -45,5 +45,5 @@ python search_gz_list.py
 ~~~
 rm -rf ../data/categorized #必要に応じて初期化
 rm -rf temp/fin   #終了済みファイルリストを必要に応じて初期化
-python clean_and_clustering.py 10 # 数学は並列処理の数
+python clean_and_clustering.py 30 # 数学は並列処理の数
 ~~~
