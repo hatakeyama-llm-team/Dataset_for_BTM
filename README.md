@@ -68,5 +68,6 @@ python clean_and_clustering.py 16 # 数学は並列処理の数
     - 処理が進むにつれ､使用メモリが増えていくので注意
 
 ~~~
-python dedup.py 16 # 数値は並列処理の数
+rm -rf ../data/dedup_categorized #必要に応じて初期化
+python dedup.py 50 # 数値は並列処理の数
 ~~~
