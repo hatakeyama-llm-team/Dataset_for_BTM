@@ -4,7 +4,7 @@ import os
 import gzip
 
 # 設定
-save_dir = "data/original_dump/oscar/"
+save_dir = "../data/original_dump/oscar/"
 batch_size = 100000
 
 

@@ -1,15 +1,17 @@
 # %%
+from tqdm import tqdm
+import os
+import json
+import gzip
 import pandas as pd
-path="data/original_dump/dataset.parquet"
-save_dir="data/original_dump/shisa"
+path = "../data/original_dump/dataset.parquet"
+save_dir = "../data/original_dump/shisa"
 
-df=pd.read_parquet(path)
+df = pd.read_parquet(path)
 
 # %%
 
 
-import gzip
-import json
 def save_jsonl_gz(data, filename):
     """指定されたファイル名でgzip圧縮されたJSON Lines形式でデータを保存する"""
     with gzip.open(filename, 'wt', encoding='utf-8') as f:
@@ -17,19 +19,16 @@ def save_jsonl_gz(data, filename):
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
 
 
-
 # %%
-import os
-from tqdm import tqdm
 if not os.path.exists(save_dir):
     os.makedirs(save_dir)
- 
-batch_size=100000
+
+batch_size = 100000
 batch = []
 file_count = 0
-lines=list(df["text"])
+lines = list(df["text"])
 for line in tqdm(lines):
-    #line=line.decode()
+    # line=line.decode()
 
     batch.append({"text": line})
     if len(batch) == batch_size:
@@ -46,11 +45,7 @@ if batch:
     print(f'Saved {save_path}')
 
 
-
 # %%
 lines[:3]
 
 # %%
-
-
-

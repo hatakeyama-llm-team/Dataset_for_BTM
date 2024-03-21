@@ -1,9 +1,14 @@
 # %%
+import os
+import lzma
+from tqdm import tqdm
 import pandas as pd
 
 # %%
 import gzip
 import json
+
+
 def save_jsonl_gz(data, filename):
     """指定されたファイル名でgzip圧縮されたJSON Lines形式でデータを保存する"""
     with gzip.open(filename, 'wt', encoding='utf-8') as f:
@@ -11,25 +16,21 @@ def save_jsonl_gz(data, filename):
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
 
 
-
 # %%
-from tqdm import tqdm
-path="data/original_dump/ja.txt.xz"
-save_dir="data/original_dump/cc100"
-import lzma
-import os
+path = "../data/original_dump/ja.txt.xz"
+save_dir = "../data/original_dump/cc100"
 if not os.path.exists(save_dir):
     os.makedirs(save_dir)
- 
-batch_size=2000000
+
+batch_size = 2000000
 batch = []
 file_count = 0
 
 with lzma.open(path) as f:
-    #lines = f.readlines()
-#for line in tqdm(lines):
+    # lines = f.readlines()
+    # for line in tqdm(lines):
     for line in tqdm(f):
-        line=line.decode()
+        line = line.decode()
 
         batch.append({"text": line})
         if len(batch) == batch_size:
@@ -46,11 +47,7 @@ with lzma.open(path) as f:
         print(f'Saved {save_path}')
 
 
-
 # %%
 len(line)
 
 # %%
-
-
-
