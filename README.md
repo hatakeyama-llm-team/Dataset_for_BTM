@@ -4,7 +4,7 @@
 - [setup.sh](./setup.sh)
     - minicondaで環境構築するためのscript
 
-# 日本語のCommonCrawlデータを統合
+# [1. 日本語のCommonCrawlデータを統合](./web_codes/)
 ## 1. 事前ダウンロード
 - webコーパスを事前にダウンロードしておきます｡
  - 一晩くらいはかかります
@@ -78,3 +78,5 @@ rm -rf ../data/dedup_categorized #必要に応じて初期化
 python dedup.py 50 # 数値は並列処理の数
 ~~~
 
+
+# [2. あらゆるテキストを統合したjsonlを作る](./integrate_texts/)
