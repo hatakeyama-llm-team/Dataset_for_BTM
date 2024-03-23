@@ -48,7 +48,9 @@ bash auto.sh
     - dedupの計算コストや必要メモリが、naiveにはN^2に比例するため
 - クラスタ数は大きめが良いかもしれません
     - 10-20分程度で終わります (学習データ数次第です。)
-
+~~~
+python 2_train_classifier.py
+~~~
 ## 4. クリーン　&　クラスタリング
 - クリーンしてクラスタリングします
 - [categorized](./data/categorized)フォルダに生成されます。
@@ -59,7 +61,7 @@ bash auto.sh
 ~~~
 rm -rf ../data/categorized #必要に応じて初期化
 rm -rf temp/fin   #終了済みファイルリストを必要に応じて初期化
-python clean_and_clustering.py 16 # 数学は並列処理の数
+python 3_clean_and_clustering.py 16 # 数学は並列処理の数
 ~~~
 
 ## 5. 重複削除
@@ -75,9 +77,11 @@ python clean_and_clustering.py 16 # 数学は並列処理の数
     - dedup後は650 GB
 ~~~
 rm -rf ../data/dedup_categorized #必要に応じて初期化
-python dedup.py 50 # 数値は並列処理の数
+python 4_dedup.py 50 # 数値は並列処理の数
 ~~~
 
+## 6. 件数の確認
+python 5_count_articles.py
 
 # [2. あらゆるテキストを統合したjsonlを作る](./integrate_texts/)
 - [dict](./integrate_texts/dataset_dict.py)を更新する
