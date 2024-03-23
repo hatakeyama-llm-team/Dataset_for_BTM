@@ -86,3 +86,14 @@ python dedup.py 50 # 数値は並列処理の数
 ~~~
 python integrate_dataset.py
 ~~~
+
+
+# TODO
+## 入れたいデータ
+- 青空文庫
+- Wiki**系
+- NHKコーパス
+- 学術論文
+- pdf抽出のデータ
+- code関連
+- ...
