@@ -1,18 +1,17 @@
-# 日本語のwebデータなどを統合するパイプラインのテスト
+# 事前学習用のコーパスを作るパイプライン for BTM
 
-- とりあえず､畠山の方でBTMの練習が必要なので､たたき台のscriptを書いていきます｡
-
-# Scripts
+# 環境構築
 - [setup.sh](./setup.sh)
     - minicondaで環境構築するためのscript
 
-# 1. 事前ダウンロード
+# 日本語のCommonCrawlデータを統合
+## 1. 事前ダウンロード
 - webコーパスを事前にダウンロードしておきます｡
  - 一晩くらいはかかります
 - download_scriptフォルダ内のscriptを実行すれば処理が進みます
     - コーパスごとに独立に実行できます
     - jsonl.gzで分割圧縮します
-    - 700 GB程度
+    - 700 GB程度(for mc4,oscar,cc100,shisa)
 ~~~
 #はじめの処理
 cd data
@@ -24,32 +23,33 @@ bash mc4_ja.sh
 bash oscar.sh
 bash cc100.sh
 bash shisa.sh
+bash jap2010.sh
 ~~~
 
 
-# 2. gzファイルの一覧取得
+## 2. gzファイルの一覧取得
 - gzファイルの一覧を[temp/gz_list.txt](./codes/temp/gz_list.txt)に書き出します。
 ~~~
 conda activate textprocess
-cd codes
-python search_gz_list.py
+cd web_codes
+python 1_search_gz_list.py
 
 ~~~
 
-# 自動実行
+## 自動実行
 - 以下の3,4,...を自動実行するscriptです｡
 ~~~
 bash auto.sh
 ~~~
 
-# 3. クラスタリングモデルの学習
+## 3. クラスタリングモデルの学習
 - [教師なしクラスタリングのためのモデルを学習します](./codes/train_classifier.ipynb)
 - 人間のためのカテゴライズというよりは、dedupの計算時間を削減することが今回の目的です｡
     - dedupの計算コストや必要メモリが、naiveにはN^2に比例するため
 - クラスタ数は大きめが良いかもしれません
     - 10-20分程度で終わります (学習データ数次第です。)
 
-# 4. クリーン　&　クラスタリング
+## 4. クリーン　&　クラスタリング
 - クリーンしてクラスタリングします
 - [categorized](./data/categorized)フォルダに生成されます。
     - 16並列処理で1日弱、かかりました。 (1プロセスあたり10gbほどramを消費します)
@@ -62,7 +62,7 @@ rm -rf temp/fin   #終了済みファイルリストを必要に応じて初期�
 python clean_and_clustering.py 16 # 数学は並列処理の数
 ~~~
 
-# 5. 重複削除
+## 5. 重複削除
 - カテゴリ別に重複削除をしていきます。
     - 計算コストが、naiveにはO(N^2)なので、時間がかかります。
     - 前述の通り、Nを小さくするための策の一つとして、一つ前のstepでクラスタリングしています。
@@ -77,3 +77,4 @@ python clean_and_clustering.py 16 # 数学は並列処理の数
 rm -rf ../data/dedup_categorized #必要に応じて初期化
 python dedup.py 50 # 数値は並列処理の数
 ~~~
+

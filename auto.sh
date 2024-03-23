@@ -1,5 +1,5 @@
 conda activate textprocess
-cd codes
+cd web_codes
 
 #分類モデルの訓練
 python train_classifier.py

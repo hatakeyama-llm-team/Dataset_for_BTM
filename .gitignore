@@ -160,5 +160,5 @@ cython_debug/
 #.idea/
 
 data/*
-codes/temp/*
+web_codes/temp/*
 dedup_sentence
