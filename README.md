@@ -74,7 +74,9 @@ python 3_clean_and_clustering.py 16 # 数学は並列処理の数
     - 10クラスタリングとかだと、必要RAMが数十倍以上になるので注意
         - 重複の比較のための、テキスト(のキャッシュ)データをプロセスが大量に保持しなければならないため
         - その分、並列にまわせるプロセスの数が減り、より時間がかかる
-    - dedup後は650 GB
+    - dedup後は650 GB (for mc4,cc100,oscar, shisa)
+        - 466,593,931 articles 
+        - 8831060 files 
 ~~~
 rm -rf ../data/dedup_categorized #必要に応じて初期化
 python 4_dedup.py 50 # 数値は並列処理の数

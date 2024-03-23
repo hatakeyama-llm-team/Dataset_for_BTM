@@ -18,7 +18,7 @@ dataset_dict = {
     },
     "CC(ja)": {
         "loader": CC_ja_loader,
-        "n_records": 100000000,
-        "stage_ratio": [0.01, 0.01, 8, 0.01],  # 各ステージでのデータ配分
+        "n_records": 10000000,
+        "stage_ratio": [0.1, 0.1, 8, 0.1],  # 各ステージでのデータ配分
     },
 }
