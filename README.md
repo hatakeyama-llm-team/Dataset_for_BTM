@@ -90,6 +90,8 @@ python integrate_dataset.py
 
 # TODO
 ## 入れたいデータ
+- 英語common crawl (CulturaX?)
+- 対訳?
 - 青空文庫
 - Wiki**系
 - NHKコーパス
