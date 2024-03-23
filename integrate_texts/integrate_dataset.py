@@ -9,19 +9,6 @@ import yaml
 import os
 
 
-def make_dir(path):
-    if not os.path.exists(path):
-        os.mkdir(path)
-
-
-# %%
 distributor = RecordDistributor(dataset_dict)
 distributor.load_datasets()
-
-# %%
-distributor.dataset_dict, distributor.n_records_per_stage, distributor.n_records_per_stage
-
-# %%
 distributor.write_jsonl(output_path, overwrite=True)
-
-# %%

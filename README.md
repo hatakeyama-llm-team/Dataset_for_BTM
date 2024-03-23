@@ -80,3 +80,9 @@ python dedup.py 50 # 数値は並列処理の数
 
 
 # [2. あらゆるテキストを統合したjsonlを作る](./integrate_texts/)
+- [dict](./integrate_texts/dataset_dict.py)を更新する
+- [データのバランス](./integrate_texts/check_distribution.ipynb)を確認する
+- 統合する
+~~~
+python integrate_dataset.py
+~~~
