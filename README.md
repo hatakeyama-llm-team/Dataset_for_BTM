@@ -99,3 +99,8 @@ python integrate_dataset.py
 - pdf抽出のデータ
 - code関連
 - ...
+
+## トークナイズ関連
+- 以下の処理は､GPUサーバーでなくても行えるので､ここのrepositoryに含めても良いように思われる
+    - トークナイザーの学習
+    - textのtokenize
