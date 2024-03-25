@@ -102,9 +102,7 @@ python integrate_dataset.py
 ## 入れたいデータ
 - 英語common crawl (CulturaX?)
 - 対訳?
-- 青空文庫
 - Wiki**系
-- NHKコーパス
 - 学術論文
 - pdf抽出のデータ
 - code関連

@@ -1,3 +1,4 @@
+#tokenizer学習
 input: /data/hatakeyama/python/llm_corpus/corpus.jsonl
 output_dir: /data/hatakeyama/python/llm_corpus/tokenizer
 vocab_size: 65000
@@ -7,8 +8,7 @@ character_coverage: 0.9995
 model_type: unigram #character_coverage
 train_extremely_large_corpus: True
 
-#tokenize関連
-
+#tokenize
 input_tokenizer_file: /data/hatakeyama/python/llm_corpus/tokenizer.model
 output_prefix: /data/hatakeyama/python/llm_corpus/tokenized
 megatron_deepspeed_dir: Megatron-DeepSpeed

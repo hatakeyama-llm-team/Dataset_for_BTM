@@ -8,7 +8,7 @@ import pandas as pd
 
 
 class RecordDistributor:
-    def __init__(self, dataset_dict, batch_size=1000) -> None:
+    def __init__(self, dataset_dict, batch_size=100000) -> None:
         self.dataset_dict = dataset_dict
         self.batch_size = batch_size
 

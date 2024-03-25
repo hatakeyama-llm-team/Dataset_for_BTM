@@ -1,8 +1,31 @@
-
 from datasets import load_dataset
 from .CleanedJapaneseWikiDataset import CleanedJapaneseWikiDataset
 from .CommonCrawlDataset import CommonCrawlDataset
+from .CosmopediaDataset import CosmopediaDataset
+import os
+with open(".env", "r") as f:
+    for line in f:
+        var = line.split("=")
+        os.environ[var[0]] = var[1].strip()
+
 streaming = True
+
+
+def j_research_loader():
+    return load_dataset("kunishou/J-ResearchCorpus", split="train").shuffle()
+
+
+def aozora_bunko_loader():
+    return load_dataset('globis-university/aozorabunko-clean',
+                        split="train").shuffle()
+
+
+def nhk_news_loader():
+    # nhk news
+    # 168839 records
+    return load_dataset("hatakeyama-llm-team/nhk-news-170k", split="train",
+                        use_auth_token=os.environ["hf_key"],
+                        ).shuffle()
 
 
 def CC_ja_loader():
@@ -12,10 +35,12 @@ def CC_ja_loader():
                               )
 
 
+"""
 def wiki_ja_loader():
     return load_dataset("hpprc/wikipedia-20240101", split="train",
                         streaming=streaming
                         ).shuffle()
+"""
 
 
 def wiki_en_loader():
@@ -35,3 +60,7 @@ def mc4_ja_part_loader():
 def cleaned_wiki_loader():
     # クリーンされたjapanese wikipedia
     return CleanedJapaneseWikiDataset(streaming=streaming)
+
+
+def cosmo_loader():
+    return CosmopediaDataset()
