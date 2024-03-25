@@ -160,7 +160,7 @@ cython_debug/
 #.idea/
 
 data/*
-web_codes/temp/*
+01web_codes/temp/*
 Megatron-DeepSpeed
 dedup_sentence
 apex

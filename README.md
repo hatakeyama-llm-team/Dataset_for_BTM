@@ -4,7 +4,7 @@
 - [setup.sh](./setup.sh)
     - minicondaで環境構築するためのscript
 
-# [1. 日本語のCommonCrawlデータを統合](./web_codes/)
+# [1. 日本語のCommonCrawlデータを統合](./01web_codes/)
 ## 1. 事前ダウンロード
 - webコーパスを事前にダウンロードしておきます｡
  - 一晩くらいはかかります
@@ -16,7 +16,7 @@
 #はじめの処理
 cd data
 mkdir original_dump
-cd ../download_script
+cd ../00download_script
 
 #データベースのダウンロード 
 bash mc4_ja.sh
@@ -28,7 +28,7 @@ bash jap2010.sh
 
 
 ## 2. gzファイルの一覧取得
-- gzファイルの一覧を[temp/gz_list.txt](./codes/temp/gz_list.txt)に書き出します。
+- gzファイルの一覧を[temp/gz_list.txt](./01web_codes/temp/gz_list.txt)に書き出します。
 ~~~
 conda activate textprocess
 cd web_codes
@@ -43,7 +43,7 @@ bash auto.sh
 ~~~
 
 ## 3. クラスタリングモデルの学習
-- [教師なしクラスタリングのためのモデルを学習します](./codes/train_classifier.ipynb)
+- [教師なしクラスタリングのためのモデルを学習します](./01web_codes/train_classifier.ipynb)
 - 人間のためのカテゴライズというよりは、dedupの計算時間を削減することが今回の目的です｡
     - dedupの計算コストや必要メモリが、naiveにはN^2に比例するため
 - クラスタ数は大きめが良いかもしれません
@@ -85,15 +85,15 @@ python 4_dedup.py 50 # 数値は並列処理の数
 ## 6. 件数の確認
 python 5_count_articles.py
 
-# [2. あらゆるテキストを統合したjsonlを作る](./integrate_texts/)
-- [dict](./integrate_texts/dataset_dict.py)を更新する
-- [データのバランス](./integrate_texts/check_distribution.ipynb)を確認する
+# [2. あらゆるテキストを統合したjsonlを作る](./20integrate_texts/)
+- [dict](./20integrate_texts/dataset_dict.py)を更新する
+- [データのバランス](./20integrate_texts/check_distribution.ipynb)を確認する
 - 統合する
 ~~~
 python integrate_dataset.py
 ~~~
 
-## 7.トークナイズ
+## 7.[トークナイズ](./30tokenize/)
 - 以下の処理は､GPUサーバーでなくても行えるので､ここのrepositoryに含めても良いように思われる
     - トークナイザーの学習
     - textのtokenize
