@@ -28,7 +28,7 @@ def recursive_namespace(data):
 
 
 def main():
-    args = yaml_to_namespace('sentence_piece_config.yaml')
+    args = yaml_to_namespace('config.yaml')
 
     # Trains a SentencePiece tokenizer. After training, *.model and *.vocab will be saved in the current directory.
     spm.SentencePieceTrainer.train(
