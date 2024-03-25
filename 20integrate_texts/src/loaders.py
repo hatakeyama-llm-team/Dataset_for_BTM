@@ -2,6 +2,8 @@ from datasets import load_dataset
 from .CleanedJapaneseWikiDataset import CleanedJapaneseWikiDataset
 from .CommonCrawlDataset import CommonCrawlDataset
 from .CosmopediaDataset import CosmopediaDataset
+from .WikiQADataset import WikiQADataset
+from .OtherDatasets import *
 import os
 with open(".env", "r") as f:
     for line in f:
@@ -9,6 +11,10 @@ with open(".env", "r") as f:
         os.environ[var[0]] = var[1].strip()
 
 streaming = True
+
+
+def python_code_loader():
+    return PythonCodeDataset()
 
 
 def j_research_loader():
@@ -35,19 +41,13 @@ def CC_ja_loader():
                               )
 
 
-"""
-def wiki_ja_loader():
-    return load_dataset("hpprc/wikipedia-20240101", split="train",
-                        streaming=streaming
-                        ).shuffle()
-"""
-
-
-def wiki_en_loader():
-    # 英語
-    return load_dataset("wikipedia", "20220301.en", split="train",
-                        streaming=streaming,
-                        ).shuffle()
+def culturax_loader():
+    # 3,241,065,682 articles in english
+    return load_dataset("uonlp/CulturaX",
+                        "en",
+                        split="train",
+                        use_auth_token=os.environ["hf_key"],
+                        streaming=streaming)
 
 
 def mc4_ja_part_loader():
@@ -64,3 +64,14 @@ def cleaned_wiki_loader():
 
 def cosmo_loader():
     return CosmopediaDataset()
+
+
+def wiki_en_loader():
+    # 英語
+    return load_dataset("wikipedia", "20220301.en", split="train",
+                        streaming=streaming,
+                        ).shuffle()
+
+
+def wiki_qa_loader():
+    return WikiQADataset()
