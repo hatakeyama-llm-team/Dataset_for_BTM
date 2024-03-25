@@ -93,6 +93,10 @@ python 5_count_articles.py
 python integrate_dataset.py
 ~~~
 
+## 7.トークナイズ
+- 以下の処理は､GPUサーバーでなくても行えるので､ここのrepositoryに含めても良いように思われる
+    - トークナイザーの学習
+    - textのtokenize
 
 # TODO
 ## 入れたいデータ
@@ -106,7 +110,3 @@ python integrate_dataset.py
 - code関連
 - ...
 
-## トークナイズ関連
-- 以下の処理は､GPUサーバーでなくても行えるので､ここのrepositoryに含めても良いように思われる
-    - トークナイザーの学習
-    - textのtokenize
