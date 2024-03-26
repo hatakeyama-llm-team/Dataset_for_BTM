@@ -164,3 +164,4 @@ data/*
 Megatron-DeepSpeed
 dedup_sentence
 apex
+test_cmd

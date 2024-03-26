@@ -9,6 +9,6 @@ model_type: unigram #character_coverage
 train_extremely_large_corpus: True
 
 #tokenize
-input_tokenizer_file: /data/hatakeyama/python/llm_corpus/tokenizer.model
+input_tokenizer_file: /data/hatakeyama/python/llm_corpus/tokenizer/tokenizer.model
 output_prefix: /data/hatakeyama/python/llm_corpus/tokenized
 megatron_deepspeed_dir: Megatron-DeepSpeed

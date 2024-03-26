@@ -2,7 +2,7 @@ from src.loaders import *
 
 # 出力パス
 output_path = "/data/hatakeyama/python/llm_corpus/corpus.jsonl"
-scale = 1  # 練習時はscaleを小さくする
+scale = 10  # 練習時はscaleを小さくする
 
 # stage_ratioは､各レコードの､各stageごとのデータの振り分け具合を示す
 
