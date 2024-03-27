@@ -24,6 +24,7 @@ bash oscar.sh
 bash cc100.sh
 bash shisa.sh
 bash jap2010.sh
+bash commoncrawl.sh
 ~~~
 
 
