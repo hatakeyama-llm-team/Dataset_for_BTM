@@ -49,10 +49,13 @@ def filter(text, threshold=0.9, min_length=10):
         return None
 
     pos_counter, all_counts = parts_count(text)
+    # print(pos_counter, all_counts)
     # print(pos_counter)
     meishi_and_symbol_counts = pos_counter['名詞'] + \
-        pos_counter['記号']+pos_counter['補助記号']
+        pos_counter['記号']+pos_counter['補助記号']+pos_counter['接頭詞']
 
+    if all_counts == 0:
+        return None
     ratio = meishi_and_symbol_counts/all_counts
     # print(ratio, pos_counter)
     if ratio > threshold and len(text) > min_length:

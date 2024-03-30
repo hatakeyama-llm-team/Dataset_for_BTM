@@ -6,6 +6,7 @@ from . import rule_based_line_checker
 from . import parts_filter
 from .line_end_cleaner import clean_line_endings
 from .hojichar_filter import hoji_filter
+from . import rule_based_text_checker
 
 
 def text_to_cleaned_paragraphs(text):
@@ -54,7 +55,9 @@ def text_to_cleaned_paragraphs(text):
 
 def clean_text(original_text):
     paragraphs = text_to_cleaned_paragraphs(original_text)
+    # print("aa", original_text)
     text = "\n".join(paragraphs)
+    text = rule_based_text_checker.clean(text)
     if text != "":
         # pass
         text = hoji_filter(text)
