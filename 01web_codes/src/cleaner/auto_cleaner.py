@@ -25,7 +25,10 @@ def text_to_cleaned_paragraphs(text):
             new_line = rule_based_line_checker.clean(line)
 
             # 名詞だらけのlineを除外
-            new_line = parts_filter.filter(new_line)
+            try:
+                new_line = parts_filter.filter(new_line)
+            except:
+                pass
             if new_line:
                 if new_line == old_line:
                     continue

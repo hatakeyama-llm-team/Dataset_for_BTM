@@ -41,7 +41,10 @@ def clean(text):
     text = dedup_lines(text)
 
     # 文章全体で名詞が多い場合は無効と判定
-    if not filter(text):
+    try:
+        if not filter(text):
+            return ""
+    except:
         return ""
     for ending in sentence_endings:
         if text.find(ending) > 0:
