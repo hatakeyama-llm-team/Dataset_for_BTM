@@ -38,6 +38,8 @@ cd ../
 - jsonのパスなどを設定する
 
 ## トークナイザーの学習
+- 6 gbのテキストに対して､ ramは30gbほど使いました｡
+- でかすぎると､ramが足りなくなります
 ~~~
 python 1_train_sentencepiece_tokenizer.py
 ~~~
@@ -46,3 +48,34 @@ python 1_train_sentencepiece_tokenizer.py
 ~~~
 bash 2_tokenize.sh
 ~~~
+
+
+## トークン数の確認
+- 本当は並列化した方が良い
+~~~
+python count_tokens.py
+~~~
+
+
+## ファイル分割と転送
+- tokenizeしたファイルを､他のサーバーに転送する場合などに用いる
+
+### 分割例
+~~~
+split -b 5000M tokenized_text_document.bin split-
+~~~
+
+## 転送例
+~~~
+cd /data/hatakeyama/python/llm_corpus/
+split -b 1000M tokenized_text_document.bin split-
+
+rsync -avz tokenized_text_document.idx 192.168.128.16:/home/hatakeyama/python/llm/data/text/tokenized_text_document.idx
+rsync -avz split-* 192.168.128.16:/home/hatakeyama/python/llm/data/text/split-*
+~~~
+
+## 統合
+~~~
+cat split-* > tokenized_text_document.bin
+~~~
+

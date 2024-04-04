@@ -95,13 +95,10 @@ python integrate_dataset.py
 ~~~
 
 ## 7.[トークナイズ](./30tokenize/)
-- 以下の処理は､GPUサーバーでなくても行えるので､ここのrepositoryに含めても良いように思われる
-    - トークナイザーの学習
-    - textのtokenize
+- フォルダ内を参照
 
 # TODO
 ## 入れたいデータ
-- 英語common crawl (CulturaX?)
 - 対訳?
 - Wiki**系
 - 学術論文
