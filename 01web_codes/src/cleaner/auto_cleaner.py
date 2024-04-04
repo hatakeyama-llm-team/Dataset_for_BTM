@@ -64,4 +64,5 @@ def clean_text(original_text):
     if text != "":
         # pass
         text = hoji_filter(text)
+    text = text.strip()
     return text

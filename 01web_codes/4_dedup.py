@@ -13,10 +13,8 @@ parser.add_argument('max_workers', type=str,
 args = parser.parse_args()
 
 # 並列プロセスの数
-max_workers=int(args.max_workers)
+max_workers = int(args.max_workers)
 print("Max workers: ", max_workers)
-
-
 
 
 input_dir = "../data/categorized"
@@ -37,10 +35,9 @@ for job_name in job_list:
     make_dir(f"{output_dir}/{job_name}")
 
 
-
-
 def run_command(job_name):
-    cmd = f"../dedup_sentence/deduplicate {input_dir}/{job_name}/ {output_dir}/{job_name}/"
+    # cmd = f"../dedup_sentence/deduplicate {input_dir}/{job_name}/ {output_dir}/{job_name}/"
+    cmd = f"../dedup/deduplicate {input_dir}/{job_name}/ {output_dir}/{job_name}/"
     os.system(cmd)
 
 
