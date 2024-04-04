@@ -57,6 +57,7 @@ def proc(docs):
                 "text": text},
             ensure_ascii=False
         )
+        database_name = database_name.replace(".json", "").replace(".gz", "")
         with open(f"{save_dir}/{database_name}.jsonl", "a") as f:
             f.write(data+"\n")
 
