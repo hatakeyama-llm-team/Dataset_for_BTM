@@ -1,3 +1,4 @@
+//hashではなく文字列で比較｡｡
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,7 +13,8 @@
 
 #define MAX_LINE_LENGTH 102400
 #define MAX_HASH_SIZE 1000000
-#define SIMILARITY_THRESHOLD 0.3
+#define SIMILARITY_THRESHOLD 0.4
+#define MAX_COMPARE_LENGTH 256  //はじめの256文字のみを判定: 値が大きいと､遅くなる
 
 typedef struct {
     std::vector<std::string> texts;
@@ -25,14 +27,64 @@ size_t hash(const char *s, uint32_t seed) {
     return output[0];
 }
 
-double hash_similarity(const char *s1, const char *s2) {
-    size_t hash1 = hash(s1, 0);
-    size_t hash2 = hash(s2, 0);
-    size_t max_hash = std::max(hash1, hash2);
-    size_t min_hash = std::min(hash1, hash2);
-    return (double)min_hash / max_hash;
+int levenshtein_distance(const char *s1, const char *s2, int max_length) {
+    int len1 = std::min(strlen(s1), (size_t)max_length);
+    int len2 = std::min(strlen(s2), (size_t)max_length);
+    int matrix[len1 + 1][len2 + 1];
+
+    for (int i = 0; i <= len1; i++) {
+        matrix[i][0] = i;
+    }
+    for (int j = 0; j <= len2; j++) {
+        matrix[0][j] = j;
+    }
+
+    for (int j = 1; j <= len2; j++) {
+        for (int i = 1; i <= len1; i++) {
+            if (s1[i - 1] == s2[j - 1]) {
+                matrix[i][j] = matrix[i - 1][j - 1];
+            } else {
+                int deletion = matrix[i - 1][j] + 1;
+                int insertion = matrix[i][j - 1] + 1;
+                int substitution = matrix[i - 1][j - 1] + 1;
+                matrix[i][j] = std::min(deletion, std::min(insertion, substitution));
+            }
+        }
+    }
+
+    return matrix[len1][len2];
 }
 
+int ukkonen_distance(const char *s1, const char *s2, int max_length) {
+    int len1 = std::min(strlen(s1), (size_t)max_length);
+    int len2 = std::min(strlen(s2), (size_t)max_length);
+    std::vector<int> prev(len2 + 1);
+    std::vector<int> curr(len2 + 1);
+
+    for (int j = 0; j <= len2; j++) {
+        prev[j] = j;
+    }
+
+    for (int i = 1; i <= len1; i++) {
+        curr[0] = i;
+        for (int j = 1; j <= len2; j++) {
+            if (s1[i - 1] == s2[j - 1]) {
+                curr[j] = prev[j - 1];
+            } else {
+                curr[j] = std::min(prev[j - 1], std::min(prev[j], curr[j - 1])) + 1;
+            }
+        }
+        std::swap(prev, curr);
+    }
+
+    return prev[len2];
+}
+double similarity(const char *s1, const char *s2) {
+    //int distance = levenshtein_distance(s1, s2, MAX_COMPARE_LENGTH);
+    int distance = ukkonen_distance(s1, s2, MAX_COMPARE_LENGTH);
+    int max_length = std::min(std::max(strlen(s1), strlen(s2)), (size_t)MAX_COMPARE_LENGTH);
+    return 1.0 - (double)distance / max_length;
+}
 void write_output_file(const std::string &file_name, const std::vector<TextGroup> &groups, const std::string &output_dir) {
     char output_file[1024];
     snprintf(output_file, sizeof(output_file), "%s/%s", output_dir.c_str(), file_name.c_str());
@@ -57,6 +109,7 @@ void write_output_file(const std::string &file_name, const std::vector<TextGroup
 
     fclose(fp_out);
 }
+
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {
@@ -112,8 +165,8 @@ int main(int argc, char *argv[]) {
 
                     bool found_group = false;
                     for (auto &group : file_text_groups[entry->d_name]) {
-                        double similarity = hash_similarity(text, group.representative.c_str());
-                        if (similarity >= SIMILARITY_THRESHOLD) {
+                        double sim = similarity(text, group.representative.c_str());
+                        if (sim >= SIMILARITY_THRESHOLD) {
                             group.texts.push_back(text);
                             if (group.representative.length() < strlen(text)) {
                                 group.representative = text;
