@@ -26,6 +26,13 @@ dataset_dict = {
         "stage_ratio": [1,],
     },
 
+    # nhk school
+    "NHK-school": {
+        "loader": NHKSchool_loader,
+        "n_records": int(6200/scale),
+        "stage_ratio": [1,],
+    },
+
     # 青空文庫
     "aozora-bunko": {
         "loader": aozora_bunko_loader,

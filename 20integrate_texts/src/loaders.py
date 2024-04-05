@@ -3,6 +3,7 @@ from .CleanedJapaneseWikiDataset import CleanedJapaneseWikiDataset
 from .CommonCrawlDataset import CommonCrawlDataset
 from .CosmopediaDataset import CosmopediaDataset
 from .WikiQADataset import WikiQADataset
+from .NHKSchoolDataset import NHKSchoolDataset
 from .OtherDatasets import *
 import os
 with open(".env", "r") as f:
@@ -11,6 +12,10 @@ with open(".env", "r") as f:
         os.environ[var[0]] = var[1].strip()
 
 streaming = True
+
+
+def NHKSchool_loader():
+    return NHKSchoolDataset()
 
 
 def python_code_loader():
