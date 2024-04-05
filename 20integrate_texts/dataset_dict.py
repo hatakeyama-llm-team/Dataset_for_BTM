@@ -12,6 +12,14 @@ dataset_dict = {
     # stage 3
     # 上質なテキスト
 
+    # 英語のwikipedia
+    "wiki(en)": {
+        "loader": wiki_en_loader,
+        "n_records": int(1500000/scale),
+        "stage_ratio": [1, ],
+    },
+
+
     # wikipedia
     "wiki(ja)": {
         "loader": cleaned_wiki_loader,

@@ -72,6 +72,9 @@ split -b 1000M tokenized_text_document.bin split-
 
 rsync -avz tokenized_text_document.idx 192.168.128.16:/home/hatakeyama/python/llm/data/text/tokenized_text_document.idx
 rsync -avz split-* 192.168.128.16:/home/hatakeyama/python/llm/data/text/split-*
+
+
+rsync -avz tokenizer 192.168.128.16:/home/hatakeyama/python/llm/models/tokenizers
 ~~~
 
 ## 統合

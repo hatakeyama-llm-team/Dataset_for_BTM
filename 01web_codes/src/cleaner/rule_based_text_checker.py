@@ -37,11 +37,12 @@ sentence_endings = ['。', '！', '？', '.', '!', '?', "．", "」", "。"]
 # 文頭の見出しを消す
 
 
-def remove_header(txt, header_list, n_check=30):
+def remove_header(txt, header_list, n_check=10):
     for header in header_list:
         if header in txt[:n_check]:
             for delimiter in header_list:
-                txt = txt.split(delimiter)[-1]
+                txt = txt.split(delimiter)[1:]
+                txt = delimiter.join(txt)
             break
     return txt
 
@@ -54,7 +55,7 @@ def clean(text):
 
     # 文章全体で名詞が多い場合は無効と判定
     try:
-        if not filter(text):
+        if not filter(text, threshold=0.7):
             return ""
     except:
         return ""

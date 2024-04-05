@@ -7,6 +7,7 @@ from . import parts_filter
 from .line_end_cleaner import clean_line_endings
 from .hojichar_filter import hoji_filter
 from . import rule_based_text_checker
+from .line_dedup import remove_multi_headers
 
 
 def text_to_cleaned_paragraphs(text):
@@ -60,6 +61,8 @@ def clean_text(original_text):
     paragraphs = text_to_cleaned_paragraphs(original_text)
     # print("aa", original_text)
     text = "\n".join(paragraphs)
+
+    text = remove_multi_headers(text)
     text = rule_based_text_checker.clean(text)
     if text != "":
         # pass
