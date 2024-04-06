@@ -3,7 +3,7 @@ import argparse
 import json
 import os
 from src.classify.Text2Vec import Text2Vec, texts2classes
-from src.cleaner.auto_cleaner import clean_text
+from src.cleaner.auto_cleaner import clean_text, ml_clean_text
 from gensim.models.fasttext import load_facebook_model
 import joblib
 from src.load_gz import read_gzip_json_file
@@ -12,6 +12,9 @@ streaming = True
 base_dir = "../data/categorized"
 length_threshold = 30  # 短い記事は捨てる
 check_length = 200  # はじめのlengthだけで分類する
+
+# 機械学習で記事を選別する
+do_ml_clean = True
 
 # load models
 t2v = Text2Vec(load_facebook_model('../data/model/cc.ja.300.bin'))
@@ -72,7 +75,10 @@ def main():
         lines.append(text)
 
     for text in lines:
-        text = clean_text(text)
+        if do_ml_clean:
+            text = ml_clean_text(text)
+        else:
+            text = clean_text(text)
         if len(text) < length_threshold:
             continue
 

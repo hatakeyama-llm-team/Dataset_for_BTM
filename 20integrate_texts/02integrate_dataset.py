@@ -1,7 +1,7 @@
 from src.loaders import *
 from dataset_dict import dataset_dict, output_path
 import random
-from src.RecordDistributor import RecordDistributor
+from loaders.RecordDistributor import RecordDistributor
 import json
 import os
 from tqdm import tqdm
