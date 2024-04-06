@@ -7,6 +7,7 @@ from src.cleaner.auto_cleaner import clean_text, ml_clean_text
 from gensim.models.fasttext import load_facebook_model
 import joblib
 from src.load_gz import read_gzip_json_file
+from src.distribute_jsonl import process_lines,make_dir
 
 streaming = True
 base_dir = "../data/categorized"
@@ -21,17 +22,16 @@ t2v = Text2Vec(load_facebook_model('../data/model/cc.ja.300.bin'))
 kmeans = joblib.load("../data/model/kmeans.pkl")
 
 
-def make_dir(path):
-    if not os.path.exists(path):
-        os.mkdir(path)
-
-
 make_dir(base_dir)
 
+def proc(docs,base_dir, database_path, 
+         check_length=check_length):
+    return process_lines(docs, t2v, kmeans, base_dir, database_path, check_length=check_length)
+
 # %%
 
 # %%
-batch_size = 10000
+batch_size = 100
 
 parser = argparse.ArgumentParser(
     description="Load a dataset based on the given database name.")
@@ -40,29 +40,6 @@ parser.add_argument('database_path', type=str,
 args = parser.parse_args()
 database_path = args.database_path
 
-
-def proc(docs):
-    # docsを処理する関数
-    # ここに処理のロジックを実装します
-    print(f"Processing {len(docs)} documents...")
-    categories = texts2classes(docs, t2v, kmeans, length=check_length)
-
-    for text, category in zip(docs, categories):
-        save_dir = f"{base_dir}/{category}"
-        make_dir(save_dir)
-        database_name = database_path.split("/")[-1]  # .split(".")[0]
-
-        data = json.dumps(
-            {
-                # "db": database_name, #特に必要ない｡storage 節約
-                "text": text},
-            ensure_ascii=False
-        )
-        database_name = database_name.replace(".json", "").replace(".gz", "")
-        with open(f"{save_dir}/{database_name}.jsonl", "a") as f:
-            f.write(data+"\n")
-
-    return len(docs)
 
 
 def main():
@@ -84,8 +61,9 @@ def main():
 
         docs.append(text)
         if len(docs) == batch_size:
-            # docsのコピーを作成してprocに渡す
-            proc(docs[:])
+            proc(docs,base_dir, database_path, 
+                    check_length=check_length)
+
             # docsをリセット
             docs = []
 
