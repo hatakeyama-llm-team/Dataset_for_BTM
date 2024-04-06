@@ -67,7 +67,6 @@ def proc(docs):
 def main():
 
     docs = []
-    futures = []
 
     lines = []
     for article in read_gzip_json_file(database_path):
