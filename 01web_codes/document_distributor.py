@@ -2,8 +2,6 @@
 import argparse
 import json
 import os
-from datasets import load_dataset
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from src.classify.Text2Vec import Text2Vec, texts2classes
 from src.cleaner.auto_cleaner import clean_text
 from gensim.models.fasttext import load_facebook_model

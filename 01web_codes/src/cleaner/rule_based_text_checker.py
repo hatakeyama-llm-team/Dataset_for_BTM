@@ -36,7 +36,7 @@ sentence_endings = ['。', '！', '？', '.', '!', '?', "．", "」", "。"]
 # 文頭の見出しを消す
 
 
-def remove_header(txt, header_list, n_check=10):
+def remove_header(txt, header_list, n_check=30):
     for header in header_list:
         if header in txt[:n_check]:
             for delimiter in header_list:
@@ -47,7 +47,7 @@ def remove_header(txt, header_list, n_check=10):
 
 
 def clean(text):
-    text = remove_header(text, header_list=["|", "】",])
+    text = remove_header(text, header_list=["|", "】", ">", "]",])
     text = clean_endings(text)
     text = clean_headers(text)
     text = dedup_lines(text)

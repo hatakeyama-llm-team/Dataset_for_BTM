@@ -36,8 +36,8 @@ for job_name in job_list:
 
 
 def run_command(job_name):
-    # cmd = f"../dedup_sentence/deduplicate {input_dir}/{job_name}/ {output_dir}/{job_name}/"
-    cmd = f"../dedup/deduplicate {input_dir}/{job_name}/ {output_dir}/{job_name}/"
+    cmd = f"../dedup_sentence/deduplicate {input_dir}/{job_name}/ {output_dir}/{job_name}/"
+    # cmd = f"../dedup/deduplicate {input_dir}/{job_name}/ {output_dir}/{job_name}/"
     os.system(cmd)
 
 

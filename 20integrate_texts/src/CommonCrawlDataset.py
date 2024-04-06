@@ -7,12 +7,14 @@ random.seed(1)
 
 
 class CommonCrawlDataset:
-    def __init__(self, jsonl_dir="../data/dedup_categorized/**/*.jsonl",
+    def __init__(self, jsonl_dir_list=["../data/dedup_categorized/**/*.jsonl"],
                  preload_size=100,
                  ):
         self.preload_size = preload_size
 
-        self.web_jsonl_files = glob.glob(jsonl_dir, recursive=True)
+        self.web_jsonl_files = []
+        for jsonl_dir in jsonl_dir_list:
+            self.web_jsonl_files += glob.glob(jsonl_dir, recursive=True)
         random.shuffle(self.web_jsonl_files)
         self.path_loader = iter(self.web_jsonl_files)
         self.stock_records = iter([])
