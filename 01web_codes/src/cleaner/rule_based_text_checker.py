@@ -5,7 +5,6 @@ noise_ending_list = """
 ページ上部へ
 上部へ
 上へ戻る
-
 """
 noise_ending_list = noise_ending_list.split("\n")
 noise_ending_list = [x for x in noise_ending_list if len(x) > 0]

@@ -136,3 +136,9 @@ class TextClassifier:
             return ret
         else:
             return int(ret[0][0].split("_")[-1])
+
+    def clean(self, text):
+        if self.predict(text) == 1:
+            return text
+        else:
+            return ""

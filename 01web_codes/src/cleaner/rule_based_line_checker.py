@@ -1,5 +1,7 @@
 # https://github.com/lighttransport/japanese-llama-experiment/blob/main/03_clean_step1/clean_text.py
 
+# TODO: hard codeしない
+
 import unicodedata
 import re
 broken_sentence_endings = """
@@ -83,6 +85,7 @@ All Rights Reserved.
 登録商標です。
 ようこそゲストさん
 →
+[...]
 の先頭へ
 個人情報の取り扱いについて
 中古マンション

@@ -1,4 +1,3 @@
-
 from .splitter import text_to_paragraph_sentences
 from .text_normalizer import normalize
 from . import text_checker
@@ -8,6 +7,11 @@ from .line_end_cleaner import clean_line_endings
 from .hojichar_filter import hoji_filter
 from . import rule_based_text_checker
 from .line_dedup import remove_multi_headers
+try:
+    from .TextClassifier import TextClassifier
+    classifier = TextClassifier()
+except:
+    print("error loading TextClassifier. install fasttext to use it")
 
 
 def text_to_cleaned_paragraphs(text):
@@ -68,4 +72,11 @@ def clean_text(original_text):
         # pass
         text = hoji_filter(text)
     text = text.strip()
+    return text
+
+
+def ml_clean_text(original_text):
+    text = classifier.clean(original_text)
+    if text != "":
+        text = clean_text(text)
     return text
