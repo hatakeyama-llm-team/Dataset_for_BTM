@@ -43,7 +43,7 @@ def remove_header(txt, header_list, n_check=10):
             for delimiter in header_list:
                 txt = txt.split(delimiter)[1:]
                 txt = delimiter.join(txt)
-            break
+                break
     return txt
 
 
