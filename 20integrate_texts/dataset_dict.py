@@ -1,4 +1,5 @@
-from src.loaders import *
+from loaders.loaders import *
+
 import json
 # 出力パス
 output_path = "/data/hatakeyama/python/llm_corpus/corpus.jsonl"

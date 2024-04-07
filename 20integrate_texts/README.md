@@ -4,7 +4,7 @@
 - 用いるDatasetは､dataset_dictに記入していきます｡
 
 ## BTM用に､データをクラスタリングし直します [notebook](./00reclustering.ipynb)
-- 作業中です...
+- 1万クラスタ　to 5 クラスタ程度
 
 ## データを決めます｡
 - どのデータを用いるかについては､[dataset_dict](./dataset_dict.py)を直接いじって作業します｡

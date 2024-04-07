@@ -66,6 +66,7 @@ split -b 5000M tokenized_text_document.bin split-
 ~~~
 
 ## 転送例
+- GCPサーバーにも移しておくと安心
 ~~~
 cd /data/hatakeyama/python/llm_corpus/
 split -b 1000M tokenized_text_document.bin split-

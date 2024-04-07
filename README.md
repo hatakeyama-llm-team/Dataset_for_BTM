@@ -97,12 +97,22 @@ python integrate_dataset.py
 ## 7.[トークナイズ](./30tokenize/)
 - フォルダ内を参照
 
-# TODO
-## 入れたいデータ
-- 対訳?
+# データ
+- mc4-ja, cc100, oscar, shisa, japanese2010
+- commoncrawl 2021
+- wikipedia ja/en
+- nhk school, news
+- j research corpus
+- 青空文庫
+## done
+## TODO
 - Wiki**系
+- cc追加分
 - 学術論文
-- pdf抽出のデータ
+    - pmc,pes2o
+    - chem
+- common crawlpdf抽出のデータ
 - code関連
+- openmathinstruct-ja/en
 - ...
 
