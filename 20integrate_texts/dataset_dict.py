@@ -29,32 +29,32 @@ dataset_dict = {
     "wiki(en)": {
         "loader": wiki_en_loader,
         "n_records": int(1458000/scale),
-        "stage_ratio": [1]+[0.05]*5,
+        "stage_ratio": [1,0.05,0.05,0.05,0.05,0.05,],
     },
     #
     "ja0": {
         "loader": cc_loader_list[0],
-        "n_records": int(label_to_article_count["0"]/scale),
+        "n_records": int(label_to_article_count["0"]/scale-1000),
         "stage_ratio": [0.05, 1, 0.05, 0.05, 0.05, 0.05],
     },
     "ja1": {
         "loader": cc_loader_list[1],
-        "n_records": int(label_to_article_count["1"]/scale),
+        "n_records": int(label_to_article_count["1"]/scale-1000),
         "stage_ratio": [0.05, 0.05, 1, 0.05, 0.05, 0.05],
     },
     "ja2": {
         "loader": cc_loader_list[2],
-        "n_records": int(label_to_article_count["2"]/scale),
+        "n_records": int(label_to_article_count["2"]/scale-1000),
         "stage_ratio": [0.05, 0.05, 0.05, 1, 0.05, 0.05],
     },
     "ja3": {
         "loader": cc_loader_list[3],
-        "n_records": int(label_to_article_count["3"]/scale),
+        "n_records": int(label_to_article_count["3"]/scale-1000),
         "stage_ratio": [0.05, 0.05, 0.05, 0.05, 1, 0.05],
     },
     "ja4": {
         "loader": cc_loader_list[4],
-        "n_records": int(label_to_article_count["4"]/scale),
+        "n_records": int(label_to_article_count["4"]/scale-1000),
         "stage_ratio": [0.05, 0.05, 0.05, 0.05, 0.05, 1],
     },
 
