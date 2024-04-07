@@ -27,19 +27,22 @@ External links
 """
 
 
-def clean_text(txt):
+def clean_text(txt,touten_check=True):
     txt = txt.replace("\n\n", "\n")
     lines = txt.split("\n")
     cleaned_lines = []
     touten_flag = False
 
-    for line in lines[::-1]:
-        if line.endswith("。"):
-            touten_flag = True
-        if touten_flag:
-            cleaned_lines.append(line)
+    if touten_check:
+        for line in lines[::-1]:
+            if line.endswith("。"):
+                touten_flag = True
+            if touten_flag:
+                cleaned_lines.append(line)
 
-    cleaned_lines = cleaned_lines[::-1]
+        cleaned_lines = cleaned_lines[::-1]
+    else:
+        cleaned_lines = lines
 
     noise_list = noise_strings.strip().split("\n")
 
@@ -70,4 +73,21 @@ class CleanedJapaneseWikiDataset:
     def __next__(self):
         d = next(self.loader)
         d["text"] = clean_text(d["text"])
+        return d
+
+
+class CleanedEngWikiDataset:
+    def __init__(self, streaming=True):
+        self.dataset = load_dataset("wikipedia", "20220301.en", split="train",
+                        streaming=streaming,
+                        ).shuffle()
+        self.loader = iter(self.dataset)
+
+    def __iter__(self):
+        # イテレータは自分自身を返す
+        return self
+
+    def __next__(self):
+        d = next(self.loader)
+        d["text"] = clean_text(d["text"],touten_check=False)
         return d

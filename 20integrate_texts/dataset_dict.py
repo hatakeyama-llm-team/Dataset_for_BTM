@@ -14,7 +14,7 @@ with open("../data/clustered_path.json", "r") as f:
 # データ数
 with open("../data/clustered_n.json", "r") as f:
     label_to_article_count = json.load(f)
-
+print(label_to_article_count)
 cc_loader_list = []
 for label, path in label_to_path_list.items():
     loader = CommonCrawlDataset(label_to_path_list[label])
@@ -28,8 +28,8 @@ dataset_dict = {
     # 英語のwikipedia
     "wiki(en)": {
         "loader": wiki_en_loader,
-        "n_records": int(458000/scale),
-        "stage_ratio": [0.05]*6,
+        "n_records": int(1458000/scale),
+        "stage_ratio": [1]+[0.05]*5,
     },
     #
     "ja0": {

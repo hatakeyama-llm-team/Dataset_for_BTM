@@ -25,7 +25,11 @@ class RecordDistributor:
     def load_datasets(self):
         for name, dataset_info in self.dataset_dict.items():
             print(f"loading {name}")
-            dataset_info["dataset"] = dataset_info["loader"]()
+            # データセットが関数である場合、関数を呼び出してデータセットを取得する
+            try:
+                dataset_info["dataset"] = dataset_info["loader"]()
+            except:
+                dataset_info["dataset"] = dataset_info["loader"]
         self.init_iterators()
 
     def init_iterators(self):

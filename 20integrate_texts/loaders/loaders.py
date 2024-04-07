@@ -1,5 +1,5 @@
 from datasets import load_dataset
-from .CleanedJapaneseWikiDataset import CleanedJapaneseWikiDataset
+from .CleanedJapaneseWikiDataset import CleanedJapaneseWikiDataset,CleanedEngWikiDataset
 from .CommonCrawlDataset import CommonCrawlDataset
 from .CosmopediaDataset import CosmopediaDataset
 from .WikiQADataset import WikiQADataset
@@ -72,6 +72,7 @@ def cosmo_loader():
 
 
 def wiki_en_loader():
+    return CleanedEngWikiDataset()
     # 英語
     return load_dataset("wikipedia", "20220301.en", split="train",
                         streaming=streaming,
