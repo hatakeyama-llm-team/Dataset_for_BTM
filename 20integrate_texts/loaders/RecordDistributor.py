@@ -8,7 +8,7 @@ import pandas as pd
 
 
 class RecordDistributor:
-    def __init__(self, dataset_dict, batch_size=100000) -> None:
+    def __init__(self, dataset_dict, batch_size=100) -> None:
         self.dataset_dict = dataset_dict
         self.batch_size = batch_size
 
@@ -79,7 +79,7 @@ class RecordDistributor:
                 batch_cnt = cnt % self.batch_size
 
                 # 各データセットの出現頻度に応じて、データを吐き出していく
-                for dataset_info in self.dataset_dict.values():
+                for k, dataset_info in self.dataset_dict.items():
                     frequency = dataset_info["call_frequency"][stage]
 
                     # frequency
@@ -88,7 +88,9 @@ class RecordDistributor:
                             text = next(dataset_info["dataset_iterator"])
                             text_list.append(text["text"])
                         except Exception as e:
-                            print(e)
+                            print(k, batch_cnt, frequency, self.batch_size,
+                                  frequency * self.batch_size)
+                            print(e, k, dataset_info["dataset"].count)
 
                 # バッチにデータが溜まったら、シャッフルして書き出す
                 if batch_cnt == self.batch_size-1:
