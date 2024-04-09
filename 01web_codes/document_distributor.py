@@ -6,7 +6,7 @@ from src.classify.Text2Vec import Text2Vec, texts2classes
 from src.cleaner.auto_cleaner import clean_text, ml_clean_text
 from gensim.models.fasttext import load_facebook_model
 import joblib
-from src.load_gz import read_gzip_json_file
+from src.load_gz import read_gzip_json_file, load_gzip_or_parquet
 from src.distribute_jsonl import process_lines, make_dir
 import pandas as pd
 
@@ -19,9 +19,10 @@ check_length = 200  # はじめのlengthだけで分類する
 do_ml_clean = True
 
 # load models
+print("loading models...")
 t2v = Text2Vec(load_facebook_model('../data/model/cc.ja.300.bin'))
 kmeans = joblib.load("../data/model/kmeans.pkl")
-
+print("model loaded.")
 
 make_dir(base_dir)
 
@@ -49,21 +50,15 @@ def main():
     docs = []
 
     # gzの場合
-    if database_path.endswith('.gz'):
-        lines = []
-        for article in read_gzip_json_file(database_path):
-            text = article.get('text', '')  # 'text'キーからテキストデータを取得
-            lines.append(text)
-    # parquetの場合
-    elif database_path.endswith('.parquet'):
-        df = pd.read_parquet(database_path)
-        lines = df['text'].tolist()
-    else:
-        raise ValueError("Invalid database path", database_path)
+    lines = load_gzip_or_parquet(database_path)
 
     for text in lines:
         if do_ml_clean:
-            text = ml_clean_text(text)
+            try:
+                text = ml_clean_text(text)
+            except Exception as e:
+                print(e, text)
+                continue
         else:
             text = clean_text(text)
         if len(text) < length_threshold:

@@ -2,25 +2,24 @@
 # クリーニングしたwebテキストをクラスタリングするモデルを作る
 # このフェーズでのクラスタリングの主目的は､dedupの計算コスト(N^2)を下げること｡
 # dedup用に､大きくしておくのが吉
-from src.classify.Text2Vec import Text2Vec, texts2classes
+from src.classify.Text2Vec import Text2Vec
 import joblib
 import random
 import numpy as np
 from tqdm import tqdm
 from gensim.models.fasttext import load_facebook_model
 from sklearn.cluster import KMeans, MiniBatchKMeans
-from src.load_gz import read_gzip_json_file
-from datasets import load_dataset
+from src.load_gz import read_gzip_json_file, load_gzip_or_parquet
 from src.cleaner.auto_cleaner import clean_text
-from sklearn.metrics import pairwise_distances
+# クラスタの数
 n_clusters = 10000
+n_clusters = 200
+# クラスタリングに使うデータベースの数
+n_gz = 100
+# 各データセットごと､N件のデータを取得
+max_articles = 1000
+max_articles = 10
 
-
-print("imported libraries")
-
-
-txt = "こんにちは､げんきですか?研究を "
-clean_text(txt)
 
 # gzファイルの一覧を取得
 with open("temp/gz_list.txt", "r") as f:
@@ -36,29 +35,18 @@ for article in read_gzip_json_file(path):
     text = article.get('text', '')  # 'text'キーからテキストデータを取得
     lines.append(text)
 
-# %%
-lines[:3]
-
-# %%
 random.shuffle(gz_list)
-
-# クラスタリングに使うデータベースの数
-n_gz = 100
 
 train_datasets = gz_list[:n_gz]
 
 # %%
 
-# 各データセットごと､N件のデータを取得
-max_articles = 1000
+
 cleaned_text = []
 
 for path in tqdm(train_datasets):
-    lines = []
     print("loading ", path)
-    for article in read_gzip_json_file(path):
-        text = article.get('text', '')  # 'text'キーからテキストデータを取得
-        lines.append(text)
+    lines = load_gzip_or_parquet(path)
 
     cnt = 0
     for text in (lines):

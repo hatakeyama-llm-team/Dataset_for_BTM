@@ -102,7 +102,7 @@ python integrate_dataset.py
 
 # データ
 - mc4-ja, cc100, oscar, shisa, japanese2010
-- commoncrawl 2021
+- commoncrawl 2021,各種snapshot
 - wikipedia ja/en
 - nhk school, news
 - j research corpus
@@ -110,7 +110,6 @@ python integrate_dataset.py
 ## done
 ## TODO
 - Wiki**系
-- cc追加分
 - 学術論文
     - pmc,pes2o
     - chem

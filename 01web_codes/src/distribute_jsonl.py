@@ -13,6 +13,7 @@ def process_lines(docs, t2v, kmeans, base_dir, database_path, check_length=200):
     # docsを処理する関数
     # ここに処理のロジックを実装します
     print(f"Processing {len(docs)} documents...")
+
     categories = texts2classes(docs, t2v, kmeans, length=check_length)
 
     for text, category in zip(docs, categories):
