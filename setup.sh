@@ -28,6 +28,8 @@ cd ../../
 
 
 #dedup build
+# main.cppのhasherをキツめにするとdedupが強くなります
+# Hasher hasher(5, 500, 50, 10);
 sudo apt install nlohmann-json3-dev -y
 
 git clone https://github.com/if001/dedup_sentence

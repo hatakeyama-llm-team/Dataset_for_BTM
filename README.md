@@ -30,6 +30,8 @@ bash commoncrawl.sh
 
 ## 2. gzファイルの一覧取得
 - gzファイルの一覧を[temp/gz_list.txt](./01web_codes/temp/gz_list.txt)に書き出します。
+- parquetにも対応しています｡
+- TODO: [code](./01web_codes/1_search_gz_list.py)中で参照するparquetのパスが､変な場所でハードコードされている
 ~~~
 conda activate textprocess
 cd web_codes
@@ -57,7 +59,7 @@ python 2_train_classifier.py
 - [categorized](./data/categorized)フォルダに生成されます。
     - 16並列処理で3日ほど、かかりました。 (1プロセスあたり10gbほどramを消費します)
     - 960GB程度
-
+- TODO: 突貫で作ったコードのため､同じテキストに対して何度も形態素解析を行うなど､処理上の無駄が多い
 
 ~~~
 rm -rf ../data/categorized #必要に応じて初期化
