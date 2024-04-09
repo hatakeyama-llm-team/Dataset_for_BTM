@@ -1,5 +1,5 @@
 from datasets import load_dataset
-from .CleanedJapaneseWikiDataset import CleanedJapaneseWikiDataset,CleanedEngWikiDataset
+from .CleanedJapaneseWikiDataset import CleanedJapaneseWikiDataset, CleanedEngWikiDataset
 from .CommonCrawlDataset import CommonCrawlDataset
 from .CosmopediaDataset import CosmopediaDataset
 from .WikiQADataset import WikiQADataset
@@ -20,6 +20,10 @@ def NHKSchool_loader():
 
 def python_code_loader():
     return PythonCodeDataset()
+
+
+def open_math_loader():
+    return OpenMathInstructJa()
 
 
 def j_research_loader():

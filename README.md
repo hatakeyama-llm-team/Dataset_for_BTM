@@ -103,18 +103,22 @@ python integrate_dataset.py
 # データ
 - mc4-ja, cc100, oscar, shisa, japanese2010
 - commoncrawl 2021,各種snapshot
+- CommonCrawlPDF
+- openmathinstruct-en
 - wikipedia ja/en
 - nhk school, news
 - j research corpus
 - 青空文庫
+- wikibook
+
+
 ## done
 ## TODO
-- Wiki**系
+- WikiNewsなど
 - 学術論文
     - pmc,pes2o
     - chem
-- common crawlpdf抽出のデータ
 - code関連
-- openmathinstruct-ja/en
+- culturaXのcleaning
 - ...
 
