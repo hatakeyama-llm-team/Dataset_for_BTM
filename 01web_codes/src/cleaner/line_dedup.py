@@ -48,7 +48,8 @@ def is_start_with_end_symbol(sent):
 
 
 def is_sentence_end(sent):
-    end_symbols = [".", "。", "!", "！", "?", "？"]
+    end_symbols = [".", "。", "!", "！", "?", "？", "ました", "ます",
+                   "れる", "する", "すよ", "です", "」", "』", "さい",]
     for s in end_symbols:
         if sent.endswith(s):
             return True
