@@ -14,7 +14,7 @@ for path in glob.glob("../data/original_dump/c4/multilingual/*.json.gz"):
 gz_list += mc4_gz_list
 
 # 別途取得したparquetファイルの一覧を取得
-# TODO: 変なディレクトリをhard codeしてしまっている
+# TODO:このディレクトリはhardcodeされているので、変更がある場合は修正が必要
 pq_list = glob.glob(
     "/data/hatakeyama/python/llm_corpus_original/**/*.parquet", recursive=True)
 pq_list = [i for i in pq_list if os.path.getsize(i) > 5000]
