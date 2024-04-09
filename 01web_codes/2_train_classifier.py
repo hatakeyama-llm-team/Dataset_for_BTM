@@ -13,12 +13,12 @@ from src.load_gz import read_gzip_json_file, load_gzip_or_parquet
 from src.cleaner.auto_cleaner import clean_text
 # クラスタの数
 n_clusters = 10000
-n_clusters = 200
+# n_clusters = 200
 # クラスタリングに使うデータベースの数
-n_gz = 100
+n_gz = 3000
 # 各データセットごと､N件のデータを取得
-max_articles = 1000
-max_articles = 10
+max_articles = 70
+# max_articles = 10
 
 
 # gzファイルの一覧を取得
@@ -27,22 +27,12 @@ with open("temp/gz_list.txt", "r") as f:
 
 gz_list = [i for i in gz_list if i != "\n"]
 gz_list = [i.replace("\n", "") for i in gz_list]
-gz_list
 
 lines = []
-path = gz_list[0]
-for article in read_gzip_json_file(path):
-    text = article.get('text', '')  # 'text'キーからテキストデータを取得
-    lines.append(text)
+cleaned_text = []
 
 random.shuffle(gz_list)
-
 train_datasets = gz_list[:n_gz]
-
-# %%
-
-
-cleaned_text = []
 
 for path in tqdm(train_datasets):
     print("loading ", path)
@@ -59,7 +49,7 @@ for path in tqdm(train_datasets):
             if cnt >= max_articles:
                 break
 
-
+cleaned_text = list(set(cleaned_text))
 t2v = Text2Vec(load_facebook_model('../data/model/cc.ja.300.bin'))
 
 # %%
