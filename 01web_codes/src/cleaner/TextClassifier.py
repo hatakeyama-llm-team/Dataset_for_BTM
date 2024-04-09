@@ -102,18 +102,26 @@ class TextClassifier:
                        autotuneDuration=600,
                        # epoch=20,
                        wordNgrams=2,
+                       auto=True,
                        ):
         print("Outputting annotations")
         self.output_annotations()
         print("Training fasttext model")
-        model = fasttext.train_supervised(
-            input=f"{self.fasttext_path}/fasttext_train.txt",
-            autotuneValidationFile=f"{self.fasttext_path}/fasttext_valid.txt",
-            autotuneDuration=autotuneDuration,
-            # epoch=epoch,
-            wordNgrams=wordNgrams,
-            verbose=2
-        )
+        if auto:
+            model = fasttext.train_supervised(
+                input=f"{self.fasttext_path}/fasttext_train.txt",
+                autotuneValidationFile=f"{self.fasttext_path}/fasttext_valid.txt",
+                verbose=2
+            )
+        else:
+            model = fasttext.train_supervised(
+                input=f"{self.fasttext_path}/fasttext_train.txt",
+                autotuneValidationFile=f"{self.fasttext_path}/fasttext_valid.txt",
+                autotuneDuration=autotuneDuration,
+                wordNgrams=wordNgrams,
+                verbose=2
+            )
+
         model.save_model(f"{self.fasttext_path}/model.bin")
         print(f"Model saved to {self.fasttext_path}/model.bin")
         print("Testing model")
