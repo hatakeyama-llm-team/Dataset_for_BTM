@@ -13,11 +13,18 @@ for path in glob.glob("../data/original_dump/c4/multilingual/*.json.gz"):
 
 gz_list += mc4_gz_list
 
+# 別途取得したparquetファイルの一覧を取得
+# TODO: 変なディレクトリをhard codeしてしまっている
+pq_list = glob.glob(
+    "/data/hatakeyama/python/llm_corpus_original/**/*.parquet", recursive=True)
+pq_list = [i for i in pq_list if os.path.getsize(i) > 5000]
+gz_list += pq_list
+
 
 gz_list = list(set(gz_list))
 
 # %%
-print(len(gz_list), " gz files available")
+print(len(gz_list), " files available")
 
 # %%
 with open("temp/gz_list.txt", "w") as f:

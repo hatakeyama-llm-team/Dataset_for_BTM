@@ -47,7 +47,8 @@ def filter(text, threshold=0.9, min_length=10):
     """
     if text is None:
         return None
-
+    if text == "":
+        return None
     pos_counter, all_counts = parts_count(text)
     # print(pos_counter, all_counts)
     # print(pos_counter)

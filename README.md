@@ -63,6 +63,7 @@ python 2_train_classifier.py
 rm -rf ../data/categorized #必要に応じて初期化
 rm -rf temp/fin   #終了済みファイルリストを必要に応じて初期化
 python 3_clean_and_clustering.py 16 # 数学は並列処理の数
+python 3_clean_and_clustering_via_datasets # datasetsライブラリから読み込める､軽めのデータ
 ~~~
 
 ## 5. 重複削除

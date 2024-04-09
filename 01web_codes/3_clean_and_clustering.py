@@ -13,26 +13,29 @@ parser.add_argument('max_workers', type=str,
 args = parser.parse_args()
 
 # 並列プロセスの数
-max_workers=int(args.max_workers)
+max_workers = int(args.max_workers)
 print("Max workers: ", max_workers)
 
 # %%
-with open ("temp/gz_list.txt","r") as f:
+with open("temp/gz_list.txt", "r") as f:
     gz_list = f.read().splitlines()
 
-gz_list=[i for i in gz_list if i.endswith('.gz')]
+# gz_list = [i for i in gz_list if i.endswith('.gz')]
 print(len(gz_list), " files found")
 
 random.shuffle(gz_list)
 
 # %%
-if not os.path.exists("temp/fin"):
-    os.makedirs("temp/fin")
+
+dirs = ["temp/fin", "../data/categorized"]
+for d in dirs:
+    if not os.path.exists(d):
+        os.makedirs(d)
 
 
 # %%
 def process_file(gz_path):
-    gz_name = gz_path.split("/")[-1]#.split(".")[0]
+    gz_name = gz_path.split("/")[-1]  # .split(".")[0]
 
     if os.path.exists("temp/fin/" + gz_name):
         print("File already processed")
@@ -42,8 +45,11 @@ def process_file(gz_path):
         print("File processed")
         with open("temp/fin/" + gz_name, "w") as f:
             f.write("")
+
+
 # ThreadPoolExecutorを使って並列化
 with ThreadPoolExecutor(max_workers=max_workers) as executor:
     executor.map(process_file, gz_list)
 
 
+# %%

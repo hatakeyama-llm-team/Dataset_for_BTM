@@ -7,7 +7,8 @@ from src.cleaner.auto_cleaner import clean_text, ml_clean_text
 from gensim.models.fasttext import load_facebook_model
 import joblib
 from src.load_gz import read_gzip_json_file
-from src.distribute_jsonl import process_lines,make_dir
+from src.distribute_jsonl import process_lines, make_dir
+import pandas as pd
 
 streaming = True
 base_dir = "../data/categorized"
@@ -24,11 +25,13 @@ kmeans = joblib.load("../data/model/kmeans.pkl")
 
 make_dir(base_dir)
 
-def proc(docs,base_dir, database_path, 
+
+def proc(docs, base_dir, database_path,
          check_length=check_length):
     return process_lines(docs, t2v, kmeans, base_dir, database_path, check_length=check_length)
 
 # %%
+
 
 # %%
 batch_size = 100
@@ -41,15 +44,22 @@ args = parser.parse_args()
 database_path = args.database_path
 
 
-
 def main():
 
     docs = []
 
-    lines = []
-    for article in read_gzip_json_file(database_path):
-        text = article.get('text', '')  # 'text'キーからテキストデータを取得
-        lines.append(text)
+    # gzの場合
+    if database_path.endswith('.gz'):
+        lines = []
+        for article in read_gzip_json_file(database_path):
+            text = article.get('text', '')  # 'text'キーからテキストデータを取得
+            lines.append(text)
+    # parquetの場合
+    elif database_path.endswith('.parquet'):
+        df = pd.read_parquet(database_path)
+        lines = df['text'].tolist()
+    else:
+        raise ValueError("Invalid database path", database_path)
 
     for text in lines:
         if do_ml_clean:
@@ -61,8 +71,8 @@ def main():
 
         docs.append(text)
         if len(docs) == batch_size:
-            proc(docs,base_dir, database_path, 
-                    check_length=check_length)
+            proc(docs, base_dir, database_path,
+                 check_length=check_length)
 
             # docsをリセット
             docs = []
