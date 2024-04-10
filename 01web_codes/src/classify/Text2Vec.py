@@ -52,5 +52,5 @@ def texts2classes(target_texts, t2v, kmeans, length=100):
     vec = np.array([t2v.text2vec(i) for i in target_texts], dtype="float64")
     classes = kmeans.predict(vec)
     # classes = kmeans.predict(target_texts)
-    print(classes)
+    # print(classes)
     return classes
