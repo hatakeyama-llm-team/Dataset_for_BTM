@@ -15,7 +15,6 @@ import json
 from gensim.models import KeyedVectors
 # クラスタの数
 n_clusters = 10000
-n_clusters = 20
 
 text_path = "temp/texts.jsonl"
 with open(text_path, "r") as f:
@@ -23,7 +22,6 @@ with open(text_path, "r") as f:
 cleaned_text = [json.loads(i)["text"] for i in lines]
 cleaned_text = list(set(cleaned_text))
 
-cleaned_text = cleaned_text[:1000]
 
 # k-meansクラスタリング
 print("clustering...")
