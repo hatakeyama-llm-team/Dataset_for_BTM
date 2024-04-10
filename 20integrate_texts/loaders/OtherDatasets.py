@@ -3,6 +3,30 @@ import random
 from datasets import load_dataset
 
 
+class KokkaiDataset:
+    def __init__(self, auth_token):
+        self.dataset = load_dataset(
+            "JINIAC/ParliamentaryProceedings-filtered",
+            use_auth_token=auth_token,
+            split="train").shuffle()
+        self.loader = iter(self.dataset)
+
+    def __iter__(self):
+        # イテレータは自分自身を返す
+        return self
+
+    def __len__(self):
+        return len(self.dataset)
+
+    def __next__(self):
+        d = next(self.loader)
+        if "発言内容" in d:
+            d["text"] = d["発言内容"]
+        else:
+            d = ""
+        return d
+
+
 class PythonCodeDataset:
     def __init__(self, streaming=True):
         self.dataset = load_dataset(

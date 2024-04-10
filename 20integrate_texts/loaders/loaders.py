@@ -43,6 +43,11 @@ def nhk_news_loader():
                         ).shuffle()
 
 
+def kokkai_loader():
+    return KokkaiDataset(auth_token=os.environ["hf_key2"],
+                         ).shuffle()
+
+
 def CC_ja_loader():
     # 雑多なcommon crawl
     return CommonCrawlDataset(jsonl_dir="../data/dedup_categorized/**/*.jsonl",

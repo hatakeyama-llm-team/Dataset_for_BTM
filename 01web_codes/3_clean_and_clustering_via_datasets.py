@@ -13,16 +13,20 @@ from src.cleaner.auto_cleaner import clean_text, ml_clean_text
 from gensim.models.fasttext import load_facebook_model
 import joblib
 from src.distribute_jsonl import process_lines, make_dir
-
+from gensim.models import KeyedVectors
 # %%
 streaming = True
 base_dir = "../data/categorized"
 length_threshold = 30  # 短い記事は捨てる
-check_length = 200  # はじめのlengthだけで分類する
+check_length = 100  # はじめのlengthだけで分類する
 
 
 # load models
-t2v = Text2Vec(load_facebook_model('../data/model/cc.ja.300.bin'))
+# t2v = Text2Vec(load_facebook_model('../data/model/cc.ja.300.bin'))
+t2v = Text2Vec(model=KeyedVectors.load_word2vec_format(
+    '../data/model/entity_vector/entity_vector.model.bin', binary=True),
+    dim=200,
+)
 kmeans = joblib.load("../data/model/kmeans.pkl")
 
 
@@ -42,6 +46,7 @@ length_threshold = 100
 batch_size = 100
 
 loader_dict = {
+    "kokkai": kokkai_loader(),
     "NHK_School": NHKSchool_loader(),
     "WikiQA": wiki_qa_loader(),
     "Wiki": cleaned_wiki_loader(),
