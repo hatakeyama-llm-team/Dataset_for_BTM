@@ -2,8 +2,11 @@
 # きれいなテキストを分配する
 
 # %%
-from loaders.loaders import *
+
 import sys
+if True:
+    sys.path.append("../20integrate_texts/")
+from loaders.loaders import *
 from src.cleaner.auto_cleaner import clean_text
 from src.classify.Text2Vec import Text2Vec, texts2classes
 from src.cleaner.auto_cleaner import clean_text, ml_clean_text

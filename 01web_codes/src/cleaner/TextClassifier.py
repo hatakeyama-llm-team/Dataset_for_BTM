@@ -152,7 +152,7 @@ class TextClassifier:
             return ""
         try:
             pred = self.predict(text, return_raw=True)[1][0]
-            # print(pred)
+            print(pred)
             if pred > threshold:
                 return ""
             else:

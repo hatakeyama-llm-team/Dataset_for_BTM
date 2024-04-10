@@ -44,6 +44,9 @@ class Text2Vec:
 
 def texts2classes(target_texts, t2v, kmeans, length=100):
     target_texts = [i[:length] for i in target_texts]
-    vec = np.array([t2v.text2vec(i) for i in target_texts], dtype="float32")
+
+    # float64を求められたり､32を求められたり､挙動が変わる..
+    # vec = np.array([t2v.text2vec(i) for i in target_texts], dtype="float32")
+    vec = np.array([t2v.text2vec(i) for i in target_texts], dtype="float64")
     classes = kmeans.predict(vec)
     return classes
