@@ -1,7 +1,7 @@
 # https://github.com/lighttransport/japanese-llama-experiment/blob/main/03_clean_step1/clean_text.py
 
 # TODO: hard codeしない
-
+import random
 import unicodedata
 import re
 broken_sentence_endings = """
@@ -412,6 +412,171 @@ noise_mid_list = noise_mid_list.split("\n")
 noise_mid_list = [x for x in noise_mid_list if len(x) > 0]
 
 
+random_mid_list = """
+JavaScriptを
+ページの先頭
+登録・解除
+お問い合わせ等
+無料メールマガジン
+配信登録
+性癖
+Blog
+ブログ
+ここに説明文が入ります
+資料請求
+メールですすめる
+商品の状態
+未使用
+エリア・駅がありません
+見つかりませんでした。
+無料登録
+人気記事
+Top
+新規登録
+検索結果
+当院
+ホームページ
+代表挨拶
+チャンネル登録
+借金
+不動産投資
+カードローン
+トップページ
+検索
+配信
+ランキング
+徒歩
+Javascriptの
+記事一覧
+ブログ
+公開中
+カート
+このコンテンツ
+パスワードで保護
+サイト
+公開物件
+ホーム
+予約
+商品の
+お探しの
+サポートします
+を掲載!
+はこちら
+レス数が1000を超えています
+現在表示しているスレッド
+このスレは
+新着レスの表示
+掲示板に戻る
+前100
+次100
+最新50
+Twitter
+Facebook
+はてブ
+Pocket
+LINE
+ゲストさん
+コメント(
+コメント（
+が提供
+限定公開記事
+本文へ
+再度アクセス
+メールでの
+買い物を続ける
+査定
+個人情報保護
+お買い上げ
+印刷する
+会員限定
+プライバシー保護
+無料
+ご案内
+mail
+このサイト
+求人
+周辺施設情報
+賃貸マンション
+Cookie
+QRコード
+出張
+承ります
+お任せください
+タグ
+ログイン
+ユーザー登録
+トップへ
+食べログ
+ご相談ください
+全国対応
+記事
+お会計
+リンク
+ツール
+引用
+ストック
+掲載
+1 2 3 4 5
+クリック
+ご注文
+メッセージ
+お送りください
+RSS
+全リスト
+クリックで拡大
+お問い合わせ
+コメント
+非公開
+利用特定商取引法
+基づく表示規約
+お役立ち
+個人情報の取扱
+同意
+Contact
+URL
+http
+shares
+ニュースレター
+結果を見る
+お客様
+メールフォーム
+カテゴリー
+チェック
+商品
+お使いのブラウザ
+JavaScript
+店舗
+登録
+一覧
+戻る
+サービス
+紹介
+ページ
+管理
+送料
+ショッピング
+クレジットカード
+ご利用
+ガイド
+お伝えします
+ご紹介
+お部屋探し
+限定公開記事
+再度お試し
+利用規約
+プライバシー
+同意します
+整骨院
+物件
+メルカリ
+ポイント
+買取
+ツイート
+"""
+random_mid_list = random_mid_list.split("\n")
+random_mid_list = [x for x in random_mid_list if len(x) > 0]
+
+
 def clean(sent: str):
     for broken_ending in broken_ending_list:
         # print("aa", broken_ending)
@@ -423,4 +588,11 @@ def clean(sent: str):
     for noise_mid in noise_mid_list:
         if noise_mid in sent:
             return None
+
+    # インターネットに特有の単語を含む文章を確率的に落とす
+    for random_mid in random_mid_list:
+        if random_mid in sent:
+            if random.random() < 0.9:
+                return None
+
     return sent

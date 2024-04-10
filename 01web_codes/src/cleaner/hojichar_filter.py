@@ -2,7 +2,6 @@
 from hojichar import Compose, document_filters
 import json
 import random
-from collections import Counter
 
 base_path = "src/cleaner/hoji_dict/"
 cleaner = Compose([
@@ -26,7 +25,7 @@ noise_keywords = [k for k in noise_keywords if k != ""]
 
 prob_cleaner = Compose([
     document_filters.JSONLoader(key="text"),
-    document_filters.DiscardRareKuten(),  # 日本語以外を消す
+    # document_filters.DiscardRareKuten(),  # 日本語以外を消す
     document_filters.DiscardAdultContentJa(
         base_path + "adult_keywords_ja.txt"),
     document_filters.DiscardAdultContentEn(
@@ -40,7 +39,8 @@ prob_cleaner = Compose([
     # ),
     document_filters.DiscardBBSComments(),
     document_filters.DiscardAds(
-        base_path + "advertisement_keywords_ja.txt"
+        base_path + "advertisement_keywords_ja.txt",
+        max_allowed_num=10,
     ),
     document_filters.JSONDumper(),
 ])
@@ -56,7 +56,7 @@ def hoji_filter(text):
 
 
 # 確率的にフィルタリングするが､ちょっとイマイチ
-def prob_hoji_filter(text, survive_ratio=0.05):
+def prob_hoji_filter(text, survive_ratio=0.5):
     # ngワード類については､確率的に処理する
     if random.random() < survive_ratio:
         return text

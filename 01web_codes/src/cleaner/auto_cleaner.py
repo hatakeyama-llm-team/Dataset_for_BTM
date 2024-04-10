@@ -85,7 +85,7 @@ def clean_text(text, hoji=True):
 
 
 def ml_clean_text(text):
-    text = prob_filter(text)
+    text = prob_hoji_filter(text)
     text = hoji_filter(text)
     text = classifier.clean(text)
     if text != "":
