@@ -1,10 +1,14 @@
+# %%
 import argparse
+import json
+import os
 from src.classify.Text2Vec import Text2Vec, texts2classes
 from src.cleaner.auto_cleaner import clean_text, ml_clean_text
+from gensim.models.fasttext import load_facebook_model
 import joblib
 from src.load_gz import read_gzip_json_file, load_gzip_or_parquet
 from src.distribute_jsonl import process_lines, make_dir
-from gensim.models import KeyedVectors
+import pandas as pd
 
 streaming = True
 base_dir = "../data/categorized"
@@ -20,11 +24,14 @@ make_dir(base_dir)
 
 def proc(docs, base_dir, database_path,
          check_length=check_length):
-    return process_lines(docs, t2v, kmeans, base_dir,
-                         database_path, check_length=check_length)
+    return process_lines(docs,  kmeans, base_dir, database_path, check_length=check_length)
+
+# %%
 
 
+# %%
 batch_size = 100
+batch_size = 10
 
 # argparseのセットアップ
 parser = argparse.ArgumentParser(
@@ -38,13 +45,6 @@ print("\n\n-----\nDatabase paths: ", database_paths)
 
 # load models
 print("loading models...")
-# t2v = Text2Vec(load_facebook_model('../data/model/cc.ja.300.bin'))
-t2v = Text2Vec(model=KeyedVectors.load_word2vec_format(
-    '../data/model/entity_vector/entity_vector.model.bin', binary=True),
-    dim=200,
-)
-
-
 kmeans = joblib.load("../data/model/kmeans.pkl")
 print("model loaded.")
 
@@ -75,6 +75,7 @@ def main():
 
             docs.append(text)
             if len(docs) == batch_size:
+                # begin
                 proc(docs, base_dir, database_path,
                      check_length=check_length)
 

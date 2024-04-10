@@ -18,12 +18,17 @@ pip install scikit-learn==1.4.1.post1
 #pip install "dask[dataframe]"
 #pip install jinja2-3.1.3
 
-#model download
+#model download (w2v)
 cd data
 mkdir model
 cd model
-wget https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.ja.300.bin.gz
-gzip -d cc.ja.300.bin.gz
+#wget https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.ja.300.bin.gz
+#gzip -d cc.ja.300.bin.gz
+
+#こっちの方が軽量
+wget http://www.cl.ecei.tohoku.ac.jp/~m-suzuki/jawiki_vector/data/20170201.tar.bz2
+tar -xjvf 20170201.tar.bz2
+
 cd ../../
 
 

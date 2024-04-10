@@ -5,7 +5,6 @@ import os
 from concurrent.futures import ThreadPoolExecutor
 import argparse
 import random
-
 parser = argparse.ArgumentParser(
     description="Process files")
 parser.add_argument('max_workers', type=str,
@@ -17,7 +16,7 @@ max_workers = int(args.max_workers)
 print("Max workers: ", max_workers)
 
 # 1つのプロセスが処理するファイル数 (modelの読み込みに時間がかかるので､大きめにしておく)
-n_file_batch = 3
+n_file_batch = 300
 
 # %%
 with open("temp/gz_list.txt", "r") as f:
@@ -55,6 +54,7 @@ def process_files(gz_paths):
     print("Processing ", gz_name)
     # print(path_txt)
     os.system(f"python document_distributor.py {path_txt}")
+    print("File processed")
     with open("temp/fin/" + gz_name, "w") as f:
         f.write("")
 
