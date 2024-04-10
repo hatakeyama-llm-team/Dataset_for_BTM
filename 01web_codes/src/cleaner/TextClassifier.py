@@ -145,13 +145,18 @@ class TextClassifier:
         else:
             return int(ret[0][0].split("_")[-1])
 
-    def clean(self, text):
+    def clean(self, text, threshold=0.9):
         if text == "":
             return ""
         if text is None:
             return ""
         try:
-            pred = self.predict(text)
+            pred = self.predict(text, return_raw=True)[1][0]
+            # print(pred)
+            if pred > threshold:
+                return ""
+            else:
+                return text
         except Exception as e:
             print(e)
             return ""
