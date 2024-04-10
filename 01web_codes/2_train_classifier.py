@@ -15,9 +15,9 @@ from src.cleaner.auto_cleaner import clean_text
 n_clusters = 10000
 # n_clusters = 200
 # クラスタリングに使うデータベースの数
-n_gz = 3000
+n_gz = 500
 # 各データセットごと､N件のデータを取得
-max_articles = 70
+max_articles = 200
 # max_articles = 10
 
 

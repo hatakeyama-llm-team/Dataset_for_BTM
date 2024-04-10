@@ -4,9 +4,10 @@ from . import text_checker
 from . import rule_based_line_checker
 from . import parts_filter
 from .line_end_cleaner import clean_line_endings
-from .hojichar_filter import hoji_filter
+from .hojichar_filter import hoji_filter, prob_hoji_filter, prob_filter
 from . import rule_based_text_checker
 from .line_dedup import remove_multi_headers
+from . import repeated_phrase
 try:
     from .TextClassifier import TextClassifier
     classifier = TextClassifier()
@@ -17,6 +18,11 @@ except:
 def text_to_cleaned_paragraphs(text):
     text = normalize(text)  # 正規化
     # text = text_checker.check(text)  # ひらがなを含まないテキストは除外
+
+    # 繰り返し表現を除外 by Naito
+    text = repeated_phrase.repeated_id(text)
+    text = repeated_phrase.is_repetitive_japanese(
+        text)  # n-gramの計算(計算量が多そうな場合、削る)
 
     # パラグラフと文章に分割
     paragraphs = text_to_paragraph_sentences(text)
@@ -31,7 +37,8 @@ def text_to_cleaned_paragraphs(text):
 
             # 名詞だらけのlineを除外
             try:
-                new_line = parts_filter.filter(new_line)
+                # new_line = parts_filter.filter(new_line)
+                new_line = parts_filter.filter2(new_line)  # n-gramによる重複の除外
             except:
                 pass
             if new_line:
@@ -61,22 +68,26 @@ def text_to_cleaned_paragraphs(text):
     return cleaned_paragraphs
 
 
-def clean_text(original_text):
-    paragraphs = text_to_cleaned_paragraphs(original_text)
+def clean_text(text, hoji=True):
+    if hoji:
+        # text = prob_filter(text)
+        text = hoji_filter(text)
+        text = prob_hoji_filter(text)
+
+    paragraphs = text_to_cleaned_paragraphs(text)
     # print("aa", original_text)
     text = "\n".join(paragraphs)
 
     text = remove_multi_headers(text)
     text = rule_based_text_checker.clean(text)
-    if text != "":
-        # pass
-        text = hoji_filter(text)
     text = text.strip()
     return text
 
 
-def ml_clean_text(original_text):
-    text = classifier.clean(original_text)
+def ml_clean_text(text):
+    text = prob_filter(text)
+    text = hoji_filter(text)
+    text = classifier.clean(text)
     if text != "":
-        text = clean_text(text)
+        text = clean_text(text, hoji=False)
     return text

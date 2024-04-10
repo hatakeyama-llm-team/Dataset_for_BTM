@@ -168,3 +168,4 @@ test_cmd
 dedup/rapidjson
 dedup/smhasher
 annotations
+dev/mc4s

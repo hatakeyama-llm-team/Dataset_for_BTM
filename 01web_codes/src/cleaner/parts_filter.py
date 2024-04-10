@@ -63,3 +63,49 @@ def filter(text, threshold=0.9, min_length=10):
         return None
     else:
         return text
+
+
+def n_gram(words, n):
+    return [tuple(words[i:i+n]) for i in range(len(words) - n + 1)]
+
+# +(n-gramによって重複の有無を調べる)
+
+
+def filter2(text, threshold=0.9, min_length=10,  ngram_threshold_2gram=0.20, ngram_threshold_3gram=0.20, ngram_threshold_4gram=0.20):
+    if text is None:
+        return None
+
+    pos_counter, words, word_counter = parts_count(
+        text, return_word_count=True)
+    meishi_and_symbol_counts = pos_counter['名詞'] + \
+        pos_counter['記号'] + pos_counter['補助記号']
+    ratio = meishi_and_symbol_counts / len(words)
+
+    if ratio > threshold and len(text) > min_length:
+        return None
+
+    # 2-gramの処理
+    ngram_counts_2gram = Counter(n_gram(words, 2))
+    total_2grams = sum(ngram_counts_2gram.values())
+    most_common_2gram_count = ngram_counts_2gram.most_common(
+        1)[0][1] if ngram_counts_2gram else 0
+    if total_2grams > 0 and most_common_2gram_count / total_2grams > ngram_threshold_2gram:
+        return None
+
+    # 3-gramの処理
+    ngram_counts_3gram = Counter(n_gram(words, 3))
+    total_3grams = sum(ngram_counts_3gram.values())
+    repeated_3grams = sum(
+        count for count in ngram_counts_3gram.values() if count > 1)
+    if total_3grams > 0 and repeated_3grams / total_3grams > ngram_threshold_3gram:
+        return None
+
+    # 4-gramの処理
+    ngram_counts_4gram = Counter(n_gram(words, 4))
+    total_4grams = sum(ngram_counts_4gram.values())
+    repeated_4grams = sum(
+        count for count in ngram_counts_4gram.values() if count > 1)
+    if total_4grams > 0 and repeated_4grams / total_4grams > ngram_threshold_4gram:
+        return None
+
+    return text

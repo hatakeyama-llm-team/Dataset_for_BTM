@@ -62,8 +62,13 @@ def main():
 
         # gzの場合
         lines = load_gzip_or_parquet(database_path)
-
+        old_text = ""
         for text in lines:
+            # 純粋に同じテキストが続く場合はスキップ
+            if text == old_text:
+                continue
+            old_text = text
+
             if do_ml_clean:
                 try:
                     text = ml_clean_text(text)
