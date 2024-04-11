@@ -55,8 +55,8 @@ loader_dict = {
     # "aozora": aozora_bunko_loader(),  # 411済
     # "j_ronbun": j_research_loader(),  # 411済
     # "cosmo": cosmo_loader(),  # 411済
-    "novels": load_dataset("atsushi3110/novels-ja", "train", streaming=streaming),
-    "coding_blog": load_dataset("atsushi3110/coding-blog-ja", "train", streaming=streaming),
+    "novels": load_dataset("atsushi3110/novels-ja", split="train", streaming=streaming),
+    "coding_blog": load_dataset("atsushi3110/coding-blog-ja", split="train", streaming=streaming),
 }
 
 # %%

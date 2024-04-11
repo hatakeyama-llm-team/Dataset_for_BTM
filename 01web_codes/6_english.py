@@ -7,13 +7,14 @@ import json
 from loaders.RandomEnglishDataset import RandomEnglishDataset
 ds = RandomEnglishDataset()
 
-n_articles = 10**7
+n_articles = 2*10**8
 
 loader = iter(ds)
 
 # %%
 out_path = "../data/eng/eng.jsonl"
 out_path = "/data/hatakeyama/python/eng_corpus/eng.jsonl"
+out_path = "/data/hatakeyama/python/eng_corpus/eng2.jsonl"
 for i in tqdm(range(n_articles)):
     t = next(loader)["text"]
     if t == "":
