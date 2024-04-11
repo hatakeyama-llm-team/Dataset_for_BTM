@@ -68,7 +68,10 @@ class OpenMathInstructJa:
         d = next(self.loader)
         j_q = d["question_ja"]
         j_a = d["generated_solution_ja"]
-        txt = j_q+"\n\n"+j_a
+        try:
+            txt = j_q+"\n\n"+j_a
+        except TypeError:
+            return {"text": ""}
         d["text"] = txt
         return d
 
@@ -111,4 +114,28 @@ class PileStackExchange:
     def __next__(self):
         d = next(self.loader)
         d["text"] = d["text"].strip()
+        return d
+
+
+class FlanDataset:
+    def __init__(self, ):
+        self.dataset = load_dataset("Muennighoff/flan",
+                                    streaming=True, split="train")
+        self.loader = iter(self.dataset)
+
+    def __len__(self):
+        return len(self.dataset)
+
+    def __iter__(self):
+        # イテレータは自分自身を返す
+        return self
+
+    def __next__(self):
+        d = next(self.loader)
+        q = d["inputs"]
+        a = d["targets"]
+        if q is None or a is None:
+            return {"text": ""}
+        txt = "Q: "+q+"\n\nA: "+a
+        d["text"] = txt
         return d

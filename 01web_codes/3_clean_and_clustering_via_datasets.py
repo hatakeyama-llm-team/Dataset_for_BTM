@@ -46,10 +46,10 @@ length_threshold = 100
 batch_size = 100
 
 loader_dict = {
-    "kokkai": kokkai_loader(),
-    "NHK_School": NHKSchool_loader(),
-    "WikiQA": wiki_qa_loader(),
-    "Wiki": cleaned_wiki_loader(),
+    # "kokkai": kokkai_loader(), #未完了
+    # "NHK_School": NHKSchool_loader(), #411済
+    # "WikiQA": wiki_qa_loader(),#411済
+    # "Wiki": cleaned_wiki_loader(),#411済
     "NHK_News": nhk_news_loader(),
     "aozora": aozora_bunko_loader(),
     "j_ronbun": j_research_loader(),
