@@ -14,6 +14,7 @@ from gensim.models.fasttext import load_facebook_model
 import joblib
 from src.distribute_jsonl import process_lines, make_dir
 from gensim.models import KeyedVectors
+from datasets import load_dataset
 # %%
 streaming = True
 base_dir = "../data/categorized"
@@ -50,10 +51,12 @@ loader_dict = {
     # "NHK_School": NHKSchool_loader(), #411済
     # "WikiQA": wiki_qa_loader(),#411済
     # "Wiki": cleaned_wiki_loader(),#411済
-    "NHK_News": nhk_news_loader(),
-    "aozora": aozora_bunko_loader(),
-    "j_ronbun": j_research_loader(),
-    "cosmo": cosmo_loader(),
+    # "NHK_News": nhk_news_loader(),  # 411済
+    # "aozora": aozora_bunko_loader(),  # 411済
+    # "j_ronbun": j_research_loader(),  # 411済
+    # "cosmo": cosmo_loader(),  # 411済
+    "novels": load_dataset("atsushi3110/novels-ja", "train", streaming=streaming),
+    "coding_blog": load_dataset("atsushi3110/coding-blog-ja", "train", streaming=streaming),
 }
 
 # %%
