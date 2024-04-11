@@ -45,7 +45,8 @@ class PythonCodeDataset:
     def __next__(self):
         d = next(self.loader)
         out = d["output"].replace("```", "")
-        d["text"] = d["input"]+"\n"+out
+        d["text"] = d["instruction"] + d["input"]+"\n"+out
+        d["text"] = d["text"].strip()
         return d
 
 
@@ -69,4 +70,45 @@ class OpenMathInstructJa:
         j_a = d["generated_solution_ja"]
         txt = j_q+"\n\n"+j_a
         d["text"] = txt
+        return d
+
+
+class WikiBookEn:
+    def __init__(self, streaming=True):
+        self.dataset = load_dataset(
+            "bigscience-data/roots_en_wikibooks",
+            split="train", streaming=streaming)
+        self.loader = iter(self.dataset)
+
+    def __iter__(self):
+        # イテレータは自分自身を返す
+        return self
+
+    def __len__(self):
+        return len(self.dataset)
+
+    def __next__(self):
+        while True:
+            d = next(self.loader)
+            # UTCが含まれるデータはスキップ｡議論なので｡
+            if d["text"].find("UTC") > 0:
+                continue
+            return d
+
+
+class PileStackExchange:
+    def __init__(self, streaming=True,
+                 mode="validation"):
+        self.dataset = load_dataset(
+            "suolyer/pile_stackexchange",
+            split=mode, streaming=streaming)
+        self.loader = iter(self.dataset)
+
+    def __iter__(self):
+        # イテレータは自分自身を返す
+        return self
+
+    def __next__(self):
+        d = next(self.loader)
+        d["text"] = d["text"].strip()
         return d
