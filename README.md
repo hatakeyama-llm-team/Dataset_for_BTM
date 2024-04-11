@@ -119,6 +119,7 @@ python integrate_dataset.py
     - pmc,pes2o
     - chem
 - code関連
+- https://huggingface.co/datasets/hpprc/alt-parallel-en-ja
 - culturaXのcleaning
 - ...
 

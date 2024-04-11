@@ -8,7 +8,8 @@ class KokkaiDataset:
         self.dataset = load_dataset(
             "JINIAC/ParliamentaryProceedings-filtered",
             use_auth_token=auth_token,
-            split="train").shuffle()
+            streaming=True,
+            split="train")
         self.loader = iter(self.dataset)
 
     def __iter__(self):

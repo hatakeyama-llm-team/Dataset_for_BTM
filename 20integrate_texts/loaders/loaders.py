@@ -45,7 +45,7 @@ def nhk_news_loader():
 
 def kokkai_loader():
     return KokkaiDataset(auth_token=os.environ["hf_key2"],
-                         ).shuffle()
+                         )
 
 
 def CC_ja_loader():
