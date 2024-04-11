@@ -9,7 +9,7 @@ from gensim.models import KeyedVectors
 streaming = True
 base_dir = "../data/categorized"
 length_threshold = 30  # 短い記事は捨てる
-check_length = 200  # はじめのlengthだけで分類する
+check_length = 100  # はじめのlengthだけで分類する
 
 # 機械学習で記事を選別する
 do_ml_clean = True
