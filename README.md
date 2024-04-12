@@ -113,7 +113,7 @@ python integrate_dataset.py
     - [CommonCrawlPDF(ja)](https://huggingface.co/datasets/hatakeyama-llm-team/CommonCrawlPDFJa)
 - 特定のドメイン(一部はまだ非公開)
     - [NHK News](https://huggingface.co/datasets/hatakeyama-llm-team/nhk-news-170k)
-    - [NHK News](https://huggingface.co/datasets/hatakeyama-llm-team/nhk_for_school_outline)
+- [NHK school](https://huggingface.co/datasets/hatakeyama-llm-team/nhk_for_school_outline)
     - [青空文庫](https://huggingface.co/datasets/globis-university/aozorabunko-clean)
     - [国会議事録]()
     - [Wikipedia-ja](https://huggingface.co/datasets/hpprc/wikipedia-20240101)
