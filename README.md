@@ -116,22 +116,32 @@ python integrate_dataset.py
     - [NHK News](https://huggingface.co/datasets/hatakeyama-llm-team/nhk_for_school_outline)
     - [青空文庫](https://huggingface.co/datasets/globis-university/aozorabunko-clean)
     - [国会議事録]()
+    - [Wikipedia-ja](https://huggingface.co/datasets/hpprc/wikipedia-20240101)
     - [Wikipediaから自動生成したQA](https://huggingface.co/datasets/alfredplpl/wikipedia-qa-ja-1m)
-- openmathinstruct-en
-- wikipedia ja/en
-- nhk school, news
-- j research corpus
-- wikibook
+    - [J-ResearchCorpus](https://huggingface.co/datasets/kunishou/J-ResearchCorpus/viewer/default/train)
+    - [Cosmopedia-ja](https://huggingface.co/datasets/kunishou/cosmopedia-100k-ja-preview)
+    - [WikiBook-ja](https://huggingface.co/datasets/hatakeyama-llm-team/WikiBookJa)
+    - [Novels-ja](https://huggingface.co/datasets/atsushi3110/novels-ja)
+    - [CodingBlog-ja](https://huggingface.co/datasets/atsushi3110/coding-blog-ja)
+
+# 使われている英語・コード系コーパス
+- [peS2o](https://huggingface.co/datasets/allenai/peS2o/viewer/v1/train)
+- [wikipedia](https://huggingface.co/datasets/wikipedia)
+- [wikibook](https://huggingface.co/datasets/bigscience-data/roots_en_wikibooks)
+- [pile_stackexchange](https://huggingface.co/datasets/suolyer/pile_stackexchange)
+- [python-codes](https://huggingface.co/datasets/flytech/python-codes-25k)
+- [OpenMathInstruct-ja](kunishou/OpenMathInstruct-1-1.8m-ja)
+- [proof-pile-2(python)](https://huggingface.co/datasets/EleutherAI/proof-pile-2)
+- [open-web-math](https://huggingface.co/datasets/open-web-math/open-web-math)
+- [flan](https://huggingface.co/datasets/Muennighoff/flan)
 
 
 ## done
 ## TODO
 - WikiNewsなど
 - 学術論文
-    - pmc,pes2o
+    - pmc
     - chem
-- code関連
+- the stack v2
 - https://huggingface.co/datasets/hpprc/alt-parallel-en-ja
-- culturaXのcleaning
-- ...
 
