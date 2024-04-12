@@ -40,14 +40,15 @@ def dedup_lines(check_lines, check_length=100, n_workers=16, threshold=90):
 
 
 def dedup_dir(cluster_id,
-              check_length=100,
+              check_length=100,  # 類似度判定の長さ
               check_n=2000,  # 類似度判定のバッチサイズ
-              n_workers=32,
-              threshold=35,  # 類似度の閾値｡低めにすると､重複が多くなる
+              n_workers=32,  # 類似度判定の並列数
+              threshold=35,  # 類似度の閾値｡低めにすると､似た文章をより厳しく弾ける
               save_batch_size=1000,  # 重複削除後のファイルの保存バッチサイズ
-              repetition=2,
+              repetition=2,  # バッチ化した際の繰り返し回数
               ):
 
+    print("Cluster ID: ", cluster_id)
     path_list = glob.glob(f"../data/categorized/{cluster_id}/*.jsonl")
 
     all_lines = []
