@@ -51,12 +51,21 @@ def dedup_dir(cluster_id,
     print("Cluster ID: ", cluster_id)
     path_list = glob.glob(f"../data/categorized/{cluster_id}/*.jsonl")
 
+
+    if os.path.exists(f"../data/dedup_categorized/{cluster_id}"):
+        print("Already deduped")
+        return
+
     all_lines = []
     for path in path_list:
-        with open(path, "r") as f:
-            lines = f.readlines()
-        lines = [i[10:-3] for i in lines]
-        all_lines += lines
+        try:
+            with open(path, "r") as f:
+                lines = f.readlines()
+            lines = [i[10:-3] for i in lines]
+            all_lines += lines
+        except Exception as e:
+            print(e)
+            print("Error in ", path)
 
     # 普通の重複検出
     all_lines = list(set(all_lines))

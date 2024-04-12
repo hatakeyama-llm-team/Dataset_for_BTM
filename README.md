@@ -100,15 +100,27 @@ python integrate_dataset.py
 ## 7.[トークナイズ](./30tokenize/)
 - フォルダ内を参照
 
-# データ
-- mc4-ja, cc100, oscar, shisa, japanese2010
-- commoncrawl 2021,各種snapshot
-- CommonCrawlPDF
+# 使われている日本語系コーパス
+- 雑多なweb系
+    - [mc4-ja](https://huggingface.co/datasets/allenai/c4)
+    - [cc100](https://data.statmt.org/cc-100/)
+    - [Oscar](https://huggingface.co/datasets/oscar)
+    - [Shisa](https://huggingface.co/datasets/augmxnt/shisa-pretrain-en-ja-v1)
+    - [Japanese2010](https://huggingface.co/datasets/hatakeyama-llm-team/japanese2010)
+- 独自収拾のCommonCrawl(日本語ドメイン)
+    - WARCから1 snapshot (2021?)
+    - WETから5 snapshot (2020,2021,2022,2023,2024)
+    - [CommonCrawlPDF(ja)](https://huggingface.co/datasets/hatakeyama-llm-team/CommonCrawlPDFJa)
+- 特定のドメイン(一部はまだ非公開)
+    - [NHK News](https://huggingface.co/datasets/hatakeyama-llm-team/nhk-news-170k)
+    - [NHK News](https://huggingface.co/datasets/hatakeyama-llm-team/nhk_for_school_outline)
+    - [青空文庫](https://huggingface.co/datasets/globis-university/aozorabunko-clean)
+    - [国会議事録]()
+    - [Wikipediaから自動生成したQA](https://huggingface.co/datasets/alfredplpl/wikipedia-qa-ja-1m)
 - openmathinstruct-en
 - wikipedia ja/en
 - nhk school, news
 - j research corpus
-- 青空文庫
 - wikibook
 
 
