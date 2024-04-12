@@ -52,7 +52,8 @@ def dedup_dir(cluster_id,
     path_list = glob.glob(f"../data/categorized/{cluster_id}/*.jsonl")
 
 
-    if os.path.exists(f"../data/dedup_categorized/{cluster_id}"):
+    #if os.path.exists(f"../data/dedup_categorized/{cluster_id}"):
+    if len(glob.glob(f"../data/dedup_categorized/{cluster_id}/*.jsonl")) > 0:
         print("Already deduped")
         return
 
