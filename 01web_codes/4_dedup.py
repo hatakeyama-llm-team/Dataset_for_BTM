@@ -31,11 +31,12 @@ make_dir(output_dir)
 # make dirs
 dir_list = glob.glob(f"{input_dir}/*")
 job_list = [i.split("/")[-1] for i in dir_list]
-for job_name in job_list:
-    make_dir(f"{output_dir}/{job_name}")
+#for job_name in job_list:
 
 
 def run_command(job_name):
+
+    make_dir(f"{output_dir}/{job_name}")
     cmd = f"../dedup_sentence/deduplicate {input_dir}/{job_name}/ {output_dir}/{job_name}/"
     # cmd = f"../dedup/deduplicate {input_dir}/{job_name}/ {output_dir}/{job_name}/"
     os.system(cmd)
