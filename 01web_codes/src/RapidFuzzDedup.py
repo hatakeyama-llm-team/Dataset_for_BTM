@@ -1,6 +1,9 @@
-
-
 from datetime import datetime, timedelta
+from rapidfuzz.process import cdist
+import random
+import glob
+import os
+import json
 
 
 def get_deduped_ids(similarity_scores, threshold=90):
@@ -20,9 +23,64 @@ def get_deduped_ids(similarity_scores, threshold=90):
 
 
 def dedup_lines(check_lines, check_length=100, n_workers=16, threshold=90):
-    check_lines = [i[:check_lengh] for i in check_lines]
+    original_lines = check_lines
+
+    check_lines = []
+    start_pos = random.randint(0, 300)
+    for line in original_lines:
+        if len(line) < check_length+start_pos:
+            check_lines.append(line[:check_length])
+        else:
+            check_lines.append(line[start_pos:start_pos+check_length])
     similarity_scores = cdist(
-        check_lines[:check_n], check_lines[:check_n], workers=16)
+        check_lines, check_lines, workers=n_workers)
     deduped_ids = get_deduped_ids(similarity_scores, threshold=threshold)
-    deduped_lines = [all_lines[i] for i in deduped_ids]
+    deduped_lines = [original_lines[i] for i in deduped_ids]
     return deduped_lines
+
+
+def dedup_dir(cluster_id,
+              check_length=100,
+              check_n=2000,  # 類似度判定のバッチサイズ
+              n_workers=32,
+              threshold=35,  # 類似度の閾値｡低めにすると､重複が多くなる
+              save_batch_size=1000,  # 重複削除後のファイルの保存バッチサイズ
+              repetition=2,
+              ):
+
+    path_list = glob.glob(f"../data/categorized/{cluster_id}/*.jsonl")
+
+    all_lines = []
+    for path in path_list:
+        with open(path, "r") as f:
+            lines = f.readlines()
+        lines = [i[10:-3] for i in lines]
+        all_lines += lines
+
+    # 普通の重複検出
+    all_lines = list(set(all_lines))
+
+    n_repeat = len(all_lines)//check_n*repetition
+    n_repeat = 1 if n_repeat == 0 else n_repeat
+
+    # 類似度判定｡ 速度がバッチサイズの二乗で落ちるので､バッチサイズを小さくして､ランダムに落していく
+    for i in range(n_repeat):
+        random.shuffle(all_lines)
+        check_lines = all_lines[:check_n]
+        deduped_lines = dedup_lines(
+            check_lines, check_length=check_length, n_workers=n_workers, threshold=threshold)
+        all_lines = all_lines[check_n:]+deduped_lines
+        print(len(all_lines))
+
+    if not os.path.exists(f"../data/dedup_categorized"):
+        os.makedirs(f"../data/dedup_categorized")
+    if not os.path.exists(f"../data/dedup_categorized/{cluster_id}"):
+        os.makedirs(f"../data/dedup_categorized/{cluster_id}")
+
+    cnt = 0
+    # save_batch_size件ずつ､ファイルに保存
+    for i in range(0, len(all_lines), save_batch_size):
+        with open(f"../data/dedup_categorized/{cluster_id}/{cnt}.jsonl", "w") as f:
+            for line in all_lines[i:i+save_batch_size]:
+                f.write(json.dumps({"text": line}, ensure_ascii=False)+"\n")
+        cnt += 1
