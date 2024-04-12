@@ -4,6 +4,9 @@ from src.Dedup import DedupManager
 import random
 n_clusters = 10000
 
+# hojicharでフォルダを巡回して、重複を削除する
+# 遅いので厳しい
+
 
 def process_batch(batch_id):
     manager = DedupManager(batch_id)
