@@ -70,7 +70,7 @@ def dedup_dir(cluster_id,
 
     # 普通の重複検出
     all_lines = list(set(all_lines))
-
+    print("start: ",len(all_lines))
     n_repeat = len(all_lines)//check_n*repetition
     n_repeat = 1 if n_repeat == 0 else n_repeat
 
