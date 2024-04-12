@@ -3,6 +3,7 @@ import os
 import glob
 import json
 import pandas as pd
+import time
 from tqdm import tqdm
 # os.environ["HF_ENDPOINT"] = "http://localhost:5564"
 os.environ["HF_HUB_ENABLE_HF_TRANSFER"] = "1"
@@ -43,12 +44,14 @@ def upload(cluster_id):
     with open(done_list_path, "w") as f:
         f.write("\n".join(done_list))
 
-for cluster_id in tqdm(range(n_clusters)):
-    try:
-        upload(cluster_id)
-    except Exception as e:
-        print(e)
-
+while True:
+    for cluster_id in tqdm(range(n_clusters)):
+        try:
+            upload(cluster_id)
+        except Exception as e:
+            print(e)
+            #time.sleep(1)
+    time.sleep(1000)
 
 
 
