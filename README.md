@@ -136,6 +136,9 @@ python integrate_dataset.py
 - [flan](https://huggingface.co/datasets/Muennighoff/flan)
 - [alt-parallel-en-ja](https://huggingface.co/datasets/hpprc/alt-parallel-en-ja)
 - [github-code-more-filtering ](https://huggingface.co/datasets/loubnabnl/github-code-more-filtering)
+- [Oasst](https://huggingface.co/datasets/sablo/oasst2_curated)
+- [Dolly](https://huggingface.co/datasets/databricks/databricks-dolly-15k)
+- [Cosmopedia](https://huggingface.co/datasets/HuggingFaceTB/cosmopedia)
 
 ## done
 ## TODO

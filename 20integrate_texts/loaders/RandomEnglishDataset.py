@@ -44,6 +44,25 @@ class RandomEnglishDataset:
 
             # python code: 6 million
             GitHubCodePythonDataset(),
+
+            # oasst 5k
+            OasstDataset(),
+
+            # dolly 15k
+            DollyDataset(),
+
+            # cosmopedia
+            load_dataset("HuggingFaceTB/cosmopedia",
+                         "stanford", split="train", streaming=True,),
+            load_dataset("HuggingFaceTB/cosmopedia",
+                         "wikihow", split="train", streaming=True,),
+            load_dataset("HuggingFaceTB/cosmopedia",
+                         "openstax", split="train", streaming=True,),
+            load_dataset("HuggingFaceTB/cosmopedia",
+                         "khanacademy", split="train", streaming=True,),
+            load_dataset("HuggingFaceTB/cosmopedia",
+                         "automathtext", split="train", streaming=True,),
+
         ]
 
         self.dataset_list = dataset_list

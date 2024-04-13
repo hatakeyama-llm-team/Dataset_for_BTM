@@ -178,3 +178,48 @@ class GitHubCodePythonDataset:
         d = next(self.loader)
         d["text"] = d["code"]
         return d
+
+
+class OasstDataset:
+    def __init__(self, streaming=True,
+                 ):
+        self.dataset = load_dataset("sablo/oasst2_curated",
+                                    split="train",
+                                    streaming=streaming,
+                                    )
+        self.loader = iter(self.dataset)
+
+    def __iter__(self):
+        # イテレータは自分自身を返す
+        return self
+
+    def __next__(self):
+        d = next(self.loader)
+        for line in d["messages"]:
+            talk += line["role"]+": "+line["content"]+"\n"
+        d["text"] = talk
+        return d
+
+
+class DollyDataset:
+    def __init__(self, streaming=True,
+                 ):
+        self.dataset = load_dataset("databricks/databricks-dolly-15k",
+                                    split="train",
+                                    streaming=streaming,
+                                    )
+        self.loader = iter(self.dataset)
+
+    def __iter__(self):
+        # イテレータは自分自身を返す
+        return self
+
+    def __next__(self):
+        d = next(self.loader)
+        talk = ""
+        talk += "user: "+d["instruction"]+"\n"
+        if "context" in d:
+            talk += d["context"]+"\n"
+        talk += "assistant: "+d["response"]
+        d["text"] = talk
+        return d
