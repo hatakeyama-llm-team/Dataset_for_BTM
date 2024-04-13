@@ -61,7 +61,7 @@ class RandomEnglishDataset:
             load_dataset("HuggingFaceTB/cosmopedia",
                          "khanacademy", split="train", streaming=True,),
             load_dataset("HuggingFaceTB/cosmopedia",
-                         "automathtext", split="train", streaming=True,),
+                         "auto_math_text", split="train", streaming=True,),
 
         ]
 

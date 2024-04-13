@@ -195,6 +195,7 @@ class OasstDataset:
 
     def __next__(self):
         d = next(self.loader)
+        talk = ""
         for line in d["messages"]:
             talk += line["role"]+": "+line["content"]+"\n"
         d["text"] = talk
