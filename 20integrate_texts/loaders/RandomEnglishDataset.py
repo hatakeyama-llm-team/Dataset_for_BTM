@@ -38,6 +38,10 @@ class RandomEnglishDataset:
 
             # flan:;  3,530,340
             FlanDataset(),
+
+            # 日英: 20000
+            AltParallelEnJaDataset(),
+
         ]
 
         self.dataset_list = dataset_list

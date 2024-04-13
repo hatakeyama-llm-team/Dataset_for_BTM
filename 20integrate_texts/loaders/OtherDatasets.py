@@ -139,3 +139,22 @@ class FlanDataset:
         txt = "Q: "+q+"\n\nA: "+a
         d["text"] = txt
         return d
+
+
+class AltParallelEnJaDataset:
+    def __init__(self, streaming=True,
+                 mode="train"):
+        self.dataset = load_dataset(
+            "hpprc/alt-parallel-en-ja",
+            split=mode,
+            streaming=streaming)
+        self.loader = iter(self.dataset)
+
+    def __iter__(self):
+        # イテレータは自分自身を返す
+        return self
+
+    def __next__(self):
+        d = next(self.loader)
+        d["text"] = d["en"]+"\n"+d["ja"]
+        return d

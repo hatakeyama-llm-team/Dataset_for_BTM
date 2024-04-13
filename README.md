@@ -134,7 +134,7 @@ python integrate_dataset.py
 - [proof-pile-2(python)](https://huggingface.co/datasets/EleutherAI/proof-pile-2)
 - [open-web-math](https://huggingface.co/datasets/open-web-math/open-web-math)
 - [flan](https://huggingface.co/datasets/Muennighoff/flan)
-
+- [alt-parallel-en-ja](https://huggingface.co/datasets/hpprc/alt-parallel-en-ja)
 
 ## done
 ## TODO
@@ -143,5 +143,4 @@ python integrate_dataset.py
     - pmc
     - chem
 - the stack v2
-- https://huggingface.co/datasets/hpprc/alt-parallel-en-ja
 
