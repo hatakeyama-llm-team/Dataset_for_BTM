@@ -146,5 +146,4 @@ python integrate_dataset.py
 - 学術論文
     - pmc
     - chem
-- the stack v2
 
