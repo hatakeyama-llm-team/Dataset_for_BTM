@@ -117,6 +117,24 @@ class PileStackExchange:
         return d
 
 
+class PMCDataset:
+    def __init__(self, streaming=True,
+                 ):
+        self.dataset = load_dataset(
+            "hatakeyama-llm-team/PMC",
+            split="train", streaming=streaming)
+        self.loader = iter(self.dataset)
+
+    def __iter__(self):
+        # イテレータは自分自身を返す
+        return self
+
+    def __next__(self):
+        d = next(self.loader)
+        d["text"] = d["Text"]
+        return d
+
+
 class FlanDataset:
     def __init__(self, ):
         self.dataset = load_dataset("Muennighoff/flan",

@@ -139,7 +139,7 @@ python integrate_dataset.py
 - [Oasst](https://huggingface.co/datasets/sablo/oasst2_curated)
 - [Dolly](https://huggingface.co/datasets/databricks/databricks-dolly-15k)
 - [Cosmopedia](https://huggingface.co/datasets/HuggingFaceTB/cosmopedia)
-
+- [PMC(CC-BY)](https://huggingface.co/datasets/hatakeyama-llm-team/PMC)
 ## done
 ## TODO
 - WikiNewsなど

@@ -63,6 +63,8 @@ class RandomEnglishDataset:
             load_dataset("HuggingFaceTB/cosmopedia",
                          "auto_math_text", split="train", streaming=True,),
 
+            # PMC 3k
+            PMCDataset(),
         ]
 
         self.dataset_list = dataset_list
