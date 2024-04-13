@@ -117,6 +117,38 @@ class PileStackExchange:
         return d
 
 
+class JaNewsDataset:
+    def __init__(self,
+                 data_files="https://huggingface.co/datasets/atsushi3110/news-ja/resolve/main/news_cc.jsonl",
+                 ):
+        self.dataset = load_dataset(
+            "hatakeyama-llm-team/PMC",
+            data_files=data_files,
+            split="train",)
+        self.loader = iter(self.dataset)
+
+    def __iter__(self):
+        # イテレータは自分自身を返す
+        return self
+
+    def __next__(self):
+        d = next(self.loader)
+        t = d["text"]
+        noise_words = [
+            "(c)", "（抜粋）", "(この記", "関連"
+        ]
+        for noise in noise_words:
+            if t.find(noise) >= 0:
+                t = t[:t.find(noise)]
+
+        if t.find("】") >= 0:
+            t = t.split("】")[1:]
+            t = "".join(t)
+
+        d["text"] = t
+        return d
+
+
 class PMCDataset:
     def __init__(self, streaming=True,
                  ):

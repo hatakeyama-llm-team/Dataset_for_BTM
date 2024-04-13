@@ -126,6 +126,7 @@ python integrate_dataset.py
     - [日英コーパス](https://huggingface.co/datasets/atsushi3110/en-ja-parallel-corpus-augmented)
     - [Soda-ja](https://huggingface.co/datasets/atsushi3110/soda-ja-instruction)
     - [Shosetsu711K](https://huggingface.co/datasets/RyokoAI/Syosetu711K)
+    - [JapeneseNews](https://huggingface.co/datasets/atsushi3110/news-ja)
 # 使われている英語・コード系コーパス
 - [peS2o](https://huggingface.co/datasets/allenai/peS2o/viewer/v1/train)
 - [wikipedia](https://huggingface.co/datasets/wikipedia)
