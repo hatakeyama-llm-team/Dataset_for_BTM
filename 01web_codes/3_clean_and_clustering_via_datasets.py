@@ -47,7 +47,7 @@ length_threshold = 100
 batch_size = 100
 
 loader_dict = {
-    # "kokkai": kokkai_loader(), #未完了
+    # "kokkai": kokkai_loader(), #413
     # "NHK_School": NHKSchool_loader(), #411済
     # "WikiQA": wiki_qa_loader(),#411済
     # "Wiki": cleaned_wiki_loader(),#411済
@@ -57,6 +57,9 @@ loader_dict = {
     # "cosmo": cosmo_loader(),  # 411済
     # "novels": load_dataset("atsushi3110/novels-ja", split="train", streaming=streaming), #412
     # "coding_blog": load_dataset("atsushi3110/coding-blog-ja", split="train", streaming=streaming), #412
+    "en_ja_corpus_augumented": AltParallelEnJaDataset(repo_name="atsushi3110/en-ja-parallel-corpus-augmented"),
+    "SodaJa": SodaJaDataset(),  # sodaの日本語訳
+    "ShosetsuSevenK": ShosetuSevenK(),  # 小説データ
 }
 
 # %%

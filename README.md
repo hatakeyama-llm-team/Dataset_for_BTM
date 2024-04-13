@@ -123,7 +123,9 @@ python integrate_dataset.py
     - [WikiBook-ja](https://huggingface.co/datasets/hatakeyama-llm-team/WikiBookJa)
     - [Novels-ja](https://huggingface.co/datasets/atsushi3110/novels-ja)
     - [CodingBlog-ja](https://huggingface.co/datasets/atsushi3110/coding-blog-ja)
-
+    - [日英コーパス](https://huggingface.co/datasets/atsushi3110/en-ja-parallel-corpus-augmented)
+    - [Soda-ja](https://huggingface.co/datasets/atsushi3110/soda-ja-instruction)
+    - [Shosetsu711K](https://huggingface.co/datasets/RyokoAI/Syosetu711K)
 # 使われている英語・コード系コーパス
 - [peS2o](https://huggingface.co/datasets/allenai/peS2o/viewer/v1/train)
 - [wikipedia](https://huggingface.co/datasets/wikipedia)

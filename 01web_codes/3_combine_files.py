@@ -9,7 +9,6 @@ import time
 # 指定したフォルダ内のファイルを検索
 n_clusters = 10000
 while True:
-    time.sleep(30)
     for cluster_id in tqdm(range(n_clusters)):
         for i in range(100):
             path_list = glob.glob(f"../data/categorized/{cluster_id}/*.jsonl")
@@ -28,19 +27,23 @@ while True:
                 selected_files = random.sample(eligible_files, 2)
                 combined_data = []
                 for file_path in selected_files:
-                    with open(file_path,"r") as f:
-                        lines=f.readlines()
-                        combined_data+=lines
-                
+                    with open(file_path, "r") as f:
+                        lines = f.readlines()
+                        combined_data += lines
+
                 # 新しいランダムなファイル名を生成
-                random_name = "00"+''.join(random.choices(string.ascii_letters + string.digits, k=10)) + '.jsonl'
-                new_path = os.path.join(os.path.dirname(selected_files[0]), random_name)
-                combined_data = list(set(combined_data)) 
+                random_name = "00" + \
+                    ''.join(random.choices(string.ascii_letters +
+                            string.digits, k=10)) + '.jsonl'
+                new_path = os.path.join(os.path.dirname(
+                    selected_files[0]), random_name)
+                combined_data = list(set(combined_data))
                 # 統合したデータを新しいファイルに保存
-                with open(new_path,"w") as f:
+                with open(new_path, "w") as f:
                     f.writelines(combined_data)
-            
-                
+
                 # 元のファイルを削除
                 for file_path in selected_files:
                     os.remove(file_path)
+
+    time.sleep(30)

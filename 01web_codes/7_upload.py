@@ -66,5 +66,5 @@ while True:
                 # time.sleep(1)
             text_list = []
             cnt += 1
-
+    break
     time.sleep(3600*24)

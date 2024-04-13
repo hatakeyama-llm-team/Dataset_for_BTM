@@ -161,9 +161,10 @@ class FlanDataset:
 
 class AltParallelEnJaDataset:
     def __init__(self, streaming=True,
+                 repo_name="hpprc/alt-parallel-en-ja",
                  mode="train"):
         self.dataset = load_dataset(
-            "hpprc/alt-parallel-en-ja",
+            repo_name,
             split=mode,
             streaming=streaming)
         self.loader = iter(self.dataset)
@@ -175,6 +176,56 @@ class AltParallelEnJaDataset:
     def __next__(self):
         d = next(self.loader)
         d["text"] = d["en"]+"\n"+d["ja"]
+        return d
+
+
+class SodaJaDataset:
+    def __init__(self, streaming=True,
+                 repo_name="atsushi3110/soda-ja-instruction",
+                 mode="train"):
+        self.dataset = load_dataset(
+            repo_name,
+            split=mode,
+            streaming=streaming)
+        self.loader = iter(self.dataset)
+
+    def __iter__(self):
+        # イテレータは自分自身を返す
+        return self
+
+    def __next__(self):
+        d = next(self.loader)
+        text = d["text"]
+        text = text[text.find("# Input")+10:]
+        text = text.replace(" ", "")
+        lines = text.split("\n")
+        lines = [line for line in lines if line[0] != "#"]
+        d["text"] = "\n".join(lines)
+        return d
+
+
+class ShosetuSevenK:
+    def __init__(self, streaming=True,
+                 repo_name="RyokoAI/Syosetu711K",
+                 mode="train"):
+        self.dataset = load_dataset(
+            repo_name,
+            split=mode,
+            streaming=streaming)
+        self.loader = iter(self.dataset)
+
+    def __iter__(self):
+        # イテレータは自分自身を返す
+        return self
+
+    def __next__(self):
+        d = next(self.loader)
+        lines = d["text"].split("\n")
+        n_lines = lines[0:1]+(lines[7:])
+        n_lines = [i for i in n_lines if i != ""]
+        n_lines = [i for i in n_lines if i[0] != "【"]
+        text = "\n".join(n_lines)
+        d["text"] = text
         return d
 
 
