@@ -12,10 +12,11 @@ n_articles = 2*10**8
 loader = iter(ds)
 
 # %%
-out_path = "../data/eng/eng.jsonl"
-out_path = "/data/hatakeyama/python/eng_corpus/eng.jsonl"
-out_path = "/data/hatakeyama/python/eng_corpus/eng2.jsonl"
 out_path = "/data/hatakeyama/python/eng_corpus/eng3.jsonl"
+
+with open(out_path, "w") as f:
+    f.write("")
+
 for i in tqdm(range(n_articles)):
     t = next(loader)["text"]
     if t == "":
