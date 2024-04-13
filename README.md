@@ -130,7 +130,7 @@ python integrate_dataset.py
 - [wikibook](https://huggingface.co/datasets/bigscience-data/roots_en_wikibooks)
 - [pile_stackexchange](https://huggingface.co/datasets/suolyer/pile_stackexchange)
 - [python-codes](https://huggingface.co/datasets/flytech/python-codes-25k)
-- [OpenMathInstruct-ja](kunishou/OpenMathInstruct-1-1.8m-ja)
+- [OpenMathInstruct-ja](https://huggingface.co/datasets/kunishou/OpenMathInstruct-1-1.8m-ja)
 - [proof-pile-2(python)](https://huggingface.co/datasets/EleutherAI/proof-pile-2)
 - [open-web-math](https://huggingface.co/datasets/open-web-math/open-web-math)
 - [flan](https://huggingface.co/datasets/Muennighoff/flan)
