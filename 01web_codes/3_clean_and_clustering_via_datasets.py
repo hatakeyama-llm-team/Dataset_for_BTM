@@ -57,15 +57,29 @@ loader_dict = {
     # "cosmo": cosmo_loader(),  # 411済
     # "novels": load_dataset("atsushi3110/novels-ja", split="train", streaming=streaming), #412
     # "coding_blog": load_dataset("atsushi3110/coding-blog-ja", split="train", streaming=streaming), #412
-    "en_ja_corpus_augumented": AltParallelEnJaDataset(repo_name="atsushi3110/en-ja-parallel-corpus-augmented"),
-    "SodaJa": SodaJaDataset(),  # sodaの日本語訳
-    "ShosetsuSevenK": ShosetuSevenK(),  # 小説データ
+    # "en_ja_corpus_augumented_a": AltParallelEnJaDataset(repo_name="atsushi3110/en-ja-parallel-corpus-augmented",
+    #                                                    data_files="https://huggingface.co/datasets/atsushi3110/en-ja-parallel-corpus-augmented/resolve/refs%2Fconvert%2Fparquet/default/train/0000.parquet",
+    #                                                    streaming=False),
+    # "en_ja_corpus_augumented_b": AltParallelEnJaDataset(repo_name="atsushi3110/en-ja-parallel-corpus-augmented",
+    #                                                    data_files="https://huggingface.co/datasets/atsushi3110/en-ja-parallel-corpus-augmented/resolve/refs%2Fconvert%2Fparquet/default/train/0001.parquet",
+    #                                                    streaming=False),
+
+    # "ShosetsuSevenK": ShosetuSevenK(),  # 小説データ
+    # "SodaJa": SodaJaDataset(),  # sodaの日本語訳 413. エラーが出て止まるので注意
 }
 
 # %%
 
+no_cleaning_list = [
+    "en_ja_corpus_augumented_a",
+    "en_ja_corpus_augumented_b",
+    "ShosetsuSevenK",
+    "SodaJa",
+    "ShosetsuSevenK",
+]
 
 for doc_name, loader in loader_dict.items():
+    print(doc_name)
     docs = []
     lines = []
     for record in iter(loader):
@@ -73,9 +87,10 @@ for doc_name, loader in loader_dict.items():
 
     cnt = 0
     for text in lines:
-        text = clean_text(text)
-        if len(text) < length_threshold:
-            continue
+        if doc_name not in no_cleaning_list:
+            text = clean_text(text)
+            if len(text) < length_threshold:
+                continue
 
         docs.append(text)
         if len(docs) == batch_size:

@@ -162,10 +162,13 @@ class FlanDataset:
 class AltParallelEnJaDataset:
     def __init__(self, streaming=True,
                  repo_name="hpprc/alt-parallel-en-ja",
-                 mode="train"):
+                 mode="train",
+                 data_files=None,
+                 ):
         self.dataset = load_dataset(
             repo_name,
             split=mode,
+            data_files=data_files,
             streaming=streaming)
         self.loader = iter(self.dataset)
 
@@ -175,13 +178,18 @@ class AltParallelEnJaDataset:
 
     def __next__(self):
         d = next(self.loader)
-        d["text"] = d["en"]+"\n"+d["ja"]
+        try:
+            d["text"] = d["en"]+"\n"+d["ja"]
+        except Exception as e:
+            print(d, e)
+            return {"text": ""}
         return d
 
 
 class SodaJaDataset:
     def __init__(self, streaming=True,
                  repo_name="atsushi3110/soda-ja-instruction",
+                 data_files="https://huggingface.co/datasets/atsushi3110/soda-ja-instruction/resolve/main/train.json",
                  mode="train"):
         self.dataset = load_dataset(
             repo_name,
@@ -194,7 +202,10 @@ class SodaJaDataset:
         return self
 
     def __next__(self):
-        d = next(self.loader)
+        try:
+            d = next(self.loader)
+        except:
+            return {"text": ""}
         text = d["text"]
         text = text[text.find("# Input")+10:]
         text = text.replace(" ", "")
