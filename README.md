@@ -135,6 +135,7 @@ python integrate_dataset.py
 - [open-web-math](https://huggingface.co/datasets/open-web-math/open-web-math)
 - [flan](https://huggingface.co/datasets/Muennighoff/flan)
 - [alt-parallel-en-ja](https://huggingface.co/datasets/hpprc/alt-parallel-en-ja)
+- [github-code-more-filtering ](https://huggingface.co/datasets/loubnabnl/github-code-more-filtering)
 
 ## done
 ## TODO

@@ -158,3 +158,23 @@ class AltParallelEnJaDataset:
         d = next(self.loader)
         d["text"] = d["en"]+"\n"+d["ja"]
         return d
+
+
+class GitHubCodePythonDataset:
+    def __init__(self, streaming=True,
+                 ):
+        self.dataset = load_dataset("loubnabnl/github-code-more-filtering",
+                                    split="train",
+                                    streaming=streaming,
+                                    )
+        self.dataset = self.dataset.filter(lambda x: x["language"] == "Python")
+        self.loader = iter(self.dataset)
+
+    def __iter__(self):
+        # イテレータは自分自身を返す
+        return self
+
+    def __next__(self):
+        d = next(self.loader)
+        d["text"] = d["code"]
+        return d

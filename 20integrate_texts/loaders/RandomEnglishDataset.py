@@ -39,9 +39,11 @@ class RandomEnglishDataset:
             # flan:;  3,530,340
             FlanDataset(),
 
-            # 日英: 20000
+            # 日英: 20k
             AltParallelEnJaDataset(),
 
+            # python code: 6 million
+            GitHubCodePythonDataset(),
         ]
 
         self.dataset_list = dataset_list
