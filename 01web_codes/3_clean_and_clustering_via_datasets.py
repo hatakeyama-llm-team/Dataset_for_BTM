@@ -72,7 +72,7 @@ loader_dict = {
     #"JaNews4": JaNewsDataset(data_files="https://huggingface.co/datasets/atsushi3110/news-ja/resolve/main/news.dd.jsonl"),#414
     #"JaNews5": JaNewsDataset(data_files="https://huggingface.co/datasets/atsushi3110/news-ja/resolve/main/news.ee.jsonl"), #textがないので割愛
     #"JaNews6": JaNewsDataset(data_files="https://huggingface.co/datasets/atsushi3110/news-ja/resolve/main/news.ff.jsonl"), #414
-    "light_novel_4m":LightNovelFourM(auth_token=os.environ["hf_key"],streaming=True), #ライトノベル。承認とapi keyが必要
+    #"light_novel_4m":LightNovelFourM(auth_token=os.environ["hf_key"],streaming=True), #ライトノベル。承認とapi keyが必要
 
 }
 
@@ -84,6 +84,7 @@ no_cleaning_list = [
     "ShosetsuSevenK",
     "SodaJa",
     "ShosetsuSevenK",
+    "light_novel_4m",
 ]
 
 for doc_name, loader in loader_dict.items():

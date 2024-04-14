@@ -19,7 +19,7 @@ while True:
                 stats = os.stat(file_path)
                 file_size = stats.st_size
                 last_modified = datetime.fromtimestamp(stats.st_mtime)
-                if file_size <= 1 * 1024 * 1024 and (datetime.now() - last_modified) > timedelta(minutes=5):
+                if file_size <= 2 * 1024 * 1024 and (datetime.now() - last_modified) > timedelta(minutes=5):
                     eligible_files.append(file_path)
 
             # 条件に合う2つのファイルをランダムに選び、統合
