@@ -66,13 +66,16 @@ loader_dict = {
 
     # "ShosetsuSevenK": ShosetuSevenK(),  # 小説データ
     # "SodaJa": SodaJaDataset(),  # sodaの日本語訳 413. エラーが出て止まるので注意
-    #"JaNews1": JaNewsDataset(data_files="https://huggingface.co/datasets/atsushi3110/news-ja/resolve/main/news_aa.jsonl"),#414
-    #"JaNews2": JaNewsDataset(data_files="https://huggingface.co/datasets/atsushi3110/news-ja/resolve/main/news_bb.jsonl"),#414
-    #"JaNews3": JaNewsDataset(data_files="https://huggingface.co/datasets/atsushi3110/news-ja/resolve/main/news_cc.jsonl"),#414
-    #"JaNews4": JaNewsDataset(data_files="https://huggingface.co/datasets/atsushi3110/news-ja/resolve/main/news.dd.jsonl"),#414
-    #"JaNews5": JaNewsDataset(data_files="https://huggingface.co/datasets/atsushi3110/news-ja/resolve/main/news.ee.jsonl"), #textがないので割愛
-    #"JaNews6": JaNewsDataset(data_files="https://huggingface.co/datasets/atsushi3110/news-ja/resolve/main/news.ff.jsonl"), #414
-    #"light_novel_4m":LightNovelFourM(auth_token=os.environ["hf_key"],streaming=True), #ライトノベル。承認とapi keyが必要
+    # "JaNews1": JaNewsDataset(data_files="https://huggingface.co/datasets/atsushi3110/news-ja/resolve/main/news_aa.jsonl"),#414
+    # "JaNews2": JaNewsDataset(data_files="https://huggingface.co/datasets/atsushi3110/news-ja/resolve/main/news_bb.jsonl"),#414
+    # "JaNews3": JaNewsDataset(data_files="https://huggingface.co/datasets/atsushi3110/news-ja/resolve/main/news_cc.jsonl"),#414
+    # "JaNews4": JaNewsDataset(data_files="https://huggingface.co/datasets/atsushi3110/news-ja/resolve/main/news.dd.jsonl"),#414
+    # "JaNews5": JaNewsDataset(data_files="https://huggingface.co/datasets/atsushi3110/news-ja/resolve/main/news.ee.jsonl"), #textがないので割愛
+    # "JaNews6": JaNewsDataset(data_files="https://huggingface.co/datasets/atsushi3110/news-ja/resolve/main/news.ff.jsonl"), #414
+    # "light_novel_4m":LightNovelFourM(auth_token=os.environ["hf_key"],streaming=True), #ライトノベル。承認とapi keyが必要
+    # api
+    "JetCopper": load_dataset("sudy-super/JetCopper-10B", split="train", use_auth_token=os.environ["hf_key"], streaming=True,),
+
 
 }
 

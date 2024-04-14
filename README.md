@@ -128,6 +128,7 @@ python integrate_dataset.py
     - [Shosetsu711K](https://huggingface.co/datasets/RyokoAI/Syosetu711K)
     - [JapeneseNews](https://huggingface.co/datasets/atsushi3110/news-ja)
     - [light-novel-4m](https://huggingface.co/datasets/isek-ai/light-novel-4m)
+    - [JetCopper-10B](https://huggingface.co/datasets/sudy-super/JetCopper-10B)
 # 使われている英語・コード系コーパス
 - [peS2o](https://huggingface.co/datasets/allenai/peS2o/viewer/v1/train)
 - [wikipedia](https://huggingface.co/datasets/wikipedia)
