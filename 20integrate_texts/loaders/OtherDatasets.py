@@ -1,4 +1,4 @@
-
+import os
 import random
 from datasets import load_dataset
 
@@ -165,6 +165,27 @@ class PMCDataset:
         d = next(self.loader)
         d["text"] = d["Text"]
         return d
+class LightNovelFourM:
+    def __init__(self, streaming=True,
+    auth_token=None,
+                 ):
+        self.dataset = load_dataset("isek-ai/light-novel-4m",
+    split="train",
+use_auth_token=auth_token,
+streaming=streaming,
+                  )
+
+        self.loader = iter(self.dataset)
+
+    def __iter__(self):
+        # イテレータは自分自身を返す
+        return self
+
+    def __next__(self):
+        d = next(self.loader)
+        d["text"] = d["episode_body"]
+        return d
+
 
 
 class FlanDataset:
