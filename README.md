@@ -146,4 +146,4 @@ python integrate_dataset.py
 - WikiNewsなど
 - 学術論文
     - chem
-
+- https://hplt-project.org/datasets/v1.2
