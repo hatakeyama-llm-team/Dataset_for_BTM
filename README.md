@@ -145,6 +145,5 @@ python integrate_dataset.py
 ## TODO
 - WikiNewsなど
 - 学術論文
-    - pmc
     - chem
 
