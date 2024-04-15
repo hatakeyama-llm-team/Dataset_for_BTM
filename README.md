@@ -1,4 +1,5 @@
 # 事前学習用のコーパスを作るパイプライン for BTM
+# マニュアル類はあまり整備できてません...
 
 # 環境構築
 - [setup.sh](./setup.sh)
@@ -39,11 +40,6 @@ python 1_search_gz_list.py
 
 ~~~
 
-## 自動実行
-- 以下の3,4,...を自動実行するscriptです｡
-~~~
-bash auto.sh
-~~~
 
 ## 3. クラスタリングモデルの学習
 - [教師なしクラスタリングのためのモデルを学習します](./01web_codes/train_classifier.ipynb)
