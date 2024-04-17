@@ -5,4 +5,5 @@ from loaders.RecordDistributor import RecordDistributor
 
 distributor = RecordDistributor(dataset_dict)
 distributor.load_datasets()
+print("begin writing jsonl")
 distributor.write_jsonl(output_path, overwrite=True)

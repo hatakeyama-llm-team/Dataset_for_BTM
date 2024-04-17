@@ -30,10 +30,12 @@ class RecordDistributor:
                 dataset_info["dataset"] = dataset_info["loader"]()
             except:
                 dataset_info["dataset"] = dataset_info["loader"]
+        print("initiating iterators")
         self.init_iterators()
 
     def init_iterators(self):
         for name, dataset_info in self.dataset_dict.items():
+            print("initiating iterator", name)
             dataset_info["dataset_iterator"] = iter(dataset_info["dataset"])
 
     def update_n_records_per_stage(self):

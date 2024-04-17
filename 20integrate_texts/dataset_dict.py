@@ -2,7 +2,7 @@ from loaders.loaders import *
 import json
 # 出力パス
 
-scale = 1000  # 練習時はscaleを小さくする
+scale = 1  # 練習時はscaleを小さくする
 output_path = f"/data/hatakeyama/python/llm_corpus/corpus_scale_{scale}.jsonl"
 
 # 自動でクラスタリングされたコーパス群の読み込み
@@ -27,15 +27,18 @@ dataset_dict = {
 
     # 英語
     "en": {
-        "loader":  CommonCrawlDataset(["/data/hatakeyama/python/eng_corpus/eng3.jsonl"]),
+        # "loader":  CommonCrawlDataset(["/data/hatakeyama/python/eng_corpus/eng3.jsonl"]),
+        "loader": load_dataset("json", split="train",
+                               data_files="/data/hatakeyama/python/eng_corpus/eng3.jsonl",
+                               streaming=True),
         "n_records": int(67500000/scale),
-        "stage_ratio": [0.05, 7, 0.05, 0.05, 0.05, 0.05, 0.05],
+        "stage_ratio": [0.5, 7, 0.05, 0.05, 0.05, 0.05, 0.05],
     },
 
     "pmc": {
         "loader": PMCDataset2,
         "n_records": int(2800/scale),
-        "stage_ratio": [0.05, 7, 0.05, 0.05, 0.05, 0.05, 0.05],
+        "stage_ratio": [0.05, 700, 0.05, 0.05, 0.05, 0.05, 0.05],
 
     },
     # ----------------------------
