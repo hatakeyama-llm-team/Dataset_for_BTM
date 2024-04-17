@@ -26,8 +26,8 @@ dataset_dict = {
 
     # 英語
     "en": {
-        "loader": wiki_en_loader,
-        "n_records": int(6458000/scale),
+        "loader":  CommonCrawlDataset(["/data/hatakeyama/python/eng_corpus/eng3.jsonl"]),
+        "n_records": int(67500000/scale),
         "stage_ratio": [0.05, 7, 0.05, 0.05, 0.05, 0.05, 0.05],
     },
 
@@ -42,8 +42,8 @@ dataset_dict = {
     # 日本語の雑多な文章
     #
     "ja0": {
-        "loader": cc_loader_dict["0"],
-        "n_records": int(label_to_article_count["0"]/scale-1000),
+        "loader": cc_loader_dict["4"],
+        "n_records": int(label_to_article_count["4"]/scale-1000),
         "stage_ratio": [0.05, 0.05, 1, 0.05, 0.05, 0.05, 0.05],
     },
     "ja1": {
@@ -62,8 +62,8 @@ dataset_dict = {
         "stage_ratio": [0.05, 0.05, 0.05, 0.05, 0.05, 1, 0.05],
     },
     "ja4": {
-        "loader": cc_loader_dict["4"],
-        "n_records": int(label_to_article_count["4"]/scale-1000),
+        "loader": cc_loader_dict["0"],
+        "n_records": int(label_to_article_count["0"]/scale-1000),
         "stage_ratio": [0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 1],
     },
 
