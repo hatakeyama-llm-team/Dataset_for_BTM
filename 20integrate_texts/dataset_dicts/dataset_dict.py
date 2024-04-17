@@ -1,10 +1,24 @@
-from src.loaders import *
-
+from loaders.loaders import *
+import json
 # 出力パス
 output_path = "/data/hatakeyama/python/llm_corpus/corpus.jsonl"
-scale = 10  # 練習時はscaleを小さくする
+scale = 1  # 練習時はscaleを小さくする
 
-# stage_ratioは､各レコードの､各stageごとのデータの振り分け具合を示す
+# 自動でクラスタリングされたコーパス群の読み込み
+n_clusters = 5
+# クラスタリングされたweb系テキストのデータセット
+with open("../data/clustered_path.json", "r") as f:
+    label_to_path_list = json.load(f)
+
+# データ数
+with open("../data/clustered_n.json", "r") as f:
+    label_to_article_count = json.load(f)
+print(label_to_article_count)
+cc_loader_dict = {}
+for label, path in label_to_path_list.items():
+    loader = CommonCrawlDataset(label_to_path_list[label])
+    cc_loader_dict[label] = loader
+
 
 dataset_dict = {
     # ----------------------------
@@ -14,89 +28,60 @@ dataset_dict = {
     "wiki(en)": {
         "loader": wiki_en_loader,
         "n_records": int(6458000/scale),
-        "stage_ratio": [0.05, 7, 0.05, 0.05],
+        "stage_ratio": [0.05, 7, 0.05, 0.05, 0.05, 0.05, 0.05],
     },
 
     # 英語の雑多なテキスト: もっときれいなら他のものに変更する
     "culturaX(en)": {
         "loader": culturax_loader,
         "n_records": int(10**7/scale),
-        "stage_ratio": [0.05, 7, 0.05, 0.05],
+        "stage_ratio": [0.05, 7, 0.05, 0.05, 0.05, 0.05, 0.05],
     },
 
     # pythonの英語のcodeのinstructionを事前学習用に強引に突っ込む
     "PythonCodes": {
         "loader": python_code_loader,
         "n_records": int(49000/scale),
-        "stage_ratio": [1, 7, 1, 0.1],
+        "stage_ratio": [0.1, 7, 0.1, 0.1, 0.05, 0.05, 0.05],
     },
     "OpenMathJa": {
         "loader": open_math_loader,
         "n_records": int(1820000/scale),
-        "stage_ratio": [1, 7, 1, 0.1],
-    },
-
-
-    # cosmopedia
-    # 自動合成されたデータセット｡文章のクオリティは低いが､日英の勉強にはなるかも?
-    "Cosmopodia": {
-        "loader": cosmo_loader,
-        "n_records": int(79800/scale),
-        "stage_ratio": [0.25, 7, 1, 0.25],
+        "stage_ratio": [0.1, 7, 0.1, 0.1, 0.05, 0.05, 0.05],
     },
 
     # ----------------------------
-    # stage 2
+    # stage 2以降
     # 日本語の雑多な文章
-    "CC(ja)": {
-        "loader": CC_ja_loader,
-        "n_records": int(46659000/scale),
-        "stage_ratio": [0.1, 0.1, 8, 0.1],
+    #
+    "ja0": {
+        "loader": cc_loader_dict["4"],
+        "n_records": int(label_to_article_count["0"]/scale-1000),
+        "stage_ratio": [0.05, 0.05, 1, 0.05, 0.05, 0.05, 0.05],
+    },
+    "ja1": {
+        "loader": cc_loader_dict["1"],
+        "n_records": int(label_to_article_count["1"]/scale-1000),
+        "stage_ratio": [0.05, 0.05, 0.05, 1, 0.05, 0.05, 0.05],
+    },
+    "ja2": {
+        "loader": cc_loader_dict["2"],
+        "n_records": int(label_to_article_count["2"]/scale-1000),
+        "stage_ratio": [0.05, 0.05, 0.05, 0.05, 1, 0.05, 0.05],
+    },
+    "ja3": {
+        "loader": cc_loader_dict["3"],
+        "n_records": int(label_to_article_count["3"]/scale-1000),
+        "stage_ratio": [0.05, 0.05, 0.05, 0.05, 0.05, 1, 0.05],
+    },
+    "ja4": {
+        "loader": cc_loader_dict["0"],
+        "n_records": int(label_to_article_count["4"]/scale-1000),
+        "stage_ratio": [0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 1],
     },
 
-    # wikipediaから自動生成された質問集
-    "wiki-qa": {
-        "loader": wiki_qa_loader,
-        "n_records": int(1113000/scale),
-        "stage_ratio": [0.1, 0.1, 8, 0.1],
-    },
 
-    # ----------------------------
-    # stage 3
-    # 上質なテキスト
 
-    # wikipedia
-    "wiki(ja)": {
-        "loader": cleaned_wiki_loader,
-        "n_records": int(1390000/scale),
-        "stage_ratio": [1, 1, 1, 8],
-    },
-
-    # nhk news
-    "NHK-news": {
-        "loader": nhk_news_loader,
-        "n_records": int(168800/scale),
-        "stage_ratio": [0.1, 0.1, 0.1, 0.8],
-    },
-    # nhk school
-    "NHK-school": {
-        "loader": NHKSchool_loader,
-        "n_records": int(6200/scale),
-        "stage_ratio": [0.1, 0.1, 0.1, 0.8],
-    },
-    # 青空文庫
-    "aozora-bunko": {
-        "loader": aozora_bunko_loader,
-        "n_records": int(16900/scale),
-        "stage_ratio": [0.1, 0.1, 0.1, 0.8],
-    },
-
-    # 日本語の学術論文
-    "japanese-ronbun": {
-        "loader": j_research_loader,
-        "n_records": int(3200/scale),
-        "stage_ratio": [0.1, 0.1, 0.1, 0.8],
-    },
 
 
 }

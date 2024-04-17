@@ -117,6 +117,27 @@ class PileStackExchange:
         return d
 
 
+class PMCDataset2:
+    def __init__(self, streaming=False,
+                 mode="train"):
+        self.dataset = load_dataset(
+            "hatakeyama-llm-team/PMC",
+            split=mode, streaming=streaming)
+        self.loader = iter(self.dataset)
+
+    def __iter__(self):
+        # イテレータは自分自身を返す
+        return self
+
+    def __next__(self):
+        try:
+            d = next(self.loader)
+            d["text"] = d["text"].replace("Background ", "").strip()
+        except:
+            return {"text": ""}
+        return d
+
+
 class JaNewsDataset:
     def __init__(self,
                  data_files="https://huggingface.co/datasets/atsushi3110/news-ja/resolve/main/news_cc.jsonl",
@@ -165,15 +186,17 @@ class PMCDataset:
         d = next(self.loader)
         d["text"] = d["Text"]
         return d
+
+
 class LightNovelFourM:
     def __init__(self, streaming=True,
-    auth_token=None,
+                 auth_token=None,
                  ):
         self.dataset = load_dataset("isek-ai/light-novel-4m",
-    split="train",
-use_auth_token=auth_token,
-streaming=streaming,
-                  )
+                                    split="train",
+                                    use_auth_token=auth_token,
+                                    streaming=streaming,
+                                    )
 
         self.loader = iter(self.dataset)
 
@@ -185,7 +208,6 @@ streaming=streaming,
         d = next(self.loader)
         d["text"] = d["episode_body"]
         return d
-
 
 
 class FlanDataset:
