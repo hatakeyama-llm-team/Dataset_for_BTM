@@ -1,8 +1,9 @@
 from loaders.loaders import *
 import json
 # 出力パス
-output_path = "/data/hatakeyama/python/llm_corpus/corpus.jsonl"
+
 scale = 1000  # 練習時はscaleを小さくする
+output_path = f"/data/hatakeyama/python/llm_corpus/corpus_scale_{scale}.jsonl"
 
 # 自動でクラスタリングされたコーパス群の読み込み
 n_clusters = 5
