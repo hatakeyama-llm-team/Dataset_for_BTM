@@ -118,7 +118,7 @@ class PileStackExchange:
 
 
 class PMCDataset2:
-    def __init__(self, streaming=False,
+    def __init__(self, streaming=True,
                  mode="train"):
         self.dataset = load_dataset(
             "hatakeyama-llm-team/PMC",

@@ -87,8 +87,11 @@ class RecordDistributor:
                     # frequency
                     if frequency*self.batch_size > batch_cnt:
                         try:
-                            text = next(dataset_info["dataset_iterator"])
-                            text_list.append(text["text"])
+                            text = next(dataset_info["dataset_iterator"])[
+                                "text"]
+                            if text == "":
+                                continue
+                            text_list.append(text)
                         except Exception as e:
                             print(k, batch_cnt, frequency, self.batch_size,
                                   frequency * self.batch_size)
