@@ -118,11 +118,17 @@ class PileStackExchange:
 
 
 class PMCDataset2:
-    def __init__(self, streaming=True,
+    def __init__(self, streaming=False,
                  mode="train"):
         self.dataset = load_dataset(
             "hatakeyama-llm-team/PMC",
-            split=mode, streaming=streaming)
+            split=mode, streaming=streaming,
+            data_files=[
+                "https://huggingface.co/datasets/hatakeyama-llm-team/PMC/resolve/main/PMC002xxxxxx.jsonl",
+                "https://huggingface.co/datasets/hatakeyama-llm-team/PMC/resolve/main/PMC001xxxxxx.jsonl",
+                "https://huggingface.co/datasets/hatakeyama-llm-team/PMC/resolve/main/PMC000xxxxxx.jsonl",
+            ]
+        )
         self.loader = iter(self.dataset)
 
     def __iter__(self):

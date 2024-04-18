@@ -38,7 +38,7 @@ dataset_dict = {
 
     "pmc": {
         "loader": PMCDataset2,
-        "n_records": int(2000000/scale),  # 値は適当
+        "n_records": int(150000/scale),  # 値は適当
         "stage_ratio": [0.05, 700, 0.05, 0.05, 0.05, 0.05, 0.05],
 
     },
