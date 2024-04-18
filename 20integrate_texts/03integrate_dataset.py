@@ -1,5 +1,9 @@
 from loaders.loaders import *
-from dataset_dict import dataset_dict, output_path
+
+
+# tokenizerの学習用｡日本語を多めにする｡
+from dataset_dict_tokenizer import dataset_dict, output_path
+# from dataset_dict import dataset_dict, output_path  # 本番用
 from loaders.RecordDistributor import RecordDistributor
 
 

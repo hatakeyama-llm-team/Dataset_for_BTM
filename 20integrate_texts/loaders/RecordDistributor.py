@@ -92,7 +92,7 @@ class RecordDistributor:
                         except Exception as e:
                             print(k, batch_cnt, frequency, self.batch_size,
                                   frequency * self.batch_size)
-                            print(e, k, dataset_info["dataset"].count)
+                            # print(e, k, dataset_info["dataset"].count)
 
                 # バッチにデータが溜まったら、シャッフルして書き出す
                 if batch_cnt == self.batch_size-1:
