@@ -6,6 +6,9 @@ scale = 1  # 練習時はscaleを小さくする
 scale = 1.05  # データ欠損などがあるせいか､微妙に誤差があるので､少し小さめにする
 output_path = f"/data/hatakeyama/python/llm_corpus/corpus_scale_{scale}.jsonl"
 
+#780GB
+#total records: 299688306
+
 # 自動でクラスタリングされたコーパス群の読み込み
 n_clusters = 5
 # クラスタリングされたweb系テキストのデータセット
