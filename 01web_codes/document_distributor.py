@@ -1,18 +1,15 @@
 import argparse
-from src.classify.Text2Vec import Text2Vec, texts2classes
-from src.cleaner.auto_cleaner import clean_text, ml_clean_text
+from src.classify.Text2Vec import Text2Vec
 import joblib
-from src.load_gz import read_gzip_json_file, load_gzip_or_parquet
+from src.load_gz import load_gzip_or_parquet
 from src.distribute_jsonl import process_lines, make_dir
 from gensim.models import KeyedVectors
+from src.cleaner.text_normalizer import normalize
 
 streaming = True
 base_dir = "../data/categorized"
 length_threshold = 30  # 短い記事は捨てる
-check_length = 100  # はじめのlengthだけで分類する
-
-# 機械学習で記事を選別する
-do_ml_clean = True
+check_length = 200  # はじめのlengthだけで分類する
 
 
 make_dir(base_dir)
@@ -24,7 +21,7 @@ def proc(docs, base_dir, database_path,
                          database_path, check_length=check_length)
 
 
-batch_size = 100
+batch_size = 300
 
 # argparseのセットアップ
 parser = argparse.ArgumentParser(
@@ -62,14 +59,8 @@ def main():
                 continue
             old_text = text
 
-            if do_ml_clean:
-                try:
-                    text = ml_clean_text(text)
-                except Exception as e:
-                    print(e, text)
-                    continue
-            else:
-                text = clean_text(text)
+            # text = clean_text(text)
+            text = normalize(text)  # 正規化のみかけておく
             if len(text) < length_threshold:
                 continue
 

@@ -27,6 +27,11 @@ gz_list = list(set(gz_list))
 print(len(gz_list), " files available")
 
 # %%
+
+if not os.path.exists("temp"):
+    os.makedirs("temp")
+
+
 with open("temp/gz_list.txt", "w") as f:
     for path in gz_list:
         f.write(path+"\n")

@@ -23,8 +23,8 @@ n_file_batch = 10
 with open("temp/gz_list.txt", "r") as f:
     gz_list = f.read().splitlines()
 
-#gz_list = [i for i in gz_list if i.endswith('.gz')]
-#gz_list= [i for i in gz_list if 'jawiki' in i]
+# gz_list = [i for i in gz_list if i.endswith('.gz')]
+# gz_list= [i for i in gz_list if 'jawiki' in i]
 print(len(gz_list), " files found")
 
 random.shuffle(gz_list)
