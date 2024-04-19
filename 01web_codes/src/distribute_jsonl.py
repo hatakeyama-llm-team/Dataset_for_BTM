@@ -29,6 +29,7 @@ def process_lines(docs, t2v, kmeans, base_dir, database_path, check_length=200):
         )
         database_name = database_name.replace(".jsonl", "").replace(".gz", "")
         database_name = database_name.replace(".parquet", "")
+        database_name = "dump"
         with open(f"{save_dir}/{database_name}.jsonl", "a") as f:
             f.write(data+"\n")
 

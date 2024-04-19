@@ -17,7 +17,7 @@ max_workers = int(args.max_workers)
 print("Max workers: ", max_workers)
 
 # 1つのプロセスが処理するファイル数 (modelの読み込みに時間がかかるので､大きめにしておく)
-n_file_batch = 10
+n_file_batch = 500
 
 # %%
 with open("temp/gz_list.txt", "r") as f:
