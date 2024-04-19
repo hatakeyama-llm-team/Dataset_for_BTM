@@ -10,6 +10,38 @@ noise_ending_list = noise_ending_list.split("\n")
 noise_ending_list = [x for x in noise_ending_list if len(x) > 0]
 
 
+def remove_num_lines(record):
+    lines = record["text"].split("\n")
+    new_lines = []
+    for line in lines:
+        if len(line) == 0:
+            continue
+        check_line = line[:20]
+        count = sum(c.isdigit() for c in check_line)
+        # num_ratio=count/len(check_line)
+        num_ratio = count
+        # print(num_ratio)
+        ratio = 5
+        if num_ratio > ratio and check_line.find(":") > 0:
+            continue
+        if num_ratio > ratio and check_line.find("日") > 0:
+            continue
+        if num_ratio > ratio and check_line.find("年") > 0:
+            continue
+        if num_ratio > ratio and check_line.find("-") > 0:
+            continue
+        if num_ratio > ratio and check_line.find("/") > 0:
+            continue
+        if num_ratio > ratio and check_line.find("／") > 0:
+            continue
+        if num_ratio > ratio and check_line.find("月") > 0:
+            continue
+
+        new_lines.append(line)
+    record["text"] = "\n".join(new_lines)
+    return record
+
+
 def clean_endings(sent: str):
     for noise_ending in noise_ending_list:
         if sent.endswith(noise_ending):
@@ -47,10 +79,12 @@ def remove_header(txt, header_list, n_check=30):
 
 
 def clean(text):
+    text = remove_num_lines(text)
     text = remove_header(text, header_list=["|", "】", ">", "]",])
     text = clean_endings(text)
     text = clean_headers(text)
     text = dedup_lines(text)
+    text = remove_num_lines(text)
 
     # 文章全体で名詞が多い場合は無効と判定
     try:
