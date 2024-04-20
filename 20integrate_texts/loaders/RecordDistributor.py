@@ -30,10 +30,12 @@ class RecordDistributor:
                 dataset_info["dataset"] = dataset_info["loader"]()
             except:
                 dataset_info["dataset"] = dataset_info["loader"]
+        print("initiating iterators")
         self.init_iterators()
 
     def init_iterators(self):
         for name, dataset_info in self.dataset_dict.items():
+            print("initiating iterator", name)
             dataset_info["dataset_iterator"] = iter(dataset_info["dataset"])
 
     def update_n_records_per_stage(self):
@@ -85,12 +87,15 @@ class RecordDistributor:
                     # frequency
                     if frequency*self.batch_size > batch_cnt:
                         try:
-                            text = next(dataset_info["dataset_iterator"])
-                            text_list.append(text["text"])
+                            text = next(dataset_info["dataset_iterator"])[
+                                "text"]
+                            if text == "":
+                                continue
+                            text_list.append(text)
                         except Exception as e:
                             print(k, batch_cnt, frequency, self.batch_size,
                                   frequency * self.batch_size)
-                            print(e, k, dataset_info["dataset"].count)
+                            # print(e, k, dataset_info["dataset"].count)
 
                 # バッチにデータが溜まったら、シャッフルして書き出す
                 if batch_cnt == self.batch_size-1:

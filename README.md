@@ -1,4 +1,5 @@
 # 事前学習用のコーパスを作るパイプライン for BTM
+# マニュアル類はあまり整備できてません...
 
 # 環境構築
 - [setup.sh](./setup.sh)
@@ -39,11 +40,6 @@ python 1_search_gz_list.py
 
 ~~~
 
-## 自動実行
-- 以下の3,4,...を自動実行するscriptです｡
-~~~
-bash auto.sh
-~~~
 
 ## 3. クラスタリングモデルの学習
 - [教師なしクラスタリングのためのモデルを学習します](./01web_codes/train_classifier.ipynb)
@@ -64,7 +60,7 @@ python 2_train_classifier.py
 ~~~
 rm -rf ../data/categorized #必要に応じて初期化
 rm -rf temp/fin   #終了済みファイルリストを必要に応じて初期化
-python 3_clean_and_clustering.py 16 # 数学は並列処理の数
+python 3_clean_and_clustering.py 32 # 数学は並列処理の数
 python 3_clean_and_clustering_via_datasets # datasetsライブラリから読み込める､軽めのデータ
 ~~~
 
@@ -100,25 +96,54 @@ python integrate_dataset.py
 ## 7.[トークナイズ](./30tokenize/)
 - フォルダ内を参照
 
-# データ
-- mc4-ja, cc100, oscar, shisa, japanese2010
-- commoncrawl 2021,各種snapshot
-- CommonCrawlPDF
-- openmathinstruct-en
-- wikipedia ja/en
-- nhk school, news
-- j research corpus
-- 青空文庫
-- wikibook
-
-
+# 使われている日本語系コーパス
+- 雑多なweb系
+    - [mc4-ja](https://huggingface.co/datasets/allenai/c4)
+    - [cc100](https://data.statmt.org/cc-100/)
+    - [Oscar](https://huggingface.co/datasets/oscar)
+    - [Shisa](https://huggingface.co/datasets/augmxnt/shisa-pretrain-en-ja-v1)
+    - [Japanese2010](https://huggingface.co/datasets/hatakeyama-llm-team/japanese2010)
+- 独自収拾のCommonCrawl(日本語ドメイン)
+    - WARCから1 snapshot (2021?)
+    - WETから5 snapshot (2020,2021,2022,2023,2024)
+    - [CommonCrawlPDF(ja)](https://huggingface.co/datasets/hatakeyama-llm-team/CommonCrawlPDFJa)
+- 特定のドメイン(一部はまだ非公開)
+    - [NHK News](https://huggingface.co/datasets/hatakeyama-llm-team/nhk-news-170k)
+    - [NHK school](https://huggingface.co/datasets/hatakeyama-llm-team/nhk_for_school_outline)
+    - [青空文庫](https://huggingface.co/datasets/globis-university/aozorabunko-clean)
+    - [国会議事録]()
+    - [Wikipedia-ja](https://huggingface.co/datasets/hpprc/wikipedia-20240101)
+    - [Wikipediaから自動生成したQA](https://huggingface.co/datasets/alfredplpl/wikipedia-qa-ja-1m)
+    - [J-ResearchCorpus](https://huggingface.co/datasets/kunishou/J-ResearchCorpus/viewer/default/train)
+    - [Cosmopedia-ja](https://huggingface.co/datasets/kunishou/cosmopedia-100k-ja-preview)
+    - [WikiBook-ja](https://huggingface.co/datasets/hatakeyama-llm-team/WikiBookJa)
+    - [Novels-ja](https://huggingface.co/datasets/atsushi3110/novels-ja)
+    - [CodingBlog-ja](https://huggingface.co/datasets/atsushi3110/coding-blog-ja)
+    - [日英コーパス](https://huggingface.co/datasets/atsushi3110/en-ja-parallel-corpus-augmented)
+    - [Soda-ja](https://huggingface.co/datasets/atsushi3110/soda-ja-instruction)
+    - [Shosetsu711K](https://huggingface.co/datasets/RyokoAI/Syosetu711K)
+    - [JapeneseNews](https://huggingface.co/datasets/atsushi3110/news-ja)
+    - [light-novel-4m](https://huggingface.co/datasets/isek-ai/light-novel-4m)
+    - [JetCopper-10B](https://huggingface.co/datasets/sudy-super/JetCopper-10B)
+# 使われている英語・コード系コーパス
+- [peS2o](https://huggingface.co/datasets/allenai/peS2o/viewer/v1/train)
+- [wikipedia](https://huggingface.co/datasets/wikipedia)
+- [wikibook](https://huggingface.co/datasets/bigscience-data/roots_en_wikibooks)
+- [pile_stackexchange](https://huggingface.co/datasets/suolyer/pile_stackexchange)
+- [python-codes](https://huggingface.co/datasets/flytech/python-codes-25k)
+- [OpenMathInstruct-ja](https://huggingface.co/datasets/kunishou/OpenMathInstruct-1-1.8m-ja)
+- [proof-pile-2(python)](https://huggingface.co/datasets/EleutherAI/proof-pile-2)
+- [open-web-math](https://huggingface.co/datasets/open-web-math/open-web-math)
+- [flan](https://huggingface.co/datasets/Muennighoff/flan)
+- [alt-parallel-en-ja](https://huggingface.co/datasets/hpprc/alt-parallel-en-ja)
+- [github-code-more-filtering ](https://huggingface.co/datasets/loubnabnl/github-code-more-filtering)
+- [Oasst](https://huggingface.co/datasets/sablo/oasst2_curated)
+- [Dolly](https://huggingface.co/datasets/databricks/databricks-dolly-15k)
+- [Cosmopedia](https://huggingface.co/datasets/HuggingFaceTB/cosmopedia)
+- [PMC(CC-BY)](https://huggingface.co/datasets/hatakeyama-llm-team/PMC)
 ## done
 ## TODO
 - WikiNewsなど
 - 学術論文
-    - pmc,pes2o
     - chem
-- code関連
-- culturaXのcleaning
-- ...
-
+- https://hplt-project.org/datasets/v1.2

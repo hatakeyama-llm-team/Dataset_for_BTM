@@ -1,8 +1,17 @@
 from loaders.loaders import *
 import json
 # 出力パス
-output_path = "/data/hatakeyama/python/llm_corpus/corpus.jsonl"
+
 scale = 1  # 練習時はscaleを小さくする
+scale = 1.05  # データ欠損などがあるせいか､微妙に誤差があるので､少し小さめにする
+output_path = f"/data/hatakeyama/python/llm_corpus/corpus_scale_{scale}.jsonl"
+
+# 780GB
+# total records: 299688306
+# tokens in billion: 195.537374076
+# total tokens: 195537374076
+# total length: 542681260838
+# documents: 299688306
 
 # 自動でクラスタリングされたコーパス群の読み込み
 n_clusters = 5
@@ -24,59 +33,49 @@ dataset_dict = {
     # ----------------------------
     # stage 1
 
-    # 英語のwikipedia
-    "wiki(en)": {
-        "loader": wiki_en_loader,
-        "n_records": int(6458000/scale),
-        "stage_ratio": [0.05, 7, 0.05, 0.05, 0.05, 0.05, 0.05],
+    # 英語
+    "en": {
+        # "loader":  CommonCrawlDataset(["/data/hatakeyama/python/eng_corpus/eng3.jsonl"]),
+        "loader": load_dataset("json", split="train",
+                               data_files="/data/hatakeyama/python/eng_corpus/eng3.jsonl",
+                               streaming=True),
+        "n_records": int(67500000/scale),
+        "stage_ratio": [0.5, 7, 0.05, 0.05, 0.05, 0.05, 0.05],
     },
 
-    # 英語の雑多なテキスト: もっときれいなら他のものに変更する
-    "culturaX(en)": {
-        "loader": culturax_loader,
-        "n_records": int(10**7/scale),
-        "stage_ratio": [0.05, 7, 0.05, 0.05, 0.05, 0.05, 0.05],
-    },
+    "pmc": {
+        "loader": PMCDataset2,
+        "n_records": int(2000000/scale),  # 値は適当
+        "stage_ratio": [0.05, 700, 0.05, 0.05, 0.05, 0.05, 0.05],
 
-    # pythonの英語のcodeのinstructionを事前学習用に強引に突っ込む
-    "PythonCodes": {
-        "loader": python_code_loader,
-        "n_records": int(49000/scale),
-        "stage_ratio": [0.1, 7, 0.1, 0.1, 0.05, 0.05, 0.05],
     },
-    "OpenMathJa": {
-        "loader": open_math_loader,
-        "n_records": int(1820000/scale),
-        "stage_ratio": [0.1, 7, 0.1, 0.1, 0.05, 0.05, 0.05],
-    },
-
     # ----------------------------
     # stage 2以降
     # 日本語の雑多な文章
     #
     "ja0": {
-        "loader": cc_loader_dict["0"],
-        "n_records": int(label_to_article_count["0"]/scale-1000),
+        "loader": cc_loader_dict["4"],
+        "n_records": int(label_to_article_count["4"]/scale-10000),
         "stage_ratio": [0.05, 0.05, 1, 0.05, 0.05, 0.05, 0.05],
     },
     "ja1": {
         "loader": cc_loader_dict["1"],
-        "n_records": int(label_to_article_count["1"]/scale-1000),
+        "n_records": int(label_to_article_count["1"]/scale-10000),
         "stage_ratio": [0.05, 0.05, 0.05, 1, 0.05, 0.05, 0.05],
     },
     "ja2": {
         "loader": cc_loader_dict["2"],
-        "n_records": int(label_to_article_count["2"]/scale-1000),
+        "n_records": int(label_to_article_count["2"]/scale-10000),
         "stage_ratio": [0.05, 0.05, 0.05, 0.05, 1, 0.05, 0.05],
     },
     "ja3": {
         "loader": cc_loader_dict["3"],
-        "n_records": int(label_to_article_count["3"]/scale-1000),
+        "n_records": int(label_to_article_count["3"]/scale-10000),
         "stage_ratio": [0.05, 0.05, 0.05, 0.05, 0.05, 1, 0.05],
     },
     "ja4": {
-        "loader": cc_loader_dict["4"],
-        "n_records": int(label_to_article_count["4"]/scale-1000),
+        "loader": cc_loader_dict["0"],
+        "n_records": int(label_to_article_count["0"]/scale-10000),
         "stage_ratio": [0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 1],
     },
 

@@ -17,6 +17,7 @@ sp = spm.SentencePieceProcessor(model_file=model_path)
 # wikipedia 200万文章で20minほど
 total_tokens = 0
 total_length=0
+count=0
 with open(conf["input"], "r") as f:
     for line in tqdm(f):
         text = json.loads(line)["text"]
@@ -24,6 +25,7 @@ with open(conf["input"], "r") as f:
         total_tokens += n_tokens
 
         total_length+=len(text)
+        count+=1
 
 # billion
 print("tokens in billion")
@@ -32,3 +34,5 @@ print("tokens")
 print(total_tokens)
 print("length")
 print(total_length)
+print("documents")
+print(count)

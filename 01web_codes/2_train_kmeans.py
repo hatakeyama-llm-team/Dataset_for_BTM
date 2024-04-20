@@ -11,46 +11,28 @@ from gensim.models.fasttext import load_facebook_model
 from sklearn.cluster import KMeans, MiniBatchKMeans
 from src.load_gz import read_gzip_json_file, load_gzip_or_parquet
 from src.cleaner.auto_cleaner import clean_text
+import json
+from gensim.models import KeyedVectors
 # クラスタの数
 n_clusters = 10000
-# n_clusters = 200
-# クラスタリングに使うデータベースの数
-n_gz = 500
-# 各データセットごと､N件のデータを取得
-max_articles = 200
-# max_articles = 10
 
-
-# gzファイルの一覧を取得
-with open("temp/gz_list.txt", "r") as f:
-    gz_list = f.readlines()
-
-gz_list = [i for i in gz_list if i != "\n"]
-gz_list = [i.replace("\n", "") for i in gz_list]
-
-lines = []
-cleaned_text = []
-
-random.shuffle(gz_list)
-train_datasets = gz_list[:n_gz]
-
-for path in tqdm(train_datasets):
-    print("loading ", path)
-    lines = load_gzip_or_parquet(path)
-
-    cnt = 0
-    for text in (lines):
-        # text=next(dataset_iter)["text"]
-        text = clean_text(text)
-
-        if text != "":
-            cleaned_text.append(text)
-            cnt += 1
-            if cnt >= max_articles:
-                break
-
+text_path = "temp/texts.jsonl"
+with open(text_path, "r") as f:
+    lines = f.readlines()
+cleaned_text = [json.loads(i)["text"] for i in lines]
 cleaned_text = list(set(cleaned_text))
-t2v = Text2Vec(load_facebook_model('../data/model/cc.ja.300.bin'))
+
+
+# k-meansクラスタリング
+print("clustering...")
+
+
+# t2v = Text2Vec(load_facebook_model('../data/model/cc.ja.300.bin'))
+
+t2v = Text2Vec(model=KeyedVectors.load_word2vec_format(
+    '../data/model/entity_vector/entity_vector.model.bin', binary=True),
+    dim=200,
+)
 
 # %%
 title_vecs = [t2v.text2vec(i) for i in tqdm(cleaned_text)]
@@ -64,6 +46,7 @@ kmeans = MiniBatchKMeans(n_clusters=n_clusters, random_state=1).fit(title_vecs)
 
 # 各データポイントが割り当てられたクラスタのインデックスを取得
 labels = kmeans.labels_
+
 
 # 各クラスタに含まれるデータポイントの数を計算
 cluster_counts = dict((i, list(labels).count(i)) for i in range(n_clusters))
