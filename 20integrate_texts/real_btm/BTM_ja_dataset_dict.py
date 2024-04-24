@@ -4,7 +4,7 @@ import json
 
 scale = 1  # 練習時はscaleを小さくする
 scale = 1.05  # データ欠損などがあるせいか､微妙に誤差があるので､少し小さめにする
-output_path = f"/data/hatakeyama/python/llm_corpus/BTM_J_EN_corpus_scale_{scale}.jsonl"
+output_path = f"/data/hatakeyama/python/llm_corpus/BTM_J_corpus_scale_{scale}.jsonl"
 
 # 780GB
 # total records: 299688306
@@ -39,7 +39,7 @@ dataset_dict = {
         "loader": load_dataset("json", split="train",
                                data_files="/data/hatakeyama/python/eng_corpus/eng3.jsonl",
                                streaming=True),
-        "n_records": int(67500000/scale/5),
+        "n_records": int(67500000/scale/100),
         "stage_ratio": [0.5, 7, 0.05, 0.05, 0.05, 0.05, 0.05],
     },
 
@@ -56,28 +56,27 @@ dataset_dict = {
     "ja0": {
         "loader": cc_loader_dict["4"],
         "n_records": int(label_to_article_count["4"]/scale-10000),
-        "stage_ratio": [0.05, 0.05, 0.05, 0.05, 1, 0.05, 0.05],
+        "stage_ratio": [0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 1],
     },
     "ja1": {
         "loader": cc_loader_dict["1"],
         "n_records": int(label_to_article_count["1"]/scale-10000),
-
-        "stage_ratio": [0.05, 0.05, 0.05, 1, 0.05, 0.05, 0.05],
+        "stage_ratio": [0.05, 0.05, 0.05, 0.05, 0.05, 1, 0.05],
     },
     "ja2": {
         "loader": cc_loader_dict["2"],
         "n_records": int(label_to_article_count["2"]/scale-10000),
-        "stage_ratio": [0.05, 0.05, 1, 0.05, 0.05, 0.05, 0.05],
+        "stage_ratio": [0.05, 0.05, 0.05, 0.05, 1, 0.05, 0.05],
     },
     "ja3": {
         "loader": cc_loader_dict["3"],
         "n_records": int(label_to_article_count["3"]/scale-10000),
-        "stage_ratio": [0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 1],
+        "stage_ratio": [0.05, 0.05, 0.05, 1, 0.05, 0.05, 0.05],
     },
     "ja4": {
         "loader": cc_loader_dict["0"],
         "n_records": int(label_to_article_count["0"]/scale-10000),
-        "stage_ratio": [0.05, 0.05, 0.05, 0.05, 0.05, 1, 0.05],
+        "stage_ratio": [0.05, 0.05, 1, 0.05, 0.05, 0.05, 0.05],
     },
 
 
