@@ -11,6 +11,6 @@ train_extremely_large_corpus: True
 
 #tokenize
 input_tokenizer_file: /data/hatakeyama/python/llm_corpus/tokenizer/tokenizer_scale200.model
-output_prefix: /data/hatakeyama/python/llm_corpus/BTM_J_EN_corpus
+output_prefix: /data/hatakeyama/python/llm_corpus/BTM_J_EN_corpus2
 #output_prefix: /data/hatakeyama/python/llm_corpus/BTM_J_corpus
 megatron_deepspeed_dir: Megatron-DeepSpeed

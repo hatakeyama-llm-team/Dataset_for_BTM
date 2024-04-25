@@ -6,7 +6,6 @@ scale = 1  # 練習時はscaleを小さくする
 scale = 1.05  # データ欠損などがあるせいか､微妙に誤差があるので､少し小さめにする
 output_path = f"/data/hatakeyama/python/llm_corpus/BTM_J_corpus_scale_{scale}.jsonl"
 
-# 780GB
 # tokens in billion: 89.938453577
 # total tokens: 89938453577
 # total length: 160393536146

@@ -4,7 +4,7 @@ import json
 
 scale = 1  # 練習時はscaleを小さくする
 scale = 1.05  # データ欠損などがあるせいか､微妙に誤差があるので､少し小さめにする
-output_path = f"/data/hatakeyama/python/llm_corpus/BTM_J_EN_corpus_scale_{scale}.jsonl"
+output_path = f"/data/hatakeyama/python/llm_corpus/BTM_J2_corpus_scale_{scale}.jsonl"
 
 
 # 自動でクラスタリングされたコーパス群の読み込み
@@ -33,7 +33,7 @@ dataset_dict = {
         "loader": load_dataset("json", split="train",
                                data_files="/data/hatakeyama/python/eng_corpus/eng3.jsonl",
                                streaming=True),
-        "n_records": int(67500000/scale/5),
+        "n_records": int(67500000/scale/100),
         "stage_ratio": [0.5, 1, 1, 1, 1, 1, 1],
     },
 

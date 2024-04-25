@@ -151,7 +151,7 @@ class JaNewsDataset:
                  data_files="https://huggingface.co/datasets/atsushi3110/news-ja/resolve/main/news_cc.jsonl",
                  ):
         self.dataset = load_dataset(
-            "hatakeyama-llm-team/PMC",
+            "atsushi3110/news-ja",
             data_files=data_files,
             split="train",)
         self.loader = iter(self.dataset)
