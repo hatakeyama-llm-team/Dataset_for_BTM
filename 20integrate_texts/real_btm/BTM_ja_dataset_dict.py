@@ -7,12 +7,10 @@ scale = 1.05  # データ欠損などがあるせいか､微妙に誤差があ�
 output_path = f"/data/hatakeyama/python/llm_corpus/BTM_J_corpus_scale_{scale}.jsonl"
 
 # 780GB
-# total records: 299688306
-# tokens in billion: 195.537374076
-# total tokens: 195537374076
-# total length: 542681260838
-# documents: 299688306
-
+# tokens in billion: 89.938453577
+# total tokens: 89938453577
+# total length: 160393536146
+# documents: 235467841
 # 自動でクラスタリングされたコーパス群の読み込み
 n_clusters = 5
 # クラスタリングされたweb系テキストのデータセット
