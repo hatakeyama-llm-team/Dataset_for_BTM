@@ -169,3 +169,7 @@ dedup/rapidjson
 dedup/smhasher
 annotations
 dev/mc4s
+.idea
+/model/20170201.tar.bz2
+/model/entity_vector/entity_vector.model.bin
+/model/entity_vector/entity_vector.model.txt
