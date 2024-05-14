@@ -1,3 +1,5 @@
+import datetime
+import os
 
 import apache_beam.pipeline as pipeline
 import trafilatura
@@ -55,68 +57,42 @@ def prepare_warcs(warcs:Warcs):
     retrived_warc =  {'trafilatura_content': trafilatura_content, 'original_content': content}
     print(retrived_warc)
     return retrived_warc
+class WriteToTempFile(beam.DoFn):
+    def process(self, element):
+        temp_file_path = f'gs://big_query_db/temp/{datetime.datetime.now().strftime("%Y%m%d%H%M%S%f")}.txt'
+        # ここでデータを一時ファイルに書き込む
+        print(element)
+        with beam.io.filesystems.FileSystems.create(temp_file_path, mime_type='text/plain') as file:
+            file.write('test')
+        yield temp_file_path
 
 
-def deduplication(texts):
-    return texts
+
+def deduplication(file_path):
+
+    # ファイルをgcsにアップロード
+    # DataFlowからファイルを読み込む
+    # 重複を除外する
+
+
+    cmd = f"../dedup_sentence/deduplicate {file_path}"
+
+    os.system(cmd)
+    return file_path
 def run():
 
     options = PipelineOptions(**OPTIONS, **{'streaming': True},flags=['--temp_location=gs://big_query_db/temp'])
 
     # Add your pipeline code here
     with pipeline.Pipeline(options=options) as p:
-        (p |'Read' >> read_from_bigquery()
-         |'PrepareWarcs'>> beam.Map(lambda warc:prepare_warcs(warc))
-         | 'Deduplication' >> beam.Map(lambda x: deduplication(x)) #3_clean_and_cluster.pyはなし
-         | 'CleanedText' >> beam.Map(lambda retrived_warc: cleaning_text(retrived_warc))
-         | 'Write' >> beam.io.WriteToText('../test.txt')
+        (p |'Read' >> read_from_bigquery() #BigQueryに保存した抽出済みデータを読み込む
+         |'PrepareWarcs'>> beam.Map(lambda warc:prepare_warcs(warc)) #加工できる形に整形する
+         | "Write to temp file" >> beam.ParDo(WriteToTempFile()) # 一時ファイルとしてDedupできるようにGoogle Cloud Storageに書き込む
+         | 'Deduplication' >> beam.Map(lambda file_path: deduplication(file_path)) #FixMe:dedumplicate.cppでファイルパスを読み込む　
+         | 'CleanedText' >> beam.Map(lambda retrived_warc: cleaning_text(retrived_warc)) #FixMe:クリーニング処理を行う
+         | 'Write' >> beam.io.WriteToText('../test.txt') #結果をファイルに書き込む Todo:BigQueryに書き込む処理に修正する
         )
     p.run()
 
 if __name__ == '__main__':
     run()
-
-
-    # [
-    #     {
-    #       "name": "id",
-    #       "type": "STRING",
-    #     },
-    #     {
-    #       "name": "record_id",
-    #       "type": "INTEGER"
-    #     },
-    #     {
-    #       "name": "url",
-    #       "type": "STRING",
-    #       "description": "Unique URL"
-    #     },
-    #     {
-    #       "name": "title",
-    #       "type": "STRING"
-    #     },
-    #     {
-    #       "name": "timestamp",
-    #       "type": "STRING"
-    #     },
-    #     {
-    #       "name": "path",
-    #       "type": "STRING"
-    #     },
-    #     {
-    #       "name": "pre_cleaned_text",
-    #       "type": "STRING"
-    #     },
-    #     {
-    #       "name": "html_text",
-    #       "type": "STRING"
-    #     },
-    #     {
-    #       "name": "batch_number",
-    #       "type": "INTEGER"
-    #     },
-    #     {
-    #         "name":"trafirature",
-    #       "type": "STRING"
-    #     }
-    # ]
