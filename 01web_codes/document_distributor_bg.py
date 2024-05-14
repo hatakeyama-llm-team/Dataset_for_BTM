@@ -1,3 +1,4 @@
+from typing import Dict
 
 from src.classify.Text2Vec import Text2Vec
 from src.cleaner.auto_cleaner import clean_text, ml_clean_text
@@ -22,17 +23,21 @@ t2v = Text2Vec(model=KeyedVectors.load_word2vec_format(
 )
 
 
-def cleaning_text(retrived_warc):
+
+
+def cleaning_text(retrived_warc:Dict[str, str]):
     # 純粋に同じテキストが続く場合はスキップ
-    trafilatura_content = retrived_warc['trafilatura_content']
-    if do_ml_clean:
-        try:
-            cleaned_text = ml_clean_text(trafilatura_content)
-            return cleaned_text
-        except Exception as e:
-            print(e, trafilatura_content)
-    else:
-        cleaned_text = clean_text(trafilatura_content)
-        return cleaned_text
-
-
+    print(retrived_warc)
+    # trafilatura_content = retrived_warc['trafilatura_content']
+    # if do_ml_clean:
+    #     try:
+    #         cleaned_text = ml_clean_text(trafilatura_content)
+    #         return cleaned_text
+    #     except Exception as e:
+    #         print(e, trafilatura_content)
+    # else:
+    #     cleaned_text = clean_text(trafilatura_content)
+    #     return cleaned_text
+    #
+    #
+    return retrived_warc
