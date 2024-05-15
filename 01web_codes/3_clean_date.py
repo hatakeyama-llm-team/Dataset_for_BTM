@@ -41,38 +41,38 @@ def remove_num_lines(record):
     return record
 
 
-cluster_ids = list(range(10000))
-random.shuffle(cluster_ids)
-for cat_id in tqdm(cluster_ids):
-    jsonl_list = glob.glob(
-        f"../data/categorized/{cat_id}/*.jsonl", recursive=True)
-    for path in (jsonl_list):
-        # ファイルの最終更新時間とサイズをチェック
-        try:
-            stats = os.stat(path)
-        except:
-            continue
-        last_modified = datetime.fromtimestamp(stats.st_mtime)
-        if (datetime.now() - last_modified) > timedelta(minutes=5):
-            # if True:
+def cluster(record):
+    cluster_ids = list(range(10000))
+    random.shuffle(cluster_ids)
+    for cat_id in tqdm(cluster_ids):
+        jsonl_list = glob.glob(
+            f"../data/categorized/{cat_id}/*.jsonl", recursive=True)
+        for path in (jsonl_list):
+            # ファイルの最終更新時間とサイズをチェック
+            try:
+                stats = os.stat(path)
+            except:
+                continue
+            last_modified = datetime.fromtimestamp(stats.st_mtime)
+            if (datetime.now() - last_modified) > timedelta(minutes=5):
+                # if True:
 
-            record_list = []
-            with open(path, "r") as f:
-                for record in f:
-                    data = json.loads(record)
-                    record_list.append(data)
+                record_list = []
+                with open(path, "r") as f:
+                    for record in f:
+                        data = json.loads(record)
+                        record_list.append(data)
 
-            cleaned_record_list = []
-            for record in record_list:
-                cleaned = remove_num_lines(record)
-                if len(cleaned["text"]) > 0:
-                    cleaned_record_list.append(cleaned)
+                cleaned_record_list = []
+                for record in record_list:
+                    cleaned = remove_num_lines(record)
+                    if len(cleaned["text"]) > 0:
+                        cleaned_record_list.append(cleaned)
 
-            with open(path, "w") as f:
-                for record in cleaned_record_list:
-                    f.write(json.dumps(record, ensure_ascii=False)+"\n")
-            # break
-            # if path=="../data/categorized/39/00A2Zpve0kEr.jsonl":
-            #    break
+                with open(path, "w") as f:
+                    for record in cleaned_record_list:
+                        f.write(json.dumps(record, ensure_ascii=False)+"\n")
+                # break
+                # if path=="../data/categorized/39/00A2Zpve0kEr.jsonl":
+                #    break
 
-# %%

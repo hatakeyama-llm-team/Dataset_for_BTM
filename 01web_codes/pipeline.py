@@ -1,3 +1,4 @@
+import json
 
 from document_distributor_bg import cleaning_text
 import subprocess
@@ -9,10 +10,16 @@ from pydantic import BaseModel
 import logging
 from datetime import datetime
 # 定数の設定
-PROJECT = 'annotation-app-418113'
-REGION = 'asia-northeast1'
-TABLE = 'warcs_download'
-BUCKET = 'big_query_db'
+# PROJECT = 'annotation-app-418113'
+# REGION = 'asia-northeast1'
+# TABLE = 'warcs_download'
+# BUCKET = 'big_query_db'
+
+PROJECT='hatakeyamallm'
+REGION='us-east1'
+TABLE='warcs'
+BUCKET='cloudrun_save_data'
+
 datetime_now = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
 # 一時ファイルの保存先
 TEMP_LOCATION = f'gs://{BUCKET}/temp/{datetime_now}'
@@ -57,7 +64,8 @@ def prepare_warcs(warcs: dict):
     if trafilatura_content is None:
         trafilatura_content = trafilatura.extract(content.decode("utf-8", errors="ignore"), include_formatting=True)
 
-    retrived_warc = {'trafilatura_content': trafilatura_content, 'original_content': content}
+    retrived_warc = {'trafilatura_content': trafilatura_content, 'original_content': content,
+                     }
     return retrived_warc
 
 class WriteToTempFile(beam.DoFn):
@@ -103,21 +111,67 @@ def deduplication(file_path):
     except subprocess.CalledProcessError as e:
         logging.error(f"Error in deduplication: {e}")
         return None
+def remove_num_lines(record):
+    lines = record["trafilatura_content"].split("\n")
+    new_lines = []
+    for line in lines:
+        if len(line) == 0:
+            continue
+        check_line = line[:20]
+        count = sum(c.isdigit() for c in check_line)
+        # num_ratio=count/len(check_line)
+        num_ratio = count
+        # print(num_ratio)
+        ratio = 5
+        if num_ratio > ratio and check_line.find(":") > 0:
+            continue
+        if num_ratio > ratio and check_line.find("日") > 0:
+            continue
+        if num_ratio > ratio and check_line.find("年") > 0:
+            continue
+        if num_ratio > ratio and check_line.find("-") > 0:
+            continue
+        if num_ratio > ratio and check_line.find("/") > 0:
+            continue
+        if num_ratio > ratio and check_line.find("／") > 0:
+            continue
+        if num_ratio > ratio and check_line.find("月") > 0:
+            continue
+
+        new_lines.append(line)
+    record["text"] = "\n".join(new_lines)
+    # 不要なキーを削除
+    del record["trafilatura_content"]  # remove
+    #transformed_record to text
+
+    return record
+
+def prepare_cluster_list(record,cluster_id:int):
+    data = json.loads(record)
+
+    cleaned_text = cleaning_text(data["text"])
+
+    # write json file to gcs
+    with open(f'../data/categorized/{cluster_id}/{uuid4()}.jsonl', 'w') as f:
+        f.write(json.dumps(data))
+    return cleaned_text
+
+
 
 def run():
     """
     パイプラインを実行する関数。
     """
-    options = PipelineOptions(**OPTIONS, **{'streaming': True})
+    options = PipelineOptions(**OPTIONS, **{'streaming': True},**{'runner': 'DataflowRunner'})
 
     with beam.Pipeline(options=options) as p:
         (
             p
             | 'Read' >> read_from_bigquery()
             | 'PrepareWarcs' >> beam.Map(prepare_warcs)
-            | 'Write to temp file' >> beam.ParDo(WriteToTempFile())
+            | 'CleanedText' >> beam.Map(remove_num_lines)
+            # | 'Write to temp file' >> beam.ParDo(WriteToTempFile())
             # | 'Deduplication' >> beam.Map(deduplication)
-            | 'CleanedText' >> beam.Map(cleaning_text)
             | 'Write' >> beam.io.WriteToText('../test.txt')
         )
 
