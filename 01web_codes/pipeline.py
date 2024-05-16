@@ -1,4 +1,15 @@
+import base64
 import json
+import pickle
+from typing import Dict
+
+import joblib
+import numpy as np
+from apache_beam import typehints
+from gensim.models import KeyedVectors
+from sklearn.cluster import MiniBatchKMeans
+
+from src.classify.Text2Vec import Text2Vec
 
 from document_distributor_bg import cleaning_text
 import subprocess
@@ -10,22 +21,28 @@ from pydantic import BaseModel
 import logging
 from datetime import datetime
 # 定数の設定
-# PROJECT = 'annotation-app-418113'
-# REGION = 'asia-northeast1'
-# TABLE = 'warcs_download'
-# BUCKET = 'big_query_db'
+#FixMe: プロジェクトに応じて
 
-PROJECT='hatakeyamallm'
-REGION='us-east1'
-TABLE='warcs'
-BUCKET='cloudrun_save_data'
+class Configuration(object):
+    PROJECT = 'annotation-app-418113'
+    REGION = 'asia-northeast1'
+    TABLE = 'warcs_download'
+    BUCKET = 'big_query_db'
+    N_CLUSTERS = 10
 
+    # PROJECT='hatakeyamallm'
+    # REGION='us-east1'
+    # TABLE='warcs'
+    # BUCKET='cloudrun_save_data'
+    #
+
+config = Configuration()
 datetime_now = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
 # 一時ファイルの保存先
-TEMP_LOCATION = f'gs://{BUCKET}/temp/{datetime_now}'
+TEMP_LOCATION = f'gs://{config.BUCKET}/temp/{datetime_now}'
 OPTIONS = {
-    'project': PROJECT,
-    'region': REGION,
+    'project': config.PROJECT,
+    'region': config.REGION,
     'temp_location': TEMP_LOCATION
 }
 logging.basicConfig(level=logging.INFO)
@@ -44,7 +61,7 @@ def read_from_bigquery():
     """
     BigQueryからデータを読み込むための関数。
     """
-    query = f'SELECT * FROM `{PROJECT}.cc_dataset.{TABLE}` LIMIT 10'
+    query = f'SELECT * FROM `{config.PROJECT}.cc_dataset.{config.TABLE}` LIMIT 2000'
     return beam.io.ReadFromBigQuery(query=query, use_standard_sql=True)
 
 def prepare_warcs(warcs: dict):
@@ -91,27 +108,26 @@ class WriteToTempFile(beam.DoFn):
         except Exception as e:
             logging.error(f"Error writing to temp file: {e}")
 
-def deduplication(file_path):
+def deduplication(input_file_path):
     """
     指定されたファイルパスを使って重複除去を行う関数。
 
     Args:
-        file_path (str): ファイルパス。
+        input_file_path (str): ファイルパス。
 
     Returns:
         str: 重複除去後のファイルパス。
     """
     try:
         # deduplicateコマンドを直接実行
-        cmd = f'../dedup/deduplicate {file_path}'
-        logging.info(f'Running deduplication command: {cmd}')
+        output_file_path = f'{input_file_path}.output.txt'
+        cmd = f'../dedup/deduplicate {input_file_path} {output_file_path}'
         subprocess.run(cmd, shell=True, check=True)
-        logging.info(f'Deduplication complete for: {file_path}')
-        return file_path
+        return output_file_path
     except subprocess.CalledProcessError as e:
         logging.error(f"Error in deduplication: {e}")
         return None
-def remove_num_lines(record):
+def remove_num_lines(record:Dict[str,str],key:str="text"):
     lines = record["trafilatura_content"].split("\n")
     new_lines = []
     for line in lines:
@@ -142,9 +158,9 @@ def remove_num_lines(record):
     record["text"] = "\n".join(new_lines)
     # 不要なキーを削除
     del record["trafilatura_content"]  # remove
-    #transformed_record to text
+    del record["original_content"]  # remove
 
-    return record
+    return json.dumps(record,ensure_ascii=False)
 
 def prepare_cluster_list(record,cluster_id:int):
     data = json.loads(record)
@@ -155,25 +171,109 @@ def prepare_cluster_list(record,cluster_id:int):
     with open(f'../data/categorized/{cluster_id}/{uuid4()}.jsonl', 'w') as f:
         f.write(json.dumps(data))
     return cleaned_text
+# 定数の設定
+# FixMe: プロジェクトに応じて 本来は10000
+MODEL_PATH = "../data/model/entity_vector/entity_vector.model.bin"
+MODEL_SAVE_PATH = "../data/model/kmeans.pkl"
+class GetTextVectors(beam.DoFn):
+    def __init__(self, model_path):
+        self.model_path = model_path
 
+    def setup(self):
+        self.model = KeyedVectors.load_word2vec_format(self.model_path, binary=True)
+        self.t2v = Text2Vec(model=self.model, dim=200)
 
+    def process(self, text):
+        vector = self.t2v.text2vec(text)
+        yield np.array(vector)
+
+class ClusterTexts(beam.DoFn):
+    def __init__(self, n_clusters):
+        self.n_clusters = n_clusters
+
+    def setup(self):
+        self.kmeans = MiniBatchKMeans(n_clusters=self.n_clusters, random_state=1)
+
+    #命名はprocessでなければいけない
+    def process(self, batch):
+        vectors = np.stack(batch)
+        self.kmeans.fit(vectors)
+        for label in self.kmeans.labels_:
+            yield label
 
 def run():
     """
     パイプラインを実行する関数。
     """
-    options = PipelineOptions(**OPTIONS, **{'streaming': True},**{'runner': 'DataflowRunner'})
+    options = PipelineOptions(**OPTIONS, **{'streaming': True})
+    # options = PipelineOptions(**OPTIONS, **{'streaming': True},**{'runner': 'DataflowRunner'})
 
     with beam.Pipeline(options=options) as p:
-        (
-            p
-            | 'Read' >> read_from_bigquery()
-            | 'PrepareWarcs' >> beam.Map(prepare_warcs)
-            | 'CleanedText' >> beam.Map(remove_num_lines)
-            # | 'Write to temp file' >> beam.ParDo(WriteToTempFile())
-            # | 'Deduplication' >> beam.Map(deduplication)
-            | 'Write' >> beam.io.WriteToText('../test.txt')
+
+        # テキストの読み込みと前処理
+        cleaned_texts = (
+                p
+                | 'Read' >> read_from_bigquery()
+                | 'PrepareWarcs' >> beam.Map(prepare_warcs)
+                | 'RemoveNumLinesText' >> beam.Map(remove_num_lines)  # json.dumps(record,ensure_ascii=False)
+                | 'Print' >> beam.Map(print)
         )
+
+        '''
+        cleand_textの出力例
+        
+        {"text": "## すたじおみりす\n### 青空がっこのせんせい君。\n### いただきじゃんがりあんR\n"}
+
+        '''
+
+        # テキストの読み込みと前処理
+        text_vectors = (
+                cleaned_texts
+                | "Get Text Vectors" >> beam.ParDo(GetTextVectors(MODEL_PATH))
+                | "Batch Elements" >> beam.BatchElements(min_batch_size=500, max_batch_size=1000)
+        )
+
+        # クラスタリングの実行
+        clustered_texts = (
+            text_vectors
+            | 'Cluster Texts' >> beam.ParDo(ClusterTexts(n_clusters=config.N_CLUSTERS))
+        )
+
+        # クラスタラベルのカウント
+        cluster_counts = (
+            clustered_texts
+            | 'Map Labels to KV' >> beam.Map(lambda label: (int(label), 1)).with_output_types(typehints.KV[int, int])
+            | 'Count by Cluster' >> beam.CombinePerKey(sum)
+        )
+        '''
+          cluster_countsの出力例
+          (3, 23)
+          (1, 10)
+          (4, 9)
+          (7, 6)
+          (2, 9)
+          (0, 13)
+          (8, 15)
+          (9, 6)
+          (5, 3)
+          (6, 6)
+          '''
+
+        #GCSに保存した一時ファイルを読み込んでcppで記述したdedupで重複除去を行う
+        deduplicated_files = (
+                cleaned_texts
+                | "Write to Temp File" >> beam.ParDo(WriteToTempFile())
+                | "Deduplicate" >> beam.Map(deduplication)
+        )
+
+
+        # 重複削除したテキストをjsonlファイルに保存
+        # clustered_texts = (
+        #         deduplicated_files
+        # )
+        #
+
+
 
 if __name__ == '__main__':
     run()
