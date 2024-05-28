@@ -1,7 +1,7 @@
 #tokenizer学習
 input: /data/hatakeyama/python/llm_corpus/PMC_ja2_corpus_scale_1.05.jsonl
 #input: /data/hatakeyama/python/llm_corpus/BTM_J_corpus_scale_1.05.jsonl
-output_dir: /data/hatakeyama/python/llm_corpus/tokenizer
+output_dir: /data/hatakeyama/python/llm_corpus/tokenizer_100k
 vocab_size: 65000
 num_threads: 32
 model_prefix: tokenizer
