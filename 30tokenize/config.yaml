@@ -1,8 +1,9 @@
 #tokenizer学習
-input: /data/hatakeyama/python/llm_corpus/PMC_ja2_corpus_scale_1.05.jsonl
+input: /data/hatakeyama/python/llm_corpus/corpus_scale_1.05.jsonl
 #input: /data/hatakeyama/python/llm_corpus/BTM_J_corpus_scale_1.05.jsonl
 output_dir: /data/hatakeyama/python/llm_corpus/tokenizer_100k
-vocab_size: 65000
+#vocab_size: 65000
+vocab_size: 100000
 num_threads: 32
 model_prefix: tokenizer
 character_coverage: 0.9995
@@ -10,7 +11,7 @@ model_type: unigram #character_coverage
 train_extremely_large_corpus: True
 
 #tokenize
-input_tokenizer_file: /data/hatakeyama/python/llm_corpus/tokenizer/tokenizer_scale200.model
+input_tokenizer_file: /media/hatakeyama/python/Dataset_for_BTM/data/tokenizers/0529tokenizer_65k_wo_mecab_scale50.model
 output_prefix: /data/hatakeyama/python/llm_corpus/BTM_J2_corpus
 #output_prefix: /data/hatakeyama/python/llm_corpus/BTM_J_corpus
 megatron_deepspeed_dir: Megatron-DeepSpeed
