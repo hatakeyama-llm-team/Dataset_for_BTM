@@ -5,7 +5,7 @@
 - [setup.sh](./setup.sh)
     - minicondaで環境構築するためのscript
 
-# [1. 日本語のCommonCrawlデータを統合](./01web_codes/)
+# [1. 日本語のCommonCrawlデータを統合](01web_codes/)
 ## 1. 事前ダウンロード
 - webコーパスを事前にダウンロードしておきます｡
  - 一晩くらいはかかります
@@ -30,9 +30,9 @@ bash commoncrawl.sh
 
 
 ## 2. gzファイルの一覧取得
-- gzファイルの一覧を[temp/gz_list.txt](./01web_codes/temp/gz_list.txt)に書き出します。
+- gzファイルの一覧を[temp/gz_list.txt](01web_codes/temp/gz_list.txt)に書き出します。
 - parquetにも対応しています｡
-- TODO: [code](./01web_codes/1_search_gz_list.py)中で参照するparquetのパスが､変な場所でハードコードされている
+- TODO: [code](01web_codes/1_search_gz_list.py)中で参照するparquetのパスが､変な場所でハードコードされている
 ~~~
 conda activate textprocess
 cd web_codes
@@ -42,7 +42,7 @@ python 1_search_gz_list.py
 
 
 ## 3. クラスタリングモデルの学習
-- [教師なしクラスタリングのためのモデルを学習します](./01web_codes/train_classifier.ipynb)
+- [教師なしクラスタリングのためのモデルを学習します](01web_codes/train_classifier.ipynb)
 - 人間のためのカテゴライズというよりは、dedupの計算時間を削減することが今回の目的です｡
     - dedupの計算コストや必要メモリが、naiveにはN^2に比例するため
 - クラスタ数は大きめが良いかもしれません
